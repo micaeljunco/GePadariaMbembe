@@ -1,0 +1,156 @@
+@charset "UTF-8";
+
+#mainHome{
+    width: 90vw;
+    flex-wrap: wrap;
+    padding: 1.5vw;
+    padding-top: 50px;
+    overflow: auto;
+}
+
+/* ---------------------- */
+/* CONFIGURAÇÃO DO HEADER */
+/* ---------------------- */
+
+#mainHome>#headerHome{
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 1em;
+    padding-bottom: 1.5em;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+#headerHome h1{
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* -------------------- */
+/* CONFIGURAÇÕES GERAIS */
+/* -------------------- */
+
+#statusComandas p,
+#statusEstoque p,
+#statusPDV p{
+    text-align: center;
+}
+
+#ctnrStatus, #ctnrAcsRap, #ctnrDiaInfo{
+    padding: 20px 1.5vw;
+    background-color: var(--cor-fundo-secundario);
+    border-radius: var(--radius);
+    box-shadow: inset var(--sombra);
+}
+
+#sysStatus h2, #acsRapido h2, #diaInfo h2{
+    margin: 30px auto 30px auto;
+    color: var(--cor-primaria);
+}
+
+#sysStatus h3, #diaInfo h3{
+    text-align: center;
+    color: var(--cor-secundaria);
+    margin-bottom: 10px;
+}
+
+/* --------------------------------- */
+/* CONFIGURAÇÃO DO STATUS DO SISTEMA */
+/* --------------------------------- */
+
+#sysStatus{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#statusComandas,
+#statusEstoque,
+#statusPDV{
+    width: 28vw;
+}
+
+#statusEstoque P{
+    color: var(--atencao);
+    font-weight: bold;
+}
+
+#statusPDV .idPDV{
+    font-weight: bold;
+}
+
+#statusPDV .statusAtivo{
+    color: var(--ativo);
+    font-weight: bold;
+}
+
+#statusPDV .atvPDV{
+    font-weight: bold;
+}
+
+#ctnrStatus {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* ----------------------------- */
+/* CONFIGURAÇÃO DO ACESSO RAPIDO */
+/* ----------------------------- */
+
+#acsRapido{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#ctnrAcsRap{
+    padding: 1vw;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.itemMenu {
+    background-color: var(--cor-fundo-secundario);
+    padding: 20px;
+    width: 27.33vw;
+    margin: 0.5vw;
+    border-radius: var(--radius);
+    cursor: pointer;
+    text-align: center;
+}
+
+.itemMenu:hover{
+    box-shadow: var(--sombra);
+    transition: .2s ease;
+}
+
+/* --------------------------- */
+/* CONFIGURAÇÃO DO DIA DE HOJE */
+/* --------------------------- */
+
+#diaInfo{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+#ctnrDiaInfo{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#vendHoje,
+#topProdutos,
+#movFaixaHora{
+    width: 28vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#totalVendasHoje, #horaPico{
+    font-weight: bold;
+}

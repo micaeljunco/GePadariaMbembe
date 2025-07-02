@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/padrao.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="icon" href="img/icon.png">
+    <title>Login</title>
+</head>
+<body>
+    <main id="login-page">
+        <div id="login-titulo">
+                <h1>Padaria Mokele y Mbembe</h1>
+                <h2>Bem-vindo(a)!</h2>
+        </div>
+        <div id="login-conteudo">
+            <header>
+                <h1>Login</h1>
+                <img id="login-logo" src="img/icon.png" alt="Ícone da Padaria Mokele y Mbembe">
+            </header>
+            <form method="#">
+                <div class="input-container">
+                    <label for="usuario">Usuário:</label>
+                    <input type="text" id="usuario" name="usuario" placeholder="Digite seu usuário" required>
+                </div>
+
+                <div class="input-container">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" name="senha" placeholder="Digite sua senha" required>
+                    <img class="input-icon" id="senha-olho" src="img/exibir_senha.png" onclick="exibirSenha()" onmouseout="ocultarSenha()" alt="Exibir Senha">
+                </div>
+                <a href="#" target="_self">Esqueceu sua senha?</a>
+
+                <button type="button" onclick="validarAcesso()">Entrar</button>
+                <script src="js/login.js"></script>
+            </form>
+
+            <script>
+                function exibirSenha(){
+                    const input_senha = document.getElementById('senha');
+                    input_senha.type = 'text';
+                }
+
+                function ocultarSenha() {
+                    const input_senha = document.getElementById('senha');
+                    input_senha.type = 'password'
+                }
+            </script>
+
+        </div>
+    </main>
+</body>
+</html>
