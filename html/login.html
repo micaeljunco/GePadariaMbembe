@@ -30,14 +30,16 @@
                 </div>
                 
                 <!-- inicio do formulario -->
-                <form action="">
+                <form action="#" method="post">
 
                     <!-- div com as informações que o usuario vai inserir(inputs) -->
                     <div id="formInfo">
                         <input type="text" class="form-control" placeholder="Nome" required>
                         <br>
-                        <input type="password" class="form-control" placeholder="Senha" required>
-
+                        <div id="formSenha">
+                            <input type="password" class="form-control" placeholder="Senha" required id="senha">
+                            <img src="../img/exibir_senha.png" alt="Exibir senha" onclick="vizualizacao()">
+                        </div>
                     </div>
                     
                     <br>
@@ -52,6 +54,20 @@
                 </form>
             </div>
     </main>
+
+    <script>
+        function vizualizacao(){
+
+            const senha = document.getElementById("senha")
+            if (senha.type === "text"){
+                senha.type = "password"
+            }
+            else{
+                senha.type = "text"
+            }
+            }
+        
+    </script>
     
 </body>
 </html>

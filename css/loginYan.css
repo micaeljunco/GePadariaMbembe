@@ -99,7 +99,7 @@
         }
         .form-control::placeholder{
             color: var(--cor-link);
-        }
+        }   
         #formInfo{
             display: flex;
             flex-direction: column;
@@ -121,4 +121,18 @@
             justify-content: center;
             align-items: center;
             height: 40%;
+        }
+        #formSenha{
+            position: relative;
+            width: 90%;
+        }
+        #formSenha input{
+            width: 100%;
+            padding-right: 40px;
+        }
+        #formSenha img{
+            position: absolute;
+            right: 10px;
+            bottom: 29px;
+            cursor: pointer;
         }
