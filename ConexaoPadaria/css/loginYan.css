@@ -1,0 +1,138 @@
+.conteiner{
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+            width: 850px;
+            height: 550px;
+        }
+        @keyframes slidePraDireita {
+            from{
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to{
+                transform: translateX(0);
+                opacity: 1;
+            }   
+        }
+        .amarelo{
+            animation: slidePraDireita 2.5s;
+            background: linear-gradient(#edb06a, #f3a852);
+            border-radius: 12px;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        html, body{
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("../img/mokele-general-bg.png");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .formulario{
+            background-color: white;
+            height: 100%;
+            width: 100%;
+            display: flex-start;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .amarelo h3, h2, h1{
+            color:white;
+        }
+        .amarelo h1{
+            font-size: 50px;
+        }
+        #botoes{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        #botoes button{
+            width: 80%;
+            border-radius: 16px;
+            transition: 1s;
+            box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.363);
+        }
+        #botoes button:hover{
+            transform: scale(1.1);
+            transition: 1s;
+            background-color: var(--cor-primaria);
+        }
+        #botoes a{
+            text-decoration: none;
+            color: var(--cor-link);
+            display: inline-block;
+            padding-bottom: 2px;
+            position: relative;
+        }
+        #botoes a::after{
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--cor-link);
+            transition: 0.6s;
+        }
+        #botoes a:hover::after{
+            width: 100%;
+        }
+        .form-control:focus{
+            border-color: var(--cor-primaria-clara);
+            box-shadow: 0 0 0 0.15rem var(--cor-primaria);
+            transition: 0.6s;
+        }
+        .form-control{
+            border: 2px solid var(--cor-primaria-clara);
+            width: 90%;
+            border-radius: 16px;
+        }
+        .form-control::placeholder{
+            color: var(--cor-link);
+        }   
+        #formInfo{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .formulario h1{
+            color: var(--cor-primaria);
+            font-size: 50px;
+            position: relative;
+            top: 30px;
+        }
+        #topoForm img{
+            width: 40%;
+            margin-left: auto;
+        }
+        #topoForm{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            height: 40%;
+        }
+        #formSenha{
+            position: relative;
+            width: 90%;
+        }
+        #formSenha input{
+            width: 100%;
+            padding-right: 40px;
+        }
+        #formSenha img{
+            position: absolute;
+            right: 10px;
+            bottom: 29px;
+            cursor: pointer;
+        }
