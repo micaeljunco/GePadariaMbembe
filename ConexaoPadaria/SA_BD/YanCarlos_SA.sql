@@ -18,7 +18,6 @@
 --
 -- Table structure for table `comanda`
 --
-
 DROP TABLE IF EXISTS `comanda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -29,7 +28,7 @@ CREATE TABLE `comanda` (
   PRIMARY KEY (`ID_comanda`),
   KEY `FK_ID_usuario_comanda` (`ID_usuario`),
   CONSTRAINT `FK_ID_usuario_comanda` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,7 +57,7 @@ CREATE TABLE `comanda_produto` (
   KEY `FK_produto_comanda` (`ID_produto`),
   CONSTRAINT `FK_comanda` FOREIGN KEY (`ID_comanda`) REFERENCES `comanda` (`ID_comanda`),
   CONSTRAINT `FK_produto_comanda` FOREIGN KEY (`ID_produto`) REFERENCES `produto` (`ID_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -86,7 +85,7 @@ CREATE TABLE `endereco_fornecedor` (
   `cidade` varchar(40) DEFAULT NULL,
   `estado` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`ID_endereco`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,7 +114,7 @@ CREATE TABLE `estoque` (
   PRIMARY KEY (`ID_estoque`),
   KEY `FK_ID_produto` (`ID_produto`),
   CONSTRAINT `FK_ID_produto` FOREIGN KEY (`ID_produto`) REFERENCES `produto` (`ID_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -146,7 +145,7 @@ CREATE TABLE `fornecedor` (
   KEY `FK_ID_telefone_fornecedor` (`ID_telefone_fornecedor`),
   CONSTRAINT `FK_ID_endereco` FOREIGN KEY (`ID_endereco`) REFERENCES `endereco_fornecedor` (`ID_endereco`),
   CONSTRAINT `FK_ID_telefone_fornecedor` FOREIGN KEY (`ID_telefone_fornecedor`) REFERENCES `telefone_fornecedor` (`ID_telefone_fornecedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -175,7 +174,7 @@ CREATE TABLE `produto` (
   PRIMARY KEY (`ID_produto`),
   KEY `FK_ID_fornecedor` (`ID_fornecedor`),
   CONSTRAINT `FK_ID_fornecedor` FOREIGN KEY (`ID_fornecedor`) REFERENCES `fornecedor` (`ID_fornecedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,7 +199,7 @@ CREATE TABLE `telefone_fornecedor` (
   `DDD` varchar(5) DEFAULT NULL,
   `numero` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`ID_telefone_fornecedor`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -233,7 +232,7 @@ CREATE TABLE `usuario` (
   UNIQUE KEY `CPF` (`CPF`),
   KEY `FK_ID_usuario_telefone` (`ID_usuario_telefone`),
   CONSTRAINT `FK_ID_usuario_telefone` FOREIGN KEY (`ID_usuario_telefone`) REFERENCES `usuario_telefone` (`ID_usuario_telefone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -258,7 +257,7 @@ CREATE TABLE `usuario_telefone` (
   `DDD` varchar(5) DEFAULT NULL,
   `numero` varchar(15) DEFAULT NULL,
   PRIMARY KEY (`ID_usuario_telefone`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -287,7 +286,7 @@ CREATE TABLE `venda_produto` (
   KEY `FK_produto` (`ID_produto`),
   CONSTRAINT `FK_produto` FOREIGN KEY (`ID_produto`) REFERENCES `produto` (`ID_produto`),
   CONSTRAINT `FK_venda` FOREIGN KEY (`ID_venda`) REFERENCES `vendas` (`ID_venda`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -316,7 +315,7 @@ CREATE TABLE `vendas` (
   PRIMARY KEY (`ID_venda`),
   KEY `FK_ID_usuario` (`ID_usuario`),
   CONSTRAINT `FK_ID_usuario` FOREIGN KEY (`ID_usuario`) REFERENCES `usuario` (`ID_usuario`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
