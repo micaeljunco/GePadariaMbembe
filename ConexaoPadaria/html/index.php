@@ -1,10 +1,6 @@
-<?php
-        include_once "../PHP/conexao.php"
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
@@ -38,11 +34,11 @@
 
                     <!-- div com as informações que o usuario vai inserir(inputs) -->
                     <div id="formInfo">
-                        <input type="text" class="form-control" placeholder="Nome" required name="nome">
+                        <input type="email" class="form-control" placeholder="E-mail" name="email" required >
                         <br>
 
                         <div id="formSenha">
-                            <input type="password" class="form-control" placeholder="Senha" required id="senha" name="senha">
+                            <input type="password" class="form-control" placeholder="Senha" id="senha" name="senha" required>
                             <img src="../img/exibir_senha.png" alt="Exibir senha" onclick="vizualizacao()">
                         </div>
                     </div>
@@ -73,6 +69,5 @@
             }
         
     </script>
-    
 </body>
 </html>
