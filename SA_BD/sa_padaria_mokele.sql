@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 15/08/2025 às 21:00
+-- Tempo de geração: 16/08/2025 às 17:25
 -- Versão do servidor: 9.1.0
 -- Versão do PHP: 8.3.14
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `email`, `senha`, `id_cargo`) VALUES
-(1, 'Yan Carlos de Oliveira', 'Yan@gmail.com', 'Yan123', 1);
+(1, 'Yan Carlos de Oliveira', 'Yan@gmail.com', '$2y$10$hjSq05Cvs7s26gJNyfBDweuAa7fjDhyziCiLRhe80ni3Dqh8W6Ydy', 1);
 
 -- --------------------------------------------------------
 
