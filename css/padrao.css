@@ -138,32 +138,3 @@ form button:hover {
 h2{
     font-size: 1.7em;
 }
-
-button{
-        width: 80%;
-        border-radius: 16px;
-        transition: 1s;
-        box-shadow: 2px 2px 8px 0 rgba(0, 0, 0, 0.363);
-}
-
-button:hover{
-    transform: scale(1.1);
-    transition: 1s;
-    background-color: var(--cor-primaria);
-}
-
-.form-control:focus{
-    border-color: var(--cor-primaria-clara);
-    box-shadow: 0 0 0 0.15rem var(--cor-primaria);
-    transition: 0.6s;
-}
-
-.form-control{
-    border: 2px solid var(--cor-primaria-clara);
-    width: 90%;
-    border-radius: 16px;
-}
-
-.form-control::placeholder{
-        color: var(--cor-link);
-} 
