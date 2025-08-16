@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include_once "../PHP/conexao.php";
+    require_once "../PHP/conexao.php";
     ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -15,6 +15,7 @@
 </head>
 
 <body>
+    <?php include_once "sidebar.php"; ?>
 
     <main id="mainHome">
         <header id="headerHome">
@@ -199,7 +200,7 @@
             <span class="material-symbols-outlined">
                 account_circle
             </span>
-            Usuário: <span id="usuLogado"> <?=htmlspecialchars($_SESSION['nome']); ?>
+            Usuário: <span id="usuLogado">
             </span>
         </div>
 
