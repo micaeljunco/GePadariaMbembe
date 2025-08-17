@@ -21,7 +21,7 @@
         <header id="headerHome">
             <h1> Bem-vindo,
                 <span id="usuLogado">
-                    Usuário
+                    <?php echo $_SESSION["nome"]?>
                 </span>!
             </h1>
         </header>
@@ -200,18 +200,32 @@
             <span class="material-symbols-outlined">
                 account_circle
             </span>
-            Usuário: <span id="usuLogado">
+            Usuário: <?php echo $_SESSION["nome"]?> <span id="usuLogado">
             </span>
         </div>
 
-        <span id="dataHora">
-            21 jun 15:54
-        </span>
+        <span id="dataHora"></span>
 
         <span id="copy">
             Copyright: 2025-2025
         </span>
     </footer>
+
+    <script>
+        function dataHora(){
+            const agora = new Date();
+            const ano = agora.getFullYear();
+            const mes = String(agora.getMonth() + 1).padStart(2, '0');
+            const dia = String(agora.getDate()).padStart(2, '0');
+            const hora = String(agora.getHours()).padStart(2, '0');
+            const min = String(agora.getMinutes()).padStart(2, '0');
+            const sec = String(agora.getSeconds()).padStart(2, '0');
+
+            document.getElementById('dataHora').textContent = `${ano}-${mes}-${dia} ${hora}:${min}:${sec}`;
+        }
+        setInterval(dataHora, 900);
+        dataHora();
+    </script>
 </body>
 
 </html>
