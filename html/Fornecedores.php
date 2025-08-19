@@ -1,3 +1,38 @@
+<?php
+    session_start();
+    require_once '../PHP/conexao.php';
+
+    // // Verifica se o usuario tem permissao de ADM ou Secretaria
+    // if($_SESSION['perfil'] !=1 && $_SESSION['perfil'] !=2){
+    //     echo "<script>alert('Acesso Negado!');window.location.href='principal.php';</script>";
+    //     exit();
+    // } 
+
+    // ADICIONAR APÓS TER DIVISÕES DE NÍVEIS
+    $usuario = []; // Inicializa a variavel para evitar erros
+
+    // Se o formulario for enviado busca o usuario pelo id ou nome
+    if($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST['busca'])){
+        $busca = trim($_POST['busca']);
+
+        // Verifica se a busca é um numero ou um nome
+        if(is_numeric($busca)){
+            $sql = "SELECT * FROM fornecedores WHERE id_fornecedores = :busca ORDER BY nome_fornecedor ASC";
+            $stmt = $con->prepare($sql);
+            $stmt->bindParam(':busca', $busca, PDO::PARAM_INT);
+        }else{
+            $sql = "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome_fornecedor ORDER BY nome_fornecedor ASC";
+            $stmt = $con->prepare($sql);
+            $stmt->bindValue(':busca_nome_fornecedor', "$busca%", PDO::PARAM_STR);
+        }
+    }else {
+        $sql = "SELECT * FROM fornecedores ORDER BY nome_fornecedor ASC";
+        $stmt = $con->prepare($sql);
+        
+    }
+        $stmt->execute();
+        $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -46,10 +81,10 @@
                     <td>
                         <div class="acoes">
                             <div class="editar">
-                            <img src="../img/edit.png" alt="Editar">
+                            <span type="submit" class="material-symbols-outlined">edit</span>
                         </div>
                         <div class="excluir">
-                            <img src="../img/delete.png" alt="Excluir">
+                        <span class="material-symbols-outlined">delete</span>
                         </div>
                         </div>
                         

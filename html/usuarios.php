@@ -1,3 +1,7 @@
+<?php
+    session_start();
+    require_once("../PHP/exibirUsuarios.php");
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -15,6 +19,31 @@
 <body>
 
     <main class="container">
+
+            <dialog class="popupContainer" id="popup">
+                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('popup').close()">
+
+                <div class="popup">
+                    <form action="../PHP/criarUsuario.php" method="POST">
+                        <input type="text" name="nome" placeholder="Nome" class="form-control">
+                        <input type="text" name="senha" placeholder="Senha" class="form-control">
+                        <input type="text" name="email" placeholder="Email" class="form-control">
+                        <input type="text" name="cpf" placeholder="CPF" class="form-control">
+                        <select name="cargo" id="cargo" class="form-select">
+                            <?php foreach($cargos as $cargo):?>
+                                <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
+                            <?php endforeach;?>
+                        </select>
+                     
+                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                    </form>
+                    
+                </div>
+            </dialog>
+
+
+
+
         <div class="nomePag">
             <h1>Gestão de Usuários</h1>
         </div>
@@ -27,33 +56,42 @@
                     
                 </div>
                 <div class="cadastro">
-                    <button class="btn btn-outline-warning">Cadastrar Usuários</button>
+                    <button class="btn btn-outline-warning" onclick="document.getElementById('popup').showModal()">Cadastrar Usuários</button>
                 </div>
             </div>
             <table class="table">
                 <thead>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>CPF</th>
                     <th>E-mail</th>
+                    <th>Cargo</th>
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    <td>Mensagem</td>
-                    <td>Para</td>
-                    <td>Testes</td>
-                    <td>AIAI</td>
-                    <td>
-                        <div class="acoes">
-                            <div class="editar">
-                            <img src="../img/edit.png" alt="Editar">
-                        </div>
-                        <div class="excluir">
-                            <img src="../img/delete.png" alt="Excluir">
-                        </div>
-                        </div>
-                        
-                    </td>
+                    <?php foreach($usuarios as $usuario):?>
+                        <tr>
+                            <td><?php echo $usuario["id_usuario"]?></td>
+
+                            <td><?php echo $usuario["nome_usuario"]?></td>
+
+                            <td><?php echo $usuario["email"]?></td>
+
+                            <td><?php $usuario["id_cargo"] == 1 ? print "Administrador" : print "sem cargo"; ?></td>
+
+                            <td>
+                                <div class="acoes">
+                                    <div class="editar">
+                                            <img src="../img/edit.png" alt="Editar" type="button">
+                                    </div>
+
+                                    <div class="excluir">
+                                            <img src="../img/delete.png" alt="Excluir" type="button">
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                            
+                    <?php endforeach;?>
                 </tbody>
             </table>
 
