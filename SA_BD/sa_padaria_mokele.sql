@@ -84,6 +84,7 @@ DROP TABLE IF EXISTS `fornecedores`;
 CREATE TABLE IF NOT EXISTS `fornecedores` (
   `id_fornecedor` int NOT NULL AUTO_INCREMENT,
   `nome_fornecedor` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `cnpj` varchar(18) COLLATE utf8mb4_general_ci,
   `descricao` text COLLATE utf8mb4_general_ci,
   `id_telefone` int DEFAULT NULL,
   PRIMARY KEY (`id_fornecedor`),
