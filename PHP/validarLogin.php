@@ -14,6 +14,7 @@ $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($usuario && password_verify($senha, $usuario["senha"])) {
     $_SESSION["nome"] = $usuario['nome_usuario'];
+    $_SESSION['id_usuario'] = $usuario['id_usuario'];
     $_SESSION["id_cargo"] = $usuario["id_cargo"];
     
     echo "<script>alert('Login Bem sucedido!');window.location.href='../html/home.php';</script>";
