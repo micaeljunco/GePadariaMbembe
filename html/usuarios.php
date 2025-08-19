@@ -24,13 +24,14 @@
                 <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('popup').close()">
 
                 <div class="popup">
-                    <form action="../PHP/criarUsuario.php">
-                        <input type="text" placeholder="Nome" class="form-control">
-                        <input type="text" placeholder="Senha" class="form-control">
-                        <input type="text" placeholder="Email" class="form-control">
+                    <form action="../PHP/criarUsuario.php" method="POST">
+                        <input type="text" name="nome" placeholder="Nome" class="form-control">
+                        <input type="text" name="senha" placeholder="Senha" class="form-control">
+                        <input type="text" name="email" placeholder="Email" class="form-control">
+                        <input type="text" name="cpf" placeholder="CPF" class="form-control">
                         <select name="cargo" id="cargo" class="form-select">
                             <?php foreach($cargos as $cargo):?>
-                                <option value="<?=htmlspecialchars($cargo["nome_cargo"])?>"><?php echo $cargo["nome_cargo"]?></option>
+                                <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
                             <?php endforeach;?>
                         </select>
                      
