@@ -6,7 +6,7 @@ $stmt = $con->prepare($sql);
 $stmt->execute();
 $usuarios = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-$sql_cargo = "SELECT nome_cargo FROM cargos ORDER BY nome_cargo";
+$sql_cargo = "SELECT * FROM cargos ORDER BY nome_cargo";
 $stmt = $con->prepare($sql_cargo);
 $stmt->execute();
 $cargos = $stmt->fetchALL(PDO::FETCH_ASSOC);
