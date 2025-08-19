@@ -84,9 +84,9 @@ DROP TABLE IF EXISTS `fornecedores`;
 CREATE TABLE IF NOT EXISTS `fornecedores` (
   `id_fornecedor` int NOT NULL AUTO_INCREMENT,
   `nome_fornecedor` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `cnpj` varchar(18) COLLATE utf8mb4_general_ci,
+  `cnpj` varchar(18) NOT NULL COLLATE utf8mb4_general_ci,
   `descricao` text COLLATE utf8mb4_general_ci,
-  `id_telefone` int DEFAULT NULL,
+  `id_telefone` int NOT NULL DEFAULT NULL,
   PRIMARY KEY (`id_fornecedor`),
   KEY `id_telefone` (`id_telefone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
