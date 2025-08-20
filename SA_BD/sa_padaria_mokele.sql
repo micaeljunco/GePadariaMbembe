@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
 DROP TABLE IF EXISTS `itens`;
 CREATE TABLE IF NOT EXISTS `itens` (
   `id_item` int NOT NULL AUTO_INCREMENT,
-  `nome_itens` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nome_item` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `quant_min` int NOT NULL,
   `quant` int NOT NULL,
   `categoria` ENUM('produto', 'insumo') NOT NULL,
