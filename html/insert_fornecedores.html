@@ -16,7 +16,7 @@
     <button type="button" class="btn btn-primary" onclick="document.getElementById('cadastroFornecedores').showModal()">Cadastrar Fornecedor</button>
     <dialog id="cadastroFornecedores" class="popup">
         <h2>Cadastro de Fornecedores</h2>
-        <form action="control_insert_fornecedores.php" method="POST">
+        <form action="model_insert_fornecedores.php" method="POST">
             <label for="nomeFornecedor">* Nome do Fornecedor:</label>
             <input type="text" id="nomeFornecedor" name="nomeFornecedor" maxlength="255" minlength="1" required>
 
@@ -29,6 +29,8 @@
             <label for="telFornecedor">* Telefone:</label>
             <input type="text" name="telDdd" required maxlength="2">
             <input type="tel" name="telNumero" required maxlength="20">
+
+            <button type="submit">Cadastrqar</button>
         </form>
     </dialog>
 </body>
