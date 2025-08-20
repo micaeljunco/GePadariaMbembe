@@ -4,6 +4,7 @@ require_once("conexao.php");
 $nome = $_POST["nome"];
 $email = $_POST["email"];
 $senha = $_POST["senha"];
+$senha = password_hash($senha, PASSWORD_DEFAULT);
 $cpf = $_POST["cpf"];
 $cargo = $_POST["cargo"];
 

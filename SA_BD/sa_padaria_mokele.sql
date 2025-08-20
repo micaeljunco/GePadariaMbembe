@@ -62,16 +62,16 @@ CREATE TABLE IF NOT EXISTS `comandas` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `comanda_produto`
+-- Estrutura para tabela `comanda_itens`
 --
 
-DROP TABLE IF EXISTS `comanda_produto`;
-CREATE TABLE IF NOT EXISTS `comanda_produto` (
+DROP TABLE IF EXISTS `comanda_itens`;
+CREATE TABLE IF NOT EXISTS `comanda_itens` (
   `id_comanda` int NOT NULL,
-  `id_produto` int NOT NULL,
+  `id_item` int NOT NULL,
   `quantidade` int NOT NULL,
   KEY `id_comanda` (`id_comanda`),
-  KEY `id_produto` (`id_produto`)
+  KEY `id_item` (`id_item`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -84,9 +84,9 @@ DROP TABLE IF EXISTS `fornecedores`;
 CREATE TABLE IF NOT EXISTS `fornecedores` (
   `id_fornecedor` int NOT NULL AUTO_INCREMENT,
   `nome_fornecedor` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `cnpj` varchar(18) COLLATE utf8mb4_general_ci,
+  `cnpj` varchar(18) NOT NULL COLLATE utf8mb4_general_ci,
   `descricao` text COLLATE utf8mb4_general_ci,
-  `id_telefone` int DEFAULT NULL,
+  `id_telefone` int NOT NULL,
   PRIMARY KEY (`id_fornecedor`),
   KEY `id_telefone` (`id_telefone`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -94,19 +94,20 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `produtos`
+-- Estrutura para tabela `itens`
 --
 
-DROP TABLE IF EXISTS `produtos`;
-CREATE TABLE IF NOT EXISTS `produtos` (
-  `id_produto` int NOT NULL AUTO_INCREMENT,
-  `nome_produto` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+DROP TABLE IF EXISTS `itens`;
+CREATE TABLE IF NOT EXISTS `itens` (
+  `id_item` int NOT NULL AUTO_INCREMENT,
+  `nome_itens` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `quant_min` int NOT NULL,
   `quant` int NOT NULL,
+  `categoria` ENUM('produto', 'insumo') NOT NULL,
   `validade` date NOT NULL,
   `id_fornecedor` int NOT NULL,
-  `preco` decimal(6,2) NOT NULL,
-  PRIMARY KEY (`id_produto`),
+  `val_unitario` decimal(6,2) NOT NULL,
+  PRIMARY KEY (`id_item`),
   KEY `id_fornecedor` (`id_fornecedor`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -170,16 +171,16 @@ CREATE TABLE IF NOT EXISTS `vendas` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `vendas_produtos`
+-- Estrutura para tabela `vendas_itens`
 --
 
-DROP TABLE IF EXISTS `vendas_produtos`;
-CREATE TABLE IF NOT EXISTS `vendas_produtos` (
+DROP TABLE IF EXISTS `vendas_itens`;
+CREATE TABLE IF NOT EXISTS `vendas_itens` (
   `id_venda` int NOT NULL,
-  `id_produto` int NOT NULL,
+  `id_item` int NOT NULL,
   `quantidade` int NOT NULL,
   KEY `id_venda` (`id_venda`),
-  KEY `id_produto` (`id_produto`)
+  KEY `id_item` (`id_item`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 COMMIT;
 
