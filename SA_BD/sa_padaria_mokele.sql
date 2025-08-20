@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `itens` (
   `quant` int NOT NULL,
   `categoria` ENUM('produto', 'insumo') NOT NULL,
   `validade` date NOT NULL,
-  `id_fornecedor` int NOT NULL,
+  `id_fornecedor` int NULL,
   `val_unitario` decimal(6,2) NOT NULL,
   PRIMARY KEY (`id_item`),
   KEY `id_fornecedor` (`id_fornecedor`)
