@@ -13,28 +13,30 @@
 
     <!-- Link do CSS -->
     <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/ListaPadrao.css">
       
 </head>
 <body>
 
     <main class="container">
 
-            <dialog class="popupContainer" id="popup">
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('popup').close()">
+            <!-- PopUp de Cadastrar Usuarios -->
+            <dialog class="popupContainer" id="criarPopup">
+                <div class="nomePopup">
+                    <h2>Cadastro de Usuarios</h2>
+                </div>
+                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('criarPopup').close()">
 
                 <div class="popup">
                     <form action="../PHP/criarUsuario.php" method="POST">
                         <input type="text" name="nome" placeholder="Nome" class="form-control">
                         <input type="text" name="senha" placeholder="Senha" class="form-control">
-                        <input type="text" name="email" placeholder="Email" class="form-control">
+                        <input type="email" name="email" placeholder="Email" class="form-control">
                         <input type="text" name="cpf" placeholder="CPF" class="form-control">
-                        <select name="cargo" id="cargo" class="form-select">
-                            <?php foreach($cargos as $cargo):?>
-                                <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
-                            <?php endforeach;?>
-                        </select>
-                     
+                            <select name="cargo" id="cargo" class="form-select">
+                                <?php foreach($cargos as $cargo):?>
+                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
+                                <?php endforeach;?>
+                            </select>
                             <button type="submit" class="btn btn-outline-warning">Salvar</button>    
                     </form>
                     
@@ -56,7 +58,7 @@
                     
                 </div>
                 <div class="cadastro">
-                    <button class="btn btn-outline-warning" onclick="document.getElementById('popup').showModal()">Cadastrar Usuários</button>
+                    <button class="btn btn-outline-warning" onclick="document.getElementById('criarPopup').showModal()">Cadastrar Usuários</button>
                 </div>
             </div>
             <table class="table">
@@ -76,16 +78,47 @@
 
                             <td><?php echo $usuario["email"]?></td>
 
-                            <td><?php $usuario["id_cargo"] == 1 ? print "Administrador" : print "sem cargo"; ?></td>
+                            <td><?php echo $cargosMapa[$usuario["id_cargo"]]?></td>
 
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
-                                            <img src="../img/edit.png" alt="Editar" type="button">
+                                            <img src="../img/edit.png" alt="Editar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').showModal()">
+                                            <dialog class="popupContainer" id="editarPopup<?=$usuario['id_usuario']?>">
+                                                <div class="nomePopup">
+                                                    <h2>Editar Usuarios</h2>
+                                                </div>
+                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
+
+                                                <div class="popup">
+                                                    <form action="../PHP/editarUsuario.php" method="POST">
+                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
+
+                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
+
+                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
+
+                                                            <select name="cargo" id="cargo" class="form-select">
+                                                                <?php foreach($cargos as $cargo):?>
+                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
+                                                                <?php endforeach;?>
+                                                            </select>
+                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                                                    </form>
+                                                    
+                                                </div>
+                                        </dialog>
+
+
                                     </div>
 
                                     <div class="excluir">
-                                            <img src="../img/delete.png" alt="Excluir" type="button">
+                                        <form action="../PHP/inativarUsuario.php" method="POST" id="formInativar<?=$usuario['id_usuario']?>" style="display: inline;">
+                                                <input type="hidden" name="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
+                                                <img src="../img/inativar.png" alt="Inativar usuario" onclick="document.getElementById('formInativar<?=$usuario['id_usuario']?>').submit()">
+                                       
+                                        </form>
+                                            
                                     </div>
                                 </div>
                             </td>
