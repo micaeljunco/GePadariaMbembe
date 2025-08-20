@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deletar Fornecedores</title>
+    <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.css">
+    <style>
+        label, input, textarea {
+            display: flex;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <form action="model_delete_fornecedores.php" method="POST" onsubmit="return confirm('Deletar fornecedor de ID \'' + document.getElementById('idFornecedor').value + '\'?')">
+        <label for="idFornecedor">Deletar por ID do fornecedor:</label>
+        <input type="number" id="idFornecedor" name="idFornecedor" min="0" step="1" required>
+        <button type="submit">Deletar</button>
+    </form>
+</body>
+</html>
