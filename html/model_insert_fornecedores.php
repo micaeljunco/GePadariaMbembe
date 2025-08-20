@@ -9,31 +9,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $telNumero = $_POST['telNumero'];
 
     $sql = 'INSERT INTO telefone(ddd, numero) VALUES (:telDdd, :telNumero)';
-    $stmt = $pdo->prepare($sql);
+    $stmt = $con->prepare($sql);
     $stmt->bindParam(":telDdd", $telDdd);
     $stmt->bindParam(":telNumero", $telNumero);
 
     if ($stmt->execute()) {
-        echo "<script>alert('Telefone cadastrado com sucesso!');</script>";
+        echo "<script>
+                alert('Telefone cadastrado com sucesso!');
+            </script>";
 
-        $idTelefone = $pdo->lastInsertId();
+        $idTelefone = $con->lastInsertId();
 
         $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao, id_telefone) VALUES (:nomeFornecedor, :cnpjFornecedor, :descFornecedor, :idTelefone)";
 
-        $stmt = $pdo->prepare($sql);
+        $stmt = $con->prepare($sql);
         $stmt->bindParam(":nomeFornecedor", $nomeFornecedor);
         $stmt->bindParam(":cnpjFornecedor", $cnpjFornecedor);
         $stmt->bindParam(":descFornecedor", $descFornecedor);
         $stmt->bindParam(":idTelefone", $idTelefone);
 
         if ($stmt->execute()) {
-            echo "<script>alert('Fornecedor cadastrado com sucesso!');</script>";
+            echo "<script>
+                    alert('Fornecedor cadastrado com sucesso!');
+                    window.location.href = 'insert_fornecedores.html';
+                </script>";
+
         } else {
-            echo "<script>alert('Erro ao cadastrar fornecedor!');</script>";
+            echo "<script>
+                    alert('Erro ao cadastrar fornecedor!');
+                    window.location.href = 'insert_fornecedores.html';
+                </script>";
         }
 
     } else {
-        echo "<script>alert('Erro ao cadastrar telefone!');</script>";
+        echo "<script>
+                alert('Erro ao cadastrar telefone!');
+            </script>";
     }
 }
 exit();
