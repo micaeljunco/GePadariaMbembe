@@ -153,6 +153,20 @@ h2{
     border-color: var(--cor-primaria);
     box-shadow: 0 0 0 0.25rem var(--cor-primaria);
 }
+.btn-outline-warning{
+    color: var(--cor-primaria);
+    border-color: var(--cor-primaria);
+}
+.btn-outline-warning:hover,
+.btn-outline-warning:focus,
+.btn-outline-warning:active{
+    background-color: var(--cor-primaria);
+    color:white;
+    border-color: var(--cor-primaria);
+}
+
+/* CSS dos POPUPS */
+
 .popupContainer{
     position: absolute;
     top: 50%;
@@ -160,16 +174,32 @@ h2{
     transform: translate(-50%, -50%);
     border: none;
     border-radius: 16px;
-    height: 80vh;
+    height: 60vh;
     width: 85vh;
     text-align: center;
     overflow-y: hidden;
+    justify-items: center;
+}
+.popup{
+    width: 90%;
 }
 .popupContainer img{
     cursor: pointer;
-    float: right;
-    margin: 10px;
+    position: absolute;
+    top: 5%;
+    left: 94.5%;
 }
+.nomePopup{
+    background-color: var(--cor-primaria);
+    color: white;
+    border-radius: 16px 16px 0 0;
+    margin-top: 5px;
+    width: 98%;
+    padding: 10px;
+}
+
+
+
   /*#-------------------------------------#--------------------------------------------#*/
 /*#-------------------------------------Listas------------------------------------------#*/
   /*#--------------------------------------#-----------------------------------------#*/
@@ -226,6 +256,9 @@ h2{
 }
 .acoes{
     display: flex;
+}
+.acoes img{
+    cursor: pointer;
 }
 .excluir{
     margin-left: 15px;
