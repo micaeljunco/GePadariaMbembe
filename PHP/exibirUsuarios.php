@@ -1,6 +1,9 @@
 <?php
 require_once("conexao.php");
 
+//$exibirInativos = 
+
+//if()
 $sql = "SELECT * FROM usuarios WHERE ativo = 1 ORDER BY id_usuario";
 $stmt = $con->prepare($sql);
 $stmt->execute();

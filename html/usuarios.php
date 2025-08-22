@@ -54,7 +54,18 @@
             <div class="interacao">
                 <div class="busca">
                     <input type="text" class="form-control" placeholder="Pesquisar Usuário">
-                    <button class="btn btn-outline-warning">Buscar</button>
+                    <button class="btn btn-outline-warning" onclick="document.getElementById('filtros').showModal()">Filtros</button>
+
+                    <dialog class="popupContainer" id="filtros">
+                    <div class="nomePopup">
+                        <h2>Filtros</h2>
+                    </div>
+                        <img src="../img/Fechar.png" alt="Fechar">
+                        <form action="../PHP/exibirUsuarios.php" method="POST">
+                            <input type="checkbox" class="form-check-input" name="exibirUsuarioInativado">Exibir usuarios Inativados
+                        </form>
+                    </dialog>
+
                     
                 </div>
                 <div class="cadastro">
