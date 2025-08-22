@@ -59,7 +59,7 @@ $fornecedores = consulta_fornecedores();
             <label for="idFornItem">Fornecedor:</label>
             <select name="idFornItem" id="idFornItem" required>
                 <option value="null" selected>Nenhum</option>
-                <?php if (count($fornecedores) == 0): ?>
+                <?php if (count($fornecedores) != 0): ?>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor['id_fornecedor'] ?>"><?= $fornecedor['nome_fornecedor'] ?></option>
                     <?php endforeach; ?>
