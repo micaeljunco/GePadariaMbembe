@@ -24,7 +24,7 @@ function cadastrar_item(): void
     try {
         global $con;
 
-        $nome_item = new NomeItem($_POST["nomeItem"]);
+        $nome_item = new Nome($_POST["nomeItem"]);
         $quant_min = (int) $_POST["quantMin"];
         $quant = (int) $_POST["quant"];
         $categoria = (string) $_POST["categoria"];
@@ -63,11 +63,9 @@ function cadastrar_item(): void
             echo "<script>alert('Não foi possivel cadastrar o item, Tente novamente!');window.location.href='../../view/itens.php'</script>";
             exit();
         }
-        
+
         echo "<script>alert('Item cadastrado com sucesso!');window.location.href='../../view/itens.php'</script>";
         exit();
-        
-        
     } catch (InvalidArgumentException $e) {
         echo "<script>alert('" .
             addslashes($e->getMessage()) .
