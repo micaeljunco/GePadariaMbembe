@@ -2,15 +2,21 @@
 require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../conexao.php";
 
-function consulta_itens(): array
+function consulta_itens(): array|string
 {
     global $con;
 
     $sql = "SELECT * FROM itens";
     $stmt = $con->prepare($sql);
-    $stmt->execute();
 
-    return $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    try {
+        if ($stmt->execute()) {
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+    } catch (PDOException $e) {
+        return $e->getMessage();
+    }
+    return "Não foi possível realizar a consulta.";
 }
 
 function cadastrar_item(): void
