@@ -16,17 +16,22 @@ class auth{
         $stmt->execute();
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if($usuario && $senha->verificarSenha($usuario["senha"])){
-            $_SESSION["nome"] = $usuario['nome_usuario'];
+            if (!$usuario) {
+            echo "<script>alert('E-mail ou senha Incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+            return false;
+        }
+
+        if (!$senha->verificarSenha($usuario["senha"])) {
+            echo "<script>alert('E-mail ou senha Incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+            return false;
+        }
+        
+        $_SESSION["nome"] = $usuario['nome_usuario'];
             $_SESSION["id_usuario"] = $usuario['id_usuario'];
             $_SESSION["id_cargo"] = $usuario['id_cargo'];
 
             echo "<script>alert('Login realizado com Sucesso!');window.location.href='../view/home.php'</script>";
             return true;
-        }else{
-            echo "<script>alert('E-mail ou senha Incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
-            return false;
-        }
         
 
     }

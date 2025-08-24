@@ -77,7 +77,13 @@ input, label, select {
             </tr>
         </thead>
         <tbody>
-            <?php if ($itens): ?>
+            <?php if (!$itens): ?>
+
+                <tr>
+                    <p>Não foi possível buscar itens no estoque.</p>
+                    <p>Detalhes: <?php echo $item; ?></p>
+                </tr>
+            <?php endif; ?>
                 <?php foreach ($itens as $item): ?>
                     <tr>
                         <td><?= htmlspecialchars($item["id_item"]) ?></td>
@@ -101,12 +107,6 @@ input, label, select {
                         ) ?></td>
                     </tr>
                 <?php endforeach; ?>
-            <?php else: ?>
-                <tr>
-                    <p>Não foi possível buscar itens no estoque.</p>
-                    <p>Detalhes: <?php echo $item; ?></p>
-                </tr>
-            <?php endif; ?>
         </tbody>
     </table>
 </body>

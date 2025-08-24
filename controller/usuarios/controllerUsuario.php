@@ -45,13 +45,12 @@ function cadastrar_usuario(): void{
         $stmt->bindValue(":senha", $senha->gerarHash(), PDO::PARAM_STR);
         $stmt->bindValue(":id_cargo", $usuario->getIdCargo(), PDO::PARAM_INT);
         
-        if($stmt->execute()){
-            echo "<script>alert('Usuario cadastrado com sucesso!');window.location.href='../../view/usuarios.php'</script>";
-            exit();
-        }else{
+        if(!$stmt->execute()){
             echo "<script>alert('Não foi possivel cadastrar o usuario, Tente novamente!');window.location.href='../view/usuarios.php'</script>";
             exit();
         }
+        echo "<script>alert('Usuario cadastrado com sucesso!');window.location.href='../../view/usuarios.php'</script>";
+            exit();
 
 
     }catch(InvalidArgumentException $e){
