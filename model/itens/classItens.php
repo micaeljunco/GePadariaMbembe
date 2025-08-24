@@ -1,11 +1,11 @@
 <?php
 
-require_once __DIR__ . "/nome_item.php";
+require_once "../nome.php";
 
 class Item
 {
     private int $id_item;
-    private NomeItem $nome_item;
+    private Nome $nome_item;
     private int $quant_min;
     private int $quant;
     private string $categoria;
@@ -15,7 +15,7 @@ class Item
 
     public function __construct(
         int $id_item,
-        NomeItem $nome_item,
+        Nome $nome_item,
         int $quant_min,
         int $quant,
         string $categoria,
