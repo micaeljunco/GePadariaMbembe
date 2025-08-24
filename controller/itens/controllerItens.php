@@ -59,13 +59,15 @@ function cadastrar_item(): void
         );
         $stmt->bindValue(":val_unitario", $item->getValUni(), PDO::PARAM_STR);
 
-        if ($stmt->execute()) {
-            echo "<script>alert('Item cadastrado com sucesso!');window.location.href='../../view/itens.php'</script>";
-            exit();
-        } else {
+        if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel cadastrar o item, Tente novamente!');window.location.href='../../view/itens.php'</script>";
             exit();
         }
+        
+        echo "<script>alert('Item cadastrado com sucesso!');window.location.href='../../view/itens.php'</script>";
+        exit();
+        
+        
     } catch (InvalidArgumentException $e) {
         echo "<script>alert('" .
             addslashes($e->getMessage()) .
