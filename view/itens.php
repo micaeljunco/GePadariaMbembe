@@ -103,14 +103,14 @@ input, label, select {
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <p>Não foi possível buscar itens no estoque.</p>
-                    <p>Detalhes:
+                    <td>Não foi possível buscar itens no estoque.<br>
+                    <td>Detalhes:
                                 <?php if (is_string($itens)) {
                                     echo $itens;
                                 } else {
                                     echo "Nenhum item encontrado.";
                                 } ?>
-                    </p>
+                    </td>
                 </tr>
             <?php endif; ?>
         </tbody>
