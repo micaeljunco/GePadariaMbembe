@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../controller/itens/controllerItens.php";
 
-$itens = (array) consulta_itens();
+$itens = consulta_itens();
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +77,7 @@ input, label, select {
             </tr>
         </thead>
         <tbody>
-            <?php if ($itens): ?>
+            <?php if (!empty($itens) && gettype($itens) == "array"): ?>
                 <?php foreach ($itens as $item): ?>
                     <tr>
                         <td><?= htmlspecialchars($item["id_item"]) ?></td>
@@ -104,7 +104,13 @@ input, label, select {
             <?php else: ?>
                 <tr>
                     <p>Não foi possível buscar itens no estoque.</p>
-                    <p>Detalhes: <?php echo $item; ?></p>
+                    <p>Detalhes:
+                                <?php if (is_string($itens)) {
+                                    echo $itens;
+                                } else {
+                                    echo "Nenhum item encontrado.";
+                                } ?>
+                    </p>
                 </tr>
             <?php endif; ?>
         </tbody>
