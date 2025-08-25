@@ -5,7 +5,7 @@ require_once __DIR__ . "/../nome.php";
 class Item
 {
     private int $id_item;
-    private Nome $nome_item;
+    private Nome $nome_itens;
     private int $quant_min;
     private int $quant;
     private string $categoria;
@@ -15,7 +15,7 @@ class Item
 
     public function __construct(
         int $id_item,
-        Nome $nome_item,
+        Nome $nome_itens,
         int $quant_min,
         int $quant,
         string $categoria,
@@ -24,7 +24,7 @@ class Item
         float $val_unitario,
     ) {
         $this->id_item = $id_item;
-        $this->nome_item = $nome_item;
+        $this->nome_itens = $nome_itens;
         $this->quant_min = $quant_min;
         $this->quant = $quant;
         $this->categoria = $categoria;
@@ -35,7 +35,7 @@ class Item
 
     public function getNomeItem(): string
     {
-        return (string) $this->nome_item;
+        return (string) $this->nome_itens;
     }
 
     public function getQuantMin(): int
