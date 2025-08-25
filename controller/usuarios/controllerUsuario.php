@@ -42,7 +42,7 @@ function cadastrar_usuario(): void{
         $stmt->bindValue(":nome_usuario", $usuario->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":CPF", $usuario->getCpf(), PDO::PARAM_STR);
         $stmt->bindValue(":email", $usuario->getEmail(), PDO::PARAM_STR);
-        $stmt->bindValue(":senha", $senha->gerarHash(), PDO::PARAM_STR);
+        $stmt->bindValue(":senha", $senhaHash, PDO::PARAM_STR);
         $stmt->bindValue(":id_cargo", $usuario->getIdCargo(), PDO::PARAM_INT);
         
         if(!$stmt->execute()){
