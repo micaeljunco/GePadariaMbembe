@@ -114,4 +114,14 @@ function inativar_usuario(): void{
 }
 
 }
+
+function ExibirUsuarioInativo($exibir_inativados): void{
+    global $con;
+
+    if($exibir_inativados !== "1"){
+        
+    }
+    $sql = "SELECT * FROM usuarios_inativos ORDER BY id_usuario";
+
+}
 ?>

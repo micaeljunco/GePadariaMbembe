@@ -64,8 +64,12 @@
                 <div class="busca">
                     <input type="text" class="form-control" placeholder="Pesquisar Usuário">
                     <button class="btn btn-outline-warning">Buscar</button>
-                    
+
+                    <form action="../controller/usuarios/exibirInativados.php?inativo=1" method="GET">
+                        <button class="btn btn-outline-warning" id="exibirInativados">Exibir Inativados</button>
+                    </form>
                 </div>
+
                 <div class="cadastro">
                     <button class="btn btn-outline-warning" onclick="document.getElementById('criarPopup').showModal()">Cadastrar Usuários</button>
                 </div>
