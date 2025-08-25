@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../controller/itens/controllerItens.php";
+require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
 $itens = consulta_itens();
 ?>
@@ -95,7 +96,7 @@ input, label, select {
                             ucfirst($item["categoria"]),
                         ) ?></td>
                         <td><?= htmlspecialchars($item["validade"]) ?></td>
-                        <td><?= htmlspecialchars($item["id_fornecedor"]) ?></td>
+                        <td><?= htmlspecialchars(fornecedor_item($item["id_fornecedor"])) ?></td>
                         <td>R$<?= htmlspecialchars(
                             $item["val_unitario"],
                         ) ?></td>
