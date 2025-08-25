@@ -232,7 +232,7 @@ h2{
 .busca{
     display: flex;
     flex-direction: row;
-    width: 50%;
+    width: 80%;
     height: 50px;
 }
 .busca .btn, .busca .form-control{
@@ -240,9 +240,11 @@ h2{
 }
 .busca .btn{
     margin-left: 10px;
+    margin-top: 0px;
 }
 .cadastro{
     width: 50%;
+    margin-top: 19px;
     display: flex;
     justify-content: right;
 }
