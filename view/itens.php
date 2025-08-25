@@ -104,7 +104,7 @@ input, label, select {
             <?php else: ?>
                 <tr>
                     <td>Não foi possível buscar itens no estoque.<br>
-                    <td>Detalhes:
+                    <td colspan="8">Detalhes:
                                 <?php if (is_string($itens)) {
                                     echo $itens;
                                 } else {
