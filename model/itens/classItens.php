@@ -1,6 +1,6 @@
 <?php
 
-require_once "../nome.php";
+require_once __DIR__ . "/../nome.php";
 
 class Item
 {
