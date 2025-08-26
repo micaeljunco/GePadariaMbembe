@@ -7,8 +7,8 @@ function consulta_fornecedores(): array|string
     global $con;
 
     $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-    FROM fornecedores 
-    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone 
+    FROM fornecedores
+    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
     ORDER BY fornecedores.nome_fornecedor ASC";
     $stmt = $con->prepare($sql);
 
@@ -21,36 +21,37 @@ function consulta_fornecedores(): array|string
     }
     return "Não foi possível realizar a consulta.";
 }
-function busca_fornecedores() {
+function busca_fornecedores()
+{
     global $con;
-    
+
     // Se o formulario for enviado busca o fornecedor pelo id ou nome
-    if($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['busca'])){
-        $busca = trim($_GET['busca']);
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET["busca"])) {
+        $busca = trim($_GET["busca"]);
 
         // Verifica se a busca é um numero ou um nome
-        if(is_numeric($busca)){
+        if (is_numeric($busca)) {
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                    FROM fornecedores 
-                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone 
-                    WHERE id_fornecedor = :busca 
+                    FROM fornecedores
+                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+                    WHERE id_fornecedor = :busca
                     ORDER BY nome_fornecedor ASC";
             $stmt = $con->prepare($sql);
-            $stmt->bindParam(':busca', $busca, PDO::PARAM_INT);
+            $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
         } else {
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                    FROM fornecedores 
-                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone 
-                    WHERE nome_fornecedor LIKE :busca 
+                    FROM fornecedores
+                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+                    WHERE nome_fornecedor LIKE :busca
                     ORDER BY nome_fornecedor ASC";
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':busca', "%$busca%", PDO::PARAM_STR);
+            $stmt->bindValue(":busca", "%$busca%", PDO::PARAM_STR);
         }
     } else {
         // Query normal
         $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                FROM fornecedores 
-                LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone 
+                FROM fornecedores
+                LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
                 ORDER BY fornecedores.nome_fornecedor ASC";
         $stmt = $con->prepare($sql);
     }
@@ -58,12 +59,18 @@ function busca_fornecedores() {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-function fornecedor_item(int $item_id_fornecedor): string {
+function fornecedor_item(int $item_id_fornecedor): string
+{
     global $con;
 
-    $sql = "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
+    $sql =
+        "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
     $stmt = $con->prepare($sql);
-    $stmt->bindValue(":item_id_fornecedor", $item_id_fornecedor, PDO::PARAM_INT);
+    $stmt->bindValue(
+        ":item_id_fornecedor",
+        $item_id_fornecedor,
+        PDO::PARAM_INT,
+    );
 
     try {
         $stmt->execute();
@@ -75,5 +82,5 @@ function fornecedor_item(int $item_id_fornecedor): string {
         return "Erro: " . $e->getMessage();
     }
 
-    return $fornecedor['nome_fornecedor'];
+    return $fornecedor["nome_fornecedor"];
 }
