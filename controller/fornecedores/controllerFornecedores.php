@@ -1,5 +1,4 @@
 <?php
-// require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../conexao.php";
 
 function consulta_fornecedores(): array|string
@@ -21,11 +20,12 @@ function consulta_fornecedores(): array|string
     }
     return "Não foi possível realizar a consulta.";
 }
+
 function busca_fornecedores() {
     global $con;
     
-    // Se o formulario for enviado busca o fornecedor pelo id ou nome
-    if($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET['busca'])){
+    // Verifica se o parâmetro 'busca' existe e não está vazio
+    if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['busca']) && !empty(trim($_GET['busca']))){
         $busca = trim($_GET['busca']);
 
         // Verifica se a busca é um numero ou um nome
@@ -44,7 +44,7 @@ function busca_fornecedores() {
                     WHERE nome_fornecedor LIKE :busca 
                     ORDER BY nome_fornecedor ASC";
             $stmt = $con->prepare($sql);
-            $stmt->bindValue(':busca', "%$busca%", PDO::PARAM_STR);
+            $stmt->bindValue(':busca', "$busca%", PDO::PARAM_STR);
         }
     } else {
         // Query normal
@@ -58,6 +58,7 @@ function busca_fornecedores() {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 function fornecedor_item(int $item_id_fornecedor): string {
     global $con;
 
@@ -76,4 +77,34 @@ function fornecedor_item(int $item_id_fornecedor): string {
     }
 
     return $fornecedor['nome_fornecedor'];
+}
+
+function alterar_fornecedor(){
+    global $con;
+    //inicializa variaveis.
+    $fornecedor = null;
+    if($_SERVER["REQUEST_METHOD"]== "POST"){
+        if(!empty($_POST['busca_fornecedor'])){
+            $busca = trim($_POST['busca_fornecedor']);
+
+            //Verifica se a busca e um numero (id) ou um nome.
+            if(is_numeric($busca)){
+                $sql = "SELECT * FROM fornecedores WHERE id_fornecedor = :busca";
+                $stmt = $con->prepare($sql);
+                $stmt->bindParam(':busca', $busca, PDO::PARAM_INT);
+            } else{
+                $sql = "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome";
+                $stmt = $con->prepare($sql);
+                $stmt->bindValue(':busca_nome', "$busca%", PDO::PARAM_STR);
+            }
+            $stmt->execute();
+            $fornecedor = $stmt->fetch(PDO::FETCH_ASSOC); // Corrigido: era $fornecedor, deve ser $fornecedor
+
+            //Se o fornecedor nao for encontrado, exibe um alerta.
+            if(!$fornecedor){
+                echo "<script>alert('Fornecedor não encontrado!');</script>";
+            }
+        }
+    }
+    return $fornecedor; // Adicionado retorno da função
 }
