@@ -5,6 +5,9 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 } else {
     $fornecedores = consulta_fornecedores();
 }
+if ($_SERVER["REQUEST_METHOD"] === "POST"){
+    $fornecedor = alterar_fornecedor();
+}
 
 ?>
 <!DOCTYPE html>
@@ -46,6 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
                         <th>ID</th>
                         <th>Nome</th>
                         <th>Telefone</th>
+                        <th>CNPJ</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -55,13 +59,39 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
                     <td><?=htmlspecialchars($fornecedor['id_fornecedor'])?></td>
                     <td><?=htmlspecialchars($fornecedor['nome_fornecedor'])?></td>
                     <td>(<?=htmlspecialchars($fornecedor['ddd'])?>) <?=htmlspecialchars($fornecedor['numero'])?></td>
+                    <td><?=htmlspecialchars($fornecedor['cnpj'])?></td>
                     <td>
                         <div class="acoes">
                             <div class="editar">
                                 <span type="submit" class="material-symbols-outlined">edit</span>
                             </div>
                             <div class="excluir">
-                                <span class="material-symbols-outlined">delete</span>
+                                <span class="material-symbols-outlined" onclick="document.getElementById('editarPopup<?=$fornecedor['id_fornecedor']?>').showModal()">delete</span>
+                                    <!-- <dialog class="popupContainer" id="editarPopup<?=$usuario['id_usuario']?>">
+                                                <div class="nomePopup">
+                                                    <h2>Editar Usuarios</h2>
+                                                </div>
+                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
+
+                                                <div class="popup">
+                                                    <form action="../controller/usuarios/editarUsuario.php" method="POST">
+                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
+
+                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
+
+                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
+
+                                                            <select name="cargo" id="cargo" class="form-select">
+                                                                <?php foreach($cargos as $cargo):?>
+                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
+                                                                <?php endforeach;?>
+                                                            </select>
+                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                                                    </form>
+                                                    
+                                                </div>
+                                        </dialog> -->
+
                             </div>
                         </div>
                     </td>
@@ -81,3 +111,27 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
     
 </body>
 </html>
+
+                                                <div class="nomePopup">
+                                                    <h2>Editar Usuarios</h2>
+                                                </div>
+                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
+
+                                                <div class="popup">
+                                                    <form action="../controller/usuarios/editarUsuario.php" method="POST">
+                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
+
+                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
+
+                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
+
+                                                            <select name="cargo" id="cargo" class="form-select">
+                                                                <?php foreach($cargos as $cargo):?>
+                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
+                                                                <?php endforeach;?>
+                                                            </select>
+                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                                                    </form>
+                                                    
+                                                </div>
+                                        </dialog>
