@@ -12,6 +12,7 @@ class Item
     private string $validade;
     private int $id_fornecedor;
     private float $val_unitario;
+    private string $unidade_medida;
 
     public function __construct(
         int $id_item,
@@ -22,6 +23,7 @@ class Item
         string $validade,
         int $id_fornecedor,
         float $val_unitario,
+        string $unidade_medida
     ) {
         $this->id_item = $id_item;
         $this->nome_itens = $nome_itens;
@@ -31,6 +33,7 @@ class Item
         $this->validade = $validade;
         $this->id_fornecedor = $id_fornecedor;
         $this->val_unitario = $val_unitario;
+        $this->unidade_medida = $unidade_medida;
     }
 
     public function getNomeItem(): string
@@ -66,5 +69,10 @@ class Item
     public function getValUni(): float
     {
         return $this->val_unitario;
+    }
+
+    public function getUniMed(): string
+    {
+        return $this->unidade_medida;
     }
 }
