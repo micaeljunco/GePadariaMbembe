@@ -3,6 +3,10 @@ require_once __DIR__ . "/../controller/itens/controllerItens.php";
 require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
 $itens = consulta_itens();
+
+if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["busca"]) ) {
+    $itens = busca_item($_GET["busca"]);
+}
 $fornecedores = consulta_fornecedores();
 ?>
 
@@ -23,6 +27,10 @@ input, label, select {
 <body>
     <h2>Inventário</h2>
     <button type="button" class="btn btn-primary" onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
+    <form method="get" action="itens.php">
+        <input type="text" class="form-control" name="busca">    
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
     <dialog id="cadastroItens" class="popup">
             <h2>Cadastro de Itens</h2>
             <form action="../controller/itens/cadastrarItens.php" method="POST">
@@ -40,6 +48,16 @@ input, label, select {
                     <option selected disabled>Selecione uma opção</option>
                     <option value="insumo">Insumo</option>
                     <option value="produto">Produto</option>
+                </select>
+
+                <label for="unidade_medida">* Unidade de Medida:</label>
+                <select id="unidade_medida" name="unidade_medida" required>
+                    <option selected disabled>Selecione uma opção</option>
+                    <option value="UN">UN</option>
+                    <option value="Kg">Kg</option>
+                    <option value="g">g</option>
+                    <option value="L">L</option>
+                    <option value="ml">ml</option>
                 </select>
 
                 <label for="validade">* Validade:</label>
@@ -77,6 +95,7 @@ input, label, select {
                 <th>Qtde. Mínima</th>
                 <th>Qtde. em Estoque</th>
                 <th>Categoria</th>
+                <th>Medida</th>
                 <th>Validade</th>
                 <th>Fornecedor</th>
                 <th>Val. Unitário</th>
@@ -100,6 +119,9 @@ input, label, select {
                         <td><?= htmlspecialchars($item["quant"]) ?></td>
                         <td><?= htmlspecialchars(
                             ucfirst($item["categoria"]),
+                        ) ?></td>
+                        <td><?= htmlspecialchars(
+                            ucfirst($item["unidade_medida"]),
                         ) ?></td>
                         <td><?= htmlspecialchars($item["validade"]) ?></td>
                         <td data-id-fornecedor="<?= $item["id_fornecedor"] ?>">
@@ -148,7 +170,7 @@ input, label, select {
                 <label for="cnpjItem">* Qtde. Mínima (para alertas):</label>
                 <input type="number" id="quantMinEd" name="quantMin" step="1" min="0" required>
 
-                <label for="quant">* Qtde. para o Inventário:</label>
+                <label for="quant">* Qtde. em estoque:</label>
                 <input type="number" name="quant" id="quantEd" step="1" min="0" required>
 
                 <label for="categoriaEd">* Categoria:</label>
@@ -156,6 +178,16 @@ input, label, select {
                     <option selected disabled>Selecione uma opção</option>
                     <option value="insumo">Insumo</option>
                     <option value="produto">Produto</option>
+                </select>
+
+                <label for="unidade_medidaEd">* Unidade de Medida:</label>
+                <select id="unidade_medidaEd" name="unidade_medida" required>
+                    <option selected disabled>Selecione uma opção</option>
+                    <option value="UN">UN</option>
+                    <option value="Kg">Kg</option>
+                    <option value="g">g</option>
+                    <option value="L">L</option>
+                    <option value="ml">ml</option>
                 </select>
 
                 <label for="validadeEd">* Validade:</label>

@@ -178,7 +178,6 @@ h2{
     height: 60vh;
     width: 85vh;
     text-align: center;
-    overflow-y: hidden;
     justify-items: center;
 }
 .popup{
@@ -197,78 +196,8 @@ h2{
     margin-top: 5px;
     width: 98%;
     padding: 10px;
+    margin-bottom: 15px;
 }
 #exibirInativados{
     width: 290px;
-}
-
-
-  /*#-------------------------------------#--------------------------------------------#*/
-/*#-------------------------------------Listas------------------------------------------#*/
-  /*#--------------------------------------#-----------------------------------------#*/
-  main.container{
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-}
-.nomePag{
-    background-color: var(--cor-primaria);
-    width: 95%;
-    height: 80px;
-    color: white;
-    text-align: center;
-    padding-top: 15px;
-    padding-bottom: 30px;
-    border-radius: 16px 16px 0 0;
-    margin-bottom: 30px;
-}
-.tabela{
-    width: 95%;
-    height: 100%;
-}
-.interacao{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-bottom:30px ;
-}
-.busca{
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    height: 50px;
-}
-.busca .btn, .busca .form-control{
-    height: 100% ;
-}
-.busca .btn{
-    margin-left: 10px;
-    margin-top: 0px;
-}
-.cadastro{
-    width: 50%;
-    margin-top: 19px;
-    display: flex;
-    justify-content: right;
-}
-.cadastro .btn{
-    width: 240px;
-}
-.btn{
-    border-radius: 16px;
-    width: 7rem;
-    height: 3.1rem;
-}
-.acoes{
-    display: flex;
-}
-.acoes img{
-    cursor: pointer;
-}
-.excluir{
-    margin-left: 15px;
-    fill: red;
-}
-.material-icons.md-delete{
-    color: rgb(158, 0, 0);
 }
