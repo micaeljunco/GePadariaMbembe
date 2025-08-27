@@ -1,0 +1,85 @@
+.main-pdv{
+    width: 90%;
+    display: flex;
+    background-color: transparent;
+    justify-content: space-between;
+    border: none;
+    box-shadow: none;
+}
+/* Div adicionar itens(parte esquerda da pagina) */
+.adicionarItens{
+    position: absolute;
+    background-color: white;
+    width: 55vw;
+    height: 80vh;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left:10px;
+}
+.pesquisarItens{
+    display: flex;
+    height: 7%;
+    width: 95%;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+.pesquisarItens button{
+    border-radius: 16px;
+    width: 30%;
+    margin-left: 50px;
+}
+.pesquisarItens input{
+    width: 30%;
+    margin-right: 20px;
+}
+.contabilizarVendas{
+    background-color: white;
+    width: 25vw;
+    height: 80vh;
+    border-radius: 16px;
+    margin-right: 20px;
+}
+.topoPag{
+    background-color: var(--cor-primaria);
+    width: 96%;
+    text-align: center;
+    color: white;
+    padding: 10px;
+    margin-top: 15px;
+    border-radius: 16px 16px 0 0;
+}
+.topoPag-conta{
+    background-color: #EEEE;
+    width: 96%;
+    text-align: center;
+    color: var(--cor-primaria);
+    padding: 10px;
+    margin-top: 15px;
+}
+.infoCaixa{
+    background-color: #EEEE;
+    margin-top: 10px;
+}
+
+.acoes{
+    display: flex;
+}
+.itens{
+    width: 95%;
+}
+
+/* Div contabilizarVendas(parte direira da pagina) */
+
+.contabilizarVendas{
+    position: absolute;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contabilizarVendas img{
+    width: 200px;
+}
+
