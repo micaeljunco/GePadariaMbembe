@@ -1,0 +1,22 @@
+{
+	"name": "@material-icons/font",
+	"description": "Material Design icons by Google, updated (Font)",
+	"version": "1.0.36",
+	"author": "Material Design Authors",
+	"license": "Apache-2.0",
+	"bugs": {
+		"url": "https://github.com/material-icons/material-icons/issues"
+	},
+	"homepage": "https://github.com/material-icons/material-icons",
+	"scripts": {
+		"build": "node build/font.js"
+	},
+	"devDependencies": {
+		"cheerio": "^1.0.0-rc.10",
+		"node-sass": "^6.0.0",
+		"svg2ttf": "^6.0.1",
+		"svgicons2svgfont": "^9.1.1",
+		"ttf2woff": "^2.0.2",
+		"ttf2woff2": "^4.0.3"
+	}
+}
