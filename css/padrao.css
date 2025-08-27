@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('../src/node_modules/@material-icons/font/css/outline.css');
 /* Variáveis para fácil customização */
 :root {
     --cor-primaria: #f3a853;
@@ -164,6 +164,7 @@ h2{
     color:white;
     border-color: var(--cor-primaria);
 }
+.contabiliza
 
 /* CSS dos POPUPS */
 
@@ -267,4 +268,7 @@ h2{
 .excluir{
     margin-left: 15px;
     fill: red;
+}
+.material-icons.md-delete{
+    color: rgb(158, 0, 0);
 }
