@@ -5,8 +5,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
 } else {
     $fornecedores = consulta_fornecedores();
 }
-if ($_SERVER["REQUEST_METHOD"] === "POST"){
-    $fornecedor = alterar_fornecedor();
+// if ($_SERVER["REQUEST_METHOD"] === "POST"){
+//     $fornecedor = alterar_fornecedor();
+// }
+if ($_SERVER["REQUEST_METHOD"] === "GET"){
+    $fornecedor = excluirFornecedor();
 }
 
 ?>
@@ -63,35 +66,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
                     <td>
                         <div class="acoes">
                             <div class="editar">
-                                <span type="submit" class="material-symbols-outlined">edit</span>
+                                <i class="material-icons md-edit"></i>
                             </div>
                             <div class="excluir">
-                                <span class="material-symbols-outlined" onclick="document.getElementById('editarPopup<?=$fornecedor['id_fornecedor']?>').showModal()">delete</span>
-                                    <!-- <dialog class="popupContainer" id="editarPopup<?=$usuario['id_usuario']?>">
-                                                <div class="nomePopup">
-                                                    <h2>Editar Usuarios</h2>
-                                                </div>
-                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
-
-                                                <div class="popup">
-                                                    <form action="../controller/usuarios/editarUsuario.php" method="POST">
-                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
-
-                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
-
-                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
-
-                                                            <select name="cargo" id="cargo" class="form-select">
-                                                                <?php foreach($cargos as $cargo):?>
-                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
-                                                                <?php endforeach;?>
-                                                            </select>
-                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
-                                                    </form>
-                                                    
-                                                </div>
-                                        </dialog> -->
-
+                            <i class="material-icons md-delete"></i>
                             </div>
                         </div>
                     </td>
@@ -111,27 +89,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST"){
     
 </body>
 </html>
-
-                                                <div class="nomePopup">
-                                                    <h2>Editar Usuarios</h2>
-                                                </div>
-                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
-
-                                                <div class="popup">
-                                                    <form action="../controller/usuarios/editarUsuario.php" method="POST">
-                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
-
-                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
-
-                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
-
-                                                            <select name="cargo" id="cargo" class="form-select">
-                                                                <?php foreach($cargos as $cargo):?>
-                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
-                                                                <?php endforeach;?>
-                                                            </select>
-                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
-                                                    </form>
-                                                    
-                                                </div>
-                                        </dialog>
