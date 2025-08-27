@@ -103,6 +103,7 @@ CREATE TABLE IF NOT EXISTS `itens` (
   `nome_item` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `quant_min` int NOT NULL,
   `quant` int NOT NULL,
+  `unidade_medida` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   `categoria` ENUM('produto', 'insumo') NOT NULL,
   `validade` date NOT NULL,
   `id_fornecedor` int NULL,
