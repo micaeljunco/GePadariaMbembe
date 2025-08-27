@@ -66,11 +66,6 @@
                 <div class="busca">
                     <input type="text" class="form-control" placeholder="Pesquisar Usuário">
                     <button class="btn btn-outline-warning">Buscar</button>
-                    
-
-                    <form action="../controller/usuarios/exibirInativados.php?inativado=1" method="GET">
-                        <button class="btn btn-outline-warning" id="btnInativados">Exibir Inativados</button>
-                    </form>
                 </div>
 
                 <div class="cadastro">
@@ -129,9 +124,9 @@
                                     </div>
 
                                     <div class="excluir">
-                                        <form action="../controller/usuarios/inativarUsuario.php" method="POST" id="formInativar<?=$usuario['id_usuario']?>" style="display: inline;">
+                                        <form action="../controller/usuarios/excluirUsuario.php" method="POST" id="formInativar<?=$usuario['id_usuario']?>" style="display: inline;">
                                                 <input type="hidden" name="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
-                                                <img src="../img/inativar.png" alt="Inativar usuario" onclick="document.getElementById('formInativar<?=$usuario['id_usuario']?>').submit()">
+                                                <img src="../img/inativar.png" alt="Excluir usuario" onclick="if(confirm('Tem certeza que deseja excluir esse usuario, a exclusão é irreversivel!')) document.getElementById('formInativar<?=$usuario['id_usuario']?>').submit()">
                                        
                                         </form>
                                             
