@@ -116,3 +116,21 @@ function alterar_fornecedor()
     }
     return $fornecedor; // Adicionado retorno da função
 }
+function excluirFornecedor(){
+    global $con;
+//Se um id for passado via GET excluir o fornecedor
+if(isset($_GET['id_fornecedor']) && is_numeric($_GET['id_fornecedor'])){
+    $id_fornecedor = $_GET['id_fornecedor'];
+
+    // Excluir o fornecedor do banco de dados.
+    $sql = "DELETE FROM fornecedores WHERE id_fornecedor = :id";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(':id', $id_fornecedor, PDO::PARAM_INT);
+
+    if($stmt->execute()){
+        echo "<script>alert('Usuário excluído com sucesso!');window.location.href='excluir_usuario.php'</script>";
+    } else {
+        echo "<script>alert('Erro ao excluir o usuario!');</script>";
+    }
+}
+}
