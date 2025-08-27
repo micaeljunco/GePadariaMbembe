@@ -5,7 +5,7 @@ require_once __DIR__ ."/../../conexao.php";
 function buscar_usuario(): array {
     global $con;
 
-    $sql = "SELECT * FROM usuarios WHERE ativo = 1 ORDER BY id_usuario";
+    $sql = "SELECT * FROM usuarios ORDER BY id_usuario";
     $stmt = $con->prepare($sql);
     $stmt->execute();
 
@@ -99,29 +99,23 @@ function editar_usuario(): void{
 
 
 }
-function inativar_usuario(): void{
+
+function excluir_usuario($id_usuario): void{
     global $con;
 
-    $id_usuario = $_POST["id_usuario"];
-
-    $sql = "UPDATE usuarios SET ativo = 0 WHERE id_usuario = :id_usuario";
+    
+    $sql = "DELETE FROM usuarios WHERE id_usuario = :id_usuario";
     $stmt = $con->prepare($sql);
     $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
-
-    if( $stmt->execute() ){
-        echo "<script>alert('Usuario inativado com sucesso!');window.location.href='../../view/usuarios.php'</script>";
+    if(!$stmt->execute()){
+        echo "<script>alert('Ocorreu um erro ao excluir o usuario!');window.location.href='../../view/usuarios.php'</script>";
         exit();
-}
-
-}
-
-function ExibirUsuarioInativo($exibir_inativados): void{
-    global $con;
-
-    if($exibir_inativados !== "1"){
-        
     }
-    $sql = "SELECT * FROM usuarios_inativos ORDER BY id_usuario";
-
+    $stmt->execute();
+    echo "<script>alert('usuario excluido com sucesso!');window.location.href='../../view/usuarios.php'</script>";
+    exit();
 }
-?>
+
+function pesquisar_usuario(): void{
+    
+}
