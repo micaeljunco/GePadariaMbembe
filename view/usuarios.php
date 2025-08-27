@@ -1,7 +1,7 @@
 <?php
     session_start();
     require_once __DIR__ ."/../controller/usuarios/controllerUsuario.php";
-
+    
     $usuarios = buscar_usuario();
     $cargos = buscar_cargos();
 
@@ -22,6 +22,8 @@
 
     <!-- Link do CSS -->
     <link rel="stylesheet" href="../css/padrao.css">
+    <link rel="stylesheet" href="../css/usuarios.css">
+    <link rel="stylesheet" href="../css/listaPadrao.css">
       
 </head>
 <body>
@@ -64,9 +66,10 @@
                 <div class="busca">
                     <input type="text" class="form-control" placeholder="Pesquisar Usuário">
                     <button class="btn btn-outline-warning">Buscar</button>
+                    
 
-                    <form action="../controller/usuarios/exibirInativados.php?inativo=1" method="GET">
-                        <button class="btn btn-outline-warning" id="exibirInativados">Exibir Inativados</button>
+                    <form action="../controller/usuarios/exibirInativados.php?inativado=1" method="GET">
+                        <button class="btn btn-outline-warning" id="btnInativados">Exibir Inativados</button>
                     </form>
                 </div>
 
