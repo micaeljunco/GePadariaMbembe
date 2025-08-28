@@ -1,8 +1,9 @@
 <?php
     session_start();
     require_once __DIR__ ."/../controller/usuarios/controllerUsuario.php";
-    
-    $usuarios = buscar_usuario();
+
+
+    $usuarios = pesquisar_usuario();
     $cargos = buscar_cargos();
 
     $cargosMapa = [
@@ -28,6 +29,8 @@
 </head>
 <body>
 
+    <?php require_once __DIR__."/sidebar.php";?>
+
     <main class="container">
         <div class="nomePag">
             <h1>Gestão de Usuários</h1>
@@ -36,8 +39,11 @@
         <div class="tabela">
             <div class="interacao">
                 <div class="busca">
-                    <input type="text" class="form-control" placeholder="Pesquisar Usuário">
-                    <button class="btn btn-outline-warning">Buscar</button>
+                    <form action="usuarios.php" style="padding: 0" class="d-flex" method="POST">
+                        <input type="text" name="busca" class="form-control" placeholder="Pesquisar Usuário">
+                        <button class="btn btn-outline-warning" type="submit">Buscar</button>
+                    </form>
+                    
                 </div>
 
                 <div class="cadastro">
@@ -78,6 +84,9 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
+                    <?php if(!$usuarios):?>
+                        <p>Nenhum usuario encontrado!</p>
+                    <?php endif;?>
                     <?php foreach($usuarios as $usuario):?>
                         <tr>
                             <td><?php echo $usuario["id_usuario"]?></td>

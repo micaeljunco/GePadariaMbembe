@@ -111,20 +111,30 @@ function excluir_usuario($id_usuario): void{
         echo "<script>alert('Ocorreu um erro ao excluir o usuario!');window.location.href='../../view/usuarios.php'</script>";
         exit();
     }
-    $stmt->execute();
     echo "<script>alert('usuario excluido com sucesso!');window.location.href='../../view/usuarios.php'</script>";
     exit();
 }
 
-function pesquisar_usuario(): void{
+function pesquisar_usuario(): array{
     global $con;
-    $busca = $_POST["busca"];
-    if(is_numeric($busca)){
-    $sql = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
-    $stmt->execute();
-    exit();
+
+    if (!isset($_POST["busca"]) || empty(trim($_POST["busca"]))) {
+        return buscar_usuario();
     }
 
+    
+    $busca = trim($_POST["busca"]);
+
+    if(is_numeric($busca)){
+    $sql = "SELECT * FROM usuarios WHERE id_usuario LIKE :id_usuario";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
+    }else{
+        $sql = "SELECT * FROM usuarios WHERE nome_usuario = :nome_usuario";
+        $stmt = $con->prepare($sql);
+        $nomeParam = "%". $busca . "%";
+        $stmt->bindParam(":nome_usuario", $nomeParam, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
