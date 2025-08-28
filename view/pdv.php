@@ -19,7 +19,7 @@ if (!isset($_SESSION['itens'])) {
 </head>
 
 <body>
-
+<?php require_once __DIR__."/sidebar.php";?>
     <main class="main-pdv">
 
         <div class="adicionarItens">

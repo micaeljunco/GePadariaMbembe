@@ -1,8 +1,9 @@
 <?php
     session_start();
     require_once __DIR__ ."/../controller/usuarios/controllerUsuario.php";
-    
-    $usuarios = buscar_usuario();
+
+
+    $usuarios = pesquisar_usuario();
     $cargos = buscar_cargos();
 
     $cargosMapa = [
@@ -28,9 +29,28 @@
 </head>
 <body>
 
-    <main class="container">
+    <?php require_once __DIR__."/sidebar.php";?>
 
-            <!-- PopUp de Cadastrar Usuarios -->
+    <main class="container">
+        <div class="nomePag">
+            <h1>Gestão de Usuários</h1>
+        </div>
+
+        <div class="tabela">
+            <div class="interacao">
+                <div class="busca">
+                    <form action="usuarios.php" style="padding: 0" class="d-flex" method="POST">
+                        <input type="text" name="busca" class="form-control" placeholder="Pesquisar Usuário">
+                        <button class="btn btn-outline-warning" type="submit">Buscar</button>
+                    </form>
+                    
+                </div>
+
+                <div class="cadastro">
+                    <button class="btn btn-outline-warning" onclick="document.getElementById('criarPopup').showModal()">Cadastrar Usuários</button>
+                </div>
+
+                <!-- PopUp de Cadastrar Usuarios -->
             <dialog class="popupContainer" id="criarPopup">
                 <div class="nomePopup">
                     <h2>Cadastro de Usuarios</h2>
@@ -54,23 +74,6 @@
                 </div>
             </dialog>
 
-
-
-
-        <div class="nomePag">
-            <h1>Gestão de Usuários</h1>
-        </div>
-
-        <div class="tabela">
-            <div class="interacao">
-                <div class="busca">
-                    <input type="text" class="form-control" placeholder="Pesquisar Usuário">
-                    <button class="btn btn-outline-warning">Buscar</button>
-                </div>
-
-                <div class="cadastro">
-                    <button class="btn btn-outline-warning" onclick="document.getElementById('criarPopup').showModal()">Cadastrar Usuários</button>
-                </div>
             </div>
             <table class="table">
                 <thead>
@@ -81,6 +84,9 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
+                    <?php if(!$usuarios):?>
+                        <p>Nenhum usuario encontrado!</p>
+                    <?php endif;?>
                     <?php foreach($usuarios as $usuario):?>
                         <tr>
                             <td><?php echo $usuario["id_usuario"]?></td>

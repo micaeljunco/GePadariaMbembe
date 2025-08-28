@@ -37,7 +37,7 @@ function cadastrar_usuario(): void{
 
         $usuario = new Usuario($nome, $cpf, $email, $senhaHash, $cargo, 0);
 
-        $sql = "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo, ativo)VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo, 1)";
+        $sql = "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo)VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo)";
         $stmt = $con->prepare($sql);
         $stmt->bindValue(":nome_usuario", $usuario->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":CPF", $usuario->getCpf(), PDO::PARAM_STR);
@@ -111,11 +111,30 @@ function excluir_usuario($id_usuario): void{
         echo "<script>alert('Ocorreu um erro ao excluir o usuario!');window.location.href='../../view/usuarios.php'</script>";
         exit();
     }
-    $stmt->execute();
     echo "<script>alert('usuario excluido com sucesso!');window.location.href='../../view/usuarios.php'</script>";
     exit();
 }
 
-function pesquisar_usuario(): void{
+function pesquisar_usuario(): array{
+    global $con;
+
+    if (!isset($_POST["busca"]) || empty(trim($_POST["busca"]))) {
+        return buscar_usuario();
+    }
+
     
+    $busca = trim($_POST["busca"]);
+
+    if(is_numeric($busca)){
+    $sql = "SELECT * FROM usuarios WHERE id_usuario LIKE :id_usuario";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
+    }else{
+        $sql = "SELECT * FROM usuarios WHERE nome_usuario = :nome_usuario";
+        $stmt = $con->prepare($sql);
+        $nomeParam = "%". $busca . "%";
+        $stmt->bindParam(":nome_usuario", $nomeParam, PDO::PARAM_STR);
+    }
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
