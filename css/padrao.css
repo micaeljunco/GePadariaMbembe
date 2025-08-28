@@ -197,6 +197,146 @@ h2{
     padding: 10px;
     margin-bottom: 15px;
 }
-#exibirInativados{
-    width: 290px;
+/* Cabeçalho do menu */
+
+nav{
+    font-family: Poppins;
+    z-index: 1000;
+}
+
+.cabeca-do-menu {
+    background-color: #f3a853;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    min-height: 70px;
+    transition: 0.3s;
+    margin-bottom: 10px;
+}
+
+.cabeca-do-menu img.logo {
+    width: 50px;
+    height: auto;
+}
+
+.cabeca-do-menu h1 {
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: 0.3s;
+    margin-left: 10px;
+}
+
+.menu-lateral:hover .cabeca-do-menu {
+    justify-content: flex-start;
+}
+
+/* Menu lateral */
+.menu-lateral {
+    width: 70px;
+    height: 100dvh;
+    background-color: rgba(189, 159, 120, 0.45);
+    backdrop-filter: blur(5px);
+    padding-bottom: 20px;
+    box-shadow: 3px 0 0 #f3a853;
+    overflow: hidden;
+    overflow-y: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    transition: width 0.2s;
+}
+
+.menu-lateral:hover {
+    width: 250px;
+}
+
+/* Links do menu */
+.menu-lateral ul {
+    list-style: none;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 5px 0;
+}
+
+.menu-lateral ul li {
+    margin-bottom: 10px;
+}
+
+.menu-lateral ul li a {
+    color: black;
+    display: flex; 
+    align-items: center;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 8px 10px;
+    border-radius: 5px;
+    transition: background 0.2s, color 0.2s;
+    justify-content: center;
+}
+
+.menu-lateral:hover ul li a {
+    justify-content: flex-start;
+}
+
+/* Ícones */
+.menu-lateral .icon {
+    font-size: 28px;
+    flex-shrink: 0;
+}
+
+/* Nome dos links */
+.nome-do-link {
+    opacity: 0;
+    width: 0;
+    margin: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.menu-lateral:hover .nome-do-link {
+    opacity: 1;
+    width: auto;
+    margin-left: 10px;
+}
+
+/* Hover nos itens */
+ul li.item-menu {
+    transition: background-color 0.2s;
+}
+
+ul li.item-menu:hover {
+    background-color: #f3a853;
+}
+
+ul li.item-menu:hover a,
+ul li.item-menu:hover .icon {
+    color: white;
+}
+
+#footer-principal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #f3a853;
+    color: white;
+    display: flex; /* FLEX para alinhar */
+    justify-content: space-between; /* Extremidades */
+    align-items: center; /* Centralizar verticalmente */
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    z-index: 1000;
+}
+
+.menu-lateral::-webkit-scrollbar {
+    scrollbar-width: none; /* Firefox */
+    display: none; /* Chrome, Safari, Opera */
 }
