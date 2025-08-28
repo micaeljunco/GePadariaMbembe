@@ -4,7 +4,7 @@ require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
 $itens = consulta_itens();
 
-if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["busca"]) ) {
+if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["busca"])) {
     $itens = busca_item($_GET["busca"]);
 }
 $fornecedores = consulta_fornecedores();
@@ -20,72 +20,76 @@ $fornecedores = consulta_fornecedores();
     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.css">
 </head>
 <style>
-input, label, select {
-    display:block;
-}
+    input,
+    label,
+    select {
+        display: block;
+    }
 </style>
+
 <body>
     <h2>Inventário</h2>
-    <button type="button" class="btn btn-primary" onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
+    <button type="button" class="btn btn-primary"
+        onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
     <form method="get" action="itens.php">
-        <input type="text" class="form-control" name="busca">    
+        <input type="text" class="form-control" name="busca">
         <button type="submit" class="btn btn-primary">Buscar</button>
     </form>
     <dialog id="cadastroItens" class="popup">
-            <h2>Cadastro de Itens</h2>
-            <form action="../controller/itens/cadastrarItens.php" method="POST">
-                <label for="nomeItem">* Nome do Item:</label>
-                <input type="text" id="nomeItem" name="nomeItem" maxlength="255" minlength="1" required>
+        <h2>Cadastro de Itens</h2>
+        <form action="../controller/itens/cadastrarItens.php" method="POST">
+            <label for="nomeItem">* Nome do Item:</label>
+            <input type="text" id="nomeItem" name="nomeItem" maxlength="255" minlength="1" required>
 
-                <label for="cnpjItem">* Qtde. Mínima (para alertas):</label>
-                <input type="number" id="quantMin" name="quantMin" step="1" min="0" required>
+            <label for="cnpjItem">* Qtde. Mínima (para alertas):</label>
+            <input type="number" id="quantMin" name="quantMin" step="1" min="0" required>
 
-                <label for="quant">* Qtde. para o Inventário:</label>
-                <input type="number" name="quant" id="quant" step="1" min="0" required>
+            <label for="quant">* Qtde. para o Inventário:</label>
+            <input type="number" name="quant" id="quant" step="1" min="0" required>
 
-                <label for="categoria">* Categoria:</label>
-                <select id="categoria" name="categoria" required>
-                    <option selected disabled>Selecione uma opção</option>
-                    <option value="insumo">Insumo</option>
-                    <option value="produto">Produto</option>
-                </select>
+            <label for="categoria">* Categoria:</label>
+            <select id="categoria" name="categoria" required>
+                <option selected disabled>Selecione uma opção</option>
+                <option value="insumo">Insumo</option>
+                <option value="produto">Produto</option>
+            </select>
 
-                <label for="unidade_medida">* Unidade de Medida:</label>
-                <select id="unidade_medida" name="unidade_medida" required>
-                    <option selected disabled>Selecione uma opção</option>
-                    <option value="UN">UN</option>
-                    <option value="Kg">Kg</option>
-                    <option value="g">g</option>
-                    <option value="L">L</option>
-                    <option value="ml">ml</option>
-                </select>
+            <label for="unidade_medida">* Unidade de Medida:</label>
+            <select id="unidade_medida" name="unidade_medida" required>
+                <option selected disabled>Selecione uma opção</option>
+                <option value="UN">UN</option>
+                <option value="Kg">Kg</option>
+                <option value="g">g</option>
+                <option value="L">L</option>
+                <option value="ml">ml</option>
+            </select>
 
-                <label for="validade">* Validade:</label>
-                <input type="date" name="validade" id="validade" required>
+            <label for="validade">* Validade:</label>
+            <input type="date" name="validade" id="validade" required>
 
-                <script>
-                    // Obtem a data atual e define como valor minimo para o campo de validade;
-                    const inputDate = document.getElementById('validade');
-                    const today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
-                    inputDate.min = today;
-                </script>
+            <script>
+                // Obtem a data atual e define como valor minimo para o campo de validade;
+                const inputDate = document.getElementById('validade');
+                const today = new Date().toISOString().split('T')[0]; // "YYYY-MM-DD"
+                inputDate.min = today;
+            </script>
 
-                <label>Fornecedor:</label>
-                <select id="idFornecedor" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
-                    <?php foreach ($fornecedores as $fornecedor): ?>
-                        <option value="<?= $fornecedor[
-                            "id_fornecedor"
-                        ] ?>"><?= $fornecedor["nome_fornecedor"] ?></option>
-                    <?php endforeach; ?>
-                </select>
+            <label>Fornecedor:</label>
+            <select id="idFornecedor" name="idFornecedor">
+                <option value="0" selected>Nenhum</option>
+                <?php foreach ($fornecedores as $fornecedor): ?>
+                    <option value="<?= $fornecedor[
+                        "id_fornecedor"
+                    ] ?>"><?= $fornecedor["nome_fornecedor"] ?></option>
+                <?php endforeach; ?>
+            </select>
 
-                <label id="valUni">* Valor Unitário:</label>
-                <input type="number" id="valUni" name="valUni" step="0.01" min="0" required>
+            <label id="valUni">* Valor Unitário:</label>
+            <input type="number" id="valUni" name="valUni" step="0.01" min="0" required>
 
-                <button type="submit">Cadastrar</button>
-            </form>
-        </dialog>
+            <button type="submit">Cadastrar</button>
+        </form>
+    </dialog>
     <hr>
     <table class="table table-success table-striped">
         <thead>
@@ -132,7 +136,8 @@ input, label, select {
                         <td><span>R$</span>
                             <span><?= htmlspecialchars(
                                 $item["val_unitario"],
-                            ) ?></span></td>
+                            ) ?></span>
+                        </td>
                         <td>
                             <form action="../controller/itens/deletarItens.php" method="POST">
                                 <input type="hidden" name="deletar" value="<?= $item[
@@ -149,11 +154,11 @@ input, label, select {
                 <tr>
                     <td>Não foi possível buscar itens no estoque.<br>
                     <td colspan="8">Detalhes:
-                                <?php if (is_string($itens)) {
-                                    echo $itens;
-                                } else {
-                                    echo "Nenhum item encontrado.";
-                                } ?>
+                        <?php if (is_string($itens)) {
+                            echo $itens;
+                        } else {
+                            echo "Nenhum item encontrado.";
+                        } ?>
                     </td>
                 </tr>
             <?php endif; ?>
@@ -161,60 +166,60 @@ input, label, select {
     </table>
     <hr>
     <dialog id="editarItem" class="popup">
-            <h2>Editar Item</h2>
-            <form action="../controller/itens/editarItens.php" method="POST">
-                <input type="hidden" id="id_itemCampoEditar" name="id_item">
-                <label for="nomeItem">* Nome do Item:</label>
-                <input type="text" id="nomeItemEd" name="nomeItem" maxlength="255" minlength="1" required>
+        <h2>Editar Item</h2>
+        <form action="../controller/itens/editarItens.php" method="POST">
+            <input type="hidden" id="id_itemCampoEditar" name="id_item">
+            <label for="nomeItem">* Nome do Item:</label>
+            <input type="text" id="nomeItemEd" name="nomeItem" maxlength="255" minlength="1" required>
 
-                <label for="cnpjItem">* Qtde. Mínima (para alertas):</label>
-                <input type="number" id="quantMinEd" name="quantMin" step="1" min="0" required>
+            <label for="cnpjItem">* Qtde. Mínima (para alertas):</label>
+            <input type="number" id="quantMinEd" name="quantMin" step="1" min="0" required>
 
-                <label for="quant">* Qtde. em estoque:</label>
-                <input type="number" name="quant" id="quantEd" step="1" min="0" required>
+            <label for="quant">* Qtde. em estoque:</label>
+            <input type="number" name="quant" id="quantEd" step="1" min="0" required>
 
-                <label for="categoriaEd">* Categoria:</label>
-                <select id="categoriaEd" name="categoria" required>
-                    <option selected disabled>Selecione uma opção</option>
-                    <option value="insumo">Insumo</option>
-                    <option value="produto">Produto</option>
-                </select>
+            <label for="categoriaEd">* Categoria:</label>
+            <select id="categoriaEd" name="categoria" required>
+                <option selected disabled>Selecione uma opção</option>
+                <option value="insumo">Insumo</option>
+                <option value="produto">Produto</option>
+            </select>
 
-                <label for="unidade_medidaEd">* Unidade de Medida:</label>
-                <select id="unidade_medidaEd" name="unidade_medida" required>
-                    <option selected disabled>Selecione uma opção</option>
-                    <option value="UN">UN</option>
-                    <option value="Kg">Kg</option>
-                    <option value="g">g</option>
-                    <option value="L">L</option>
-                    <option value="ml">ml</option>
-                </select>
+            <label for="unidade_medidaEd">* Unidade de Medida:</label>
+            <select id="unidade_medidaEd" name="unidade_medida" required>
+                <option selected disabled>Selecione uma opção</option>
+                <option value="UN">UN</option>
+                <option value="Kg">Kg</option>
+                <option value="g">g</option>
+                <option value="L">L</option>
+                <option value="ml">ml</option>
+            </select>
 
-                <label for="validadeEd">* Validade:</label>
-                <input type="date" name="validade" id="validadeEd" required>
+            <label for="validadeEd">* Validade:</label>
+            <input type="date" name="validade" id="validadeEd" required>
 
-                <script>
-                    // Obtem a data atual e define como valor minimo para o campo de validade;
-                    const inputDateEd = document.getElementById('validadeEd');
-                    inputDateEd.min = today;
-                </script>
+            <script>
+                // Obtem a data atual e define como valor minimo para o campo de validade;
+                const inputDateEd = document.getElementById('validadeEd');
+                inputDateEd.min = today;
+            </script>
 
-                <label>Fornecedor:</label>
-                <select id="idFornecedorEd" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
-                    <?php foreach ($fornecedores as $fornecedor): ?>
-                        <option value="<?= $fornecedor[
-                            "id_fornecedor"
-                        ] ?>"><?= $fornecedor["nome_fornecedor"] ?></option>
-                    <?php endforeach; ?>
-                </select>
+            <label>Fornecedor:</label>
+            <select id="idFornecedorEd" name="idFornecedor">
+                <option value="0" selected>Nenhum</option>
+                <?php foreach ($fornecedores as $fornecedor): ?>
+                    <option value="<?= $fornecedor[
+                        "id_fornecedor"
+                    ] ?>"><?= $fornecedor["nome_fornecedor"] ?></option>
+                <?php endforeach; ?>
+            </select>
 
-                <label id="valUniEd">* Valor Unitário:</label>
-                <input type="number" id="valUniEd" name="valUni" step="0.01" min="0" required>
+            <label id="valUniEd">* Valor Unitário:</label>
+            <input type="number" id="valUniEd" name="valUni" step="0.01" min="0" required>
 
-                <button type="submit">Salvar</button>
-            </form>
-        </dialog>
+            <button type="submit">Salvar</button>
+        </form>
+    </dialog>
     <script src="../src/js/itens.js"></script>
 </body>
 
