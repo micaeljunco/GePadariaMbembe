@@ -37,7 +37,7 @@ function cadastrar_usuario(): void{
 
         $usuario = new Usuario($nome, $cpf, $email, $senhaHash, $cargo, 0);
 
-        $sql = "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo, ativo)VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo, 1)";
+        $sql = "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo)VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo)";
         $stmt = $con->prepare($sql);
         $stmt->bindValue(":nome_usuario", $usuario->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":CPF", $usuario->getCpf(), PDO::PARAM_STR);
