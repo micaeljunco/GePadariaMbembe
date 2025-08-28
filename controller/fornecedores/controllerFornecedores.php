@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ ."/../../model/fornecedores/classFornecedores.php";
+require_once __DIR__ . "/../../controller/telefone/controllerTelefone.php";
 require_once __DIR__ . "/../../conexao.php";
 
 function consulta_fornecedores(): array|string
@@ -116,21 +118,77 @@ function alterar_fornecedor()
     }
     return $fornecedor; // Adicionado retorno da função
 }
-function excluirFornecedor(){
+function excluirFornecedor()
+{
     global $con;
-//Se um id for passado via GET excluir o fornecedor
-if(isset($_GET['id_fornecedor']) && is_numeric($_GET['id_fornecedor'])){
-    $id_fornecedor = $_GET['id_fornecedor'];
+    //Se um id for passado via GET excluir o fornecedor
+    if (isset($_POST['id_fornecedor']) && is_numeric($_POST['id_fornecedor'])) {
+        $id_fornecedor = $_POST['id_fornecedor'];
 
-    // Excluir o fornecedor do banco de dados.
-    $sql = "DELETE FROM fornecedores WHERE id_fornecedor = :id";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(':id', $id_fornecedor, PDO::PARAM_INT);
+        // Excluir o fornecedor do banco de dados.
+        $sql = "DELETE FROM fornecedores WHERE id_fornecedor = :id";
+        $stmt = $con->prepare($sql);
+        $stmt->bindParam(':id', $id_fornecedor, PDO::PARAM_INT);
 
-    if($stmt->execute()){
-        echo "<script>alert('Usuário excluído com sucesso!');window.location.href='excluir_usuario.php'</script>";
-    } else {
-        echo "<script>alert('Erro ao excluir o usuario!');</script>";
+        if ($stmt->execute()) {
+            echo "<script>alert('Usuário excluído com sucesso!');window.location.href='excluir_usuario.php'</script>";
+        } else {
+            echo "<script>alert('Erro ao excluir o usuario!');</script>";
+        }
     }
 }
+
+function cadastrar_fornecedor(): void
+{
+    try {
+        global $con;
+
+        $nome_fornecedor = new Nome($_POST["nomeFornecedor"]);
+        $cnpj = new CNPJ($_POST["cnpjFornecedor"]);
+        $desc = (string) $_POST["descFornecedor"];
+        $telefone = (string) $_POST["telefone"];
+
+        
+        // Regex para capturar o DDD e o número
+        if (preg_match('/^\((\d{2})\)\s*(\d{4,5}-\d{4})$/', $telefone, $matches)) {
+            $ddd = $matches[1];      // "47"
+            $numero = $matches[2];   // "9999-9999" ou "99999-9999"
+        } else {
+            // Formato inválido
+            throw new Exception("Formato de telefone inválido");
+        }
+
+        $id_telefone = cadastrar_telefone($ddd, $numero);
+        
+        $fornecedor = new Fornecedor(
+            0,
+            $nome_fornecedor,
+            $cnpj,
+            $desc,
+            $id_telefone
+        );
+
+        $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao, id_telefone)
+            VALUES (:nome_fornecedor, :cnpj, :descricao, :id_telefone)";
+
+        $stmt = $con->prepare($sql);
+
+        $stmt->bindValue(":nome_fornecedor", $fornecedor->getNome(), PDO::PARAM_STR);
+        $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
+        $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
+        $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
+
+        if (!$stmt->execute()) {
+            echo "<script>alert('Não foi possivel cadastrar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
+            exit();
+        }
+
+        echo "<script>alert('Fornecedor cadastrado com sucesso!');window.location.href='../../view/fornecedores.php'</script>";
+        exit();
+    } catch (InvalidArgumentException $e) {
+        echo "<script>alert('" .
+            addslashes($e->getMessage()) .
+            "');window.location.href='../view/fornecedores.php'</script>";
+        exit();
+    }
 }
