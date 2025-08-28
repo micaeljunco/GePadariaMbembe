@@ -18,12 +18,11 @@ $fornecedores = consulta_fornecedores();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventário</title>
     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.css">
+
+    <link rel="stylesheet" href="../css/padrao.css">
+
+    <link rel="stylesheet" href="../css/ListaPadrao.css">
 </head>
-<style>
-input, label, select {
-    display:block;
-}
-</style>
 <body>
 <?php require_once __DIR__."/sidebar.php";?>
     <h2>Inventário</h2>
