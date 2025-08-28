@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Tempo de geração: 16/08/2025 às 17:25
--- Versão do servidor: 9.1.0
--- Versão do PHP: 8.3.14
+-- Host: 127.0.0.1
+-- Tempo de geração: 28/08/2025 às 21:43
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,21 +21,16 @@ SET time_zone = "+00:00";
 -- Banco de dados: `sa_padaria_mokele`
 --
 
-CREATE DATABASE IF NOT EXISTS sa_padaria_mokele;
-USE sa_padaria_mokele;
-
 -- --------------------------------------------------------
 
 --
 -- Estrutura para tabela `cargos`
 --
 
-DROP TABLE IF EXISTS `cargos`;
-CREATE TABLE IF NOT EXISTS `cargos` (
-  `id_cargo` int NOT NULL AUTO_INCREMENT,
-  `nome_cargo` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_cargo`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `cargos` (
+  `id_cargo` int(11) NOT NULL,
+  `nome_cargo` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `cargos`
@@ -50,13 +45,10 @@ INSERT INTO `cargos` (`id_cargo`, `nome_cargo`) VALUES
 -- Estrutura para tabela `comandas`
 --
 
-DROP TABLE IF EXISTS `comandas`;
-CREATE TABLE IF NOT EXISTS `comandas` (
-  `id_comanda` int NOT NULL AUTO_INCREMENT,
-  `id_usuario` int DEFAULT NULL,
-  `valor_total` decimal(7,2) DEFAULT NULL,
-  PRIMARY KEY (`id_comanda`),
-  KEY `id_usuario` (`id_usuario`)
+CREATE TABLE `comandas` (
+  `id_comanda` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
+  `valor_total` decimal(7,2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -65,13 +57,22 @@ CREATE TABLE IF NOT EXISTS `comandas` (
 -- Estrutura para tabela `comanda_itens`
 --
 
-DROP TABLE IF EXISTS `comanda_itens`;
-CREATE TABLE IF NOT EXISTS `comanda_itens` (
-  `id_comanda` int NOT NULL,
-  `id_item` int NOT NULL,
-  `quantidade` int NOT NULL,
-  KEY `id_comanda` (`id_comanda`),
-  KEY `id_item` (`id_item`)
+CREATE TABLE `comanda_itens` (
+  `id_comanda` int(11) NOT NULL,
+  `id_item` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `comanda_produto`
+--
+
+CREATE TABLE `comanda_produto` (
+  `id_comanda` int(11) NOT NULL,
+  `id_produto` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -80,15 +81,12 @@ CREATE TABLE IF NOT EXISTS `comanda_itens` (
 -- Estrutura para tabela `fornecedores`
 --
 
-DROP TABLE IF EXISTS `fornecedores`;
-CREATE TABLE IF NOT EXISTS `fornecedores` (
-  `id_fornecedor` int NOT NULL AUTO_INCREMENT,
-  `nome_fornecedor` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `cnpj` varchar(18) NOT NULL COLLATE utf8mb4_general_ci,
-  `descricao` text COLLATE utf8mb4_general_ci,
-  `id_telefone` int NOT NULL,
-  PRIMARY KEY (`id_fornecedor`),
-  KEY `id_telefone` (`id_telefone`)
+CREATE TABLE `fornecedores` (
+  `id_fornecedor` int(11) NOT NULL,
+  `nome_fornecedor` varchar(255) NOT NULL,
+  `cnpj` varchar(18) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  `id_telefone` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -97,19 +95,39 @@ CREATE TABLE IF NOT EXISTS `fornecedores` (
 -- Estrutura para tabela `itens`
 --
 
-DROP TABLE IF EXISTS `itens`;
-CREATE TABLE IF NOT EXISTS `itens` (
-  `id_item` int NOT NULL AUTO_INCREMENT,
-  `nome_item` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `quant_min` int NOT NULL,
-  `quant` int NOT NULL,
-  `unidade_medida` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `categoria` ENUM('produto', 'insumo') NOT NULL,
+CREATE TABLE `itens` (
+  `id_item` int(11) NOT NULL,
+  `nome_item` varchar(255) NOT NULL,
+  `quant_min` int(11) NOT NULL,
+  `quant` int(11) NOT NULL,
+  `categoria` enum('produto','insumo') NOT NULL,
   `validade` date NOT NULL,
-  `id_fornecedor` int NULL,
+  `id_fornecedor` int(11) DEFAULT NULL,
   `val_unitario` decimal(6,2) NOT NULL,
-  PRIMARY KEY (`id_item`),
-  KEY `id_fornecedor` (`id_fornecedor`)
+  `unidade_medida` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `itens`
+--
+
+INSERT INTO `itens` (`id_item`, `nome_item`, `quant_min`, `quant`, `categoria`, `validade`, `id_fornecedor`, `val_unitario`, `unidade_medida`) VALUES
+(1, 'Ayaya', 1, 1, 'insumo', '2071-11-28', 0, 9999.99, 'Kg');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `produtos`
+--
+
+CREATE TABLE `produtos` (
+  `id_produto` int(11) NOT NULL,
+  `nome_produto` varchar(255) NOT NULL,
+  `quant_min` int(11) NOT NULL,
+  `quant` int(11) NOT NULL,
+  `validade` date NOT NULL,
+  `id_fornecedor` int(11) NOT NULL,
+  `preco` decimal(6,2) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -118,12 +136,10 @@ CREATE TABLE IF NOT EXISTS `itens` (
 -- Estrutura para tabela `telefone`
 --
 
-DROP TABLE IF EXISTS `telefone`;
-CREATE TABLE IF NOT EXISTS `telefone` (
-  `id_telefone` int NOT NULL AUTO_INCREMENT,
-  `ddd` varchar(2) COLLATE utf8mb4_general_ci NOT NULL,
-  `numero` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_telefone`)
+CREATE TABLE `telefone` (
+  `id_telefone` int(11) NOT NULL,
+  `ddd` varchar(2) NOT NULL,
+  `numero` varchar(20) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -132,23 +148,35 @@ CREATE TABLE IF NOT EXISTS `telefone` (
 -- Estrutura para tabela `usuarios`
 --
 
-DROP TABLE IF EXISTS `usuarios`;
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id_usuario` int NOT NULL AUTO_INCREMENT,
-  `nome_usuario` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `senha` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `id_cargo` int NOT NULL,
-  PRIMARY KEY (`id_usuario`),
-  KEY `id_cargo` (`id_cargo`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `usuarios` (
+  `id_usuario` int(11) NOT NULL,
+  `nome_usuario` varchar(255) NOT NULL,
+  `CPF` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `senha` varchar(255) NOT NULL,
+  `id_cargo` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `email`, `senha`, `id_cargo`) VALUES
-(1, 'Yan Carlos de Oliveira', 'Yan@gmail.com', '$2y$10$hjSq05Cvs7s26gJNyfBDweuAa7fjDhyziCiLRhe80ni3Dqh8W6Ydy', 1);
+INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `CPF`, `email`, `senha`, `id_cargo`) VALUES
+(4, 'yan', '12345678908', 'yan@gmail.com', '$2y$10$j3oq2J5dqD.KmZj3KQbBcOYsvg.HjcsRrFfmQaCLY2yAXTVlVrcTq', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura stand-in para view `usuarios_inativos`
+-- (Veja abaixo para a visão atual)
+--
+CREATE TABLE `usuarios_inativos` (
+`id_usuario` int(11)
+,`nome_usuario` varchar(255)
+,`CPF` varchar(20)
+,`email` varchar(100)
+,`id_cargo` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -156,17 +184,13 @@ INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `email`, `senha`, `id_carg
 -- Estrutura para tabela `vendas`
 --
 
-DROP TABLE IF EXISTS `vendas`;
-CREATE TABLE IF NOT EXISTS `vendas` (
-  `id_venda` int NOT NULL AUTO_INCREMENT,
-  `id_usuario` int NOT NULL,
-  `id_comanda` int DEFAULT NULL,
+CREATE TABLE `vendas` (
+  `id_venda` int(11) NOT NULL,
+  `id_usuario` int(11) NOT NULL,
+  `id_comanda` int(11) DEFAULT NULL,
   `valor_total` decimal(7,2) NOT NULL,
   `data_venda` date NOT NULL,
-  `metodo_pagamento` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_venda`),
-  KEY `id_usuario` (`id_usuario`),
-  KEY `id_comanda` (`id_comanda`)
+  `metodo_pagamento` varchar(255) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -175,14 +199,172 @@ CREATE TABLE IF NOT EXISTS `vendas` (
 -- Estrutura para tabela `vendas_itens`
 --
 
-DROP TABLE IF EXISTS `vendas_itens`;
-CREATE TABLE IF NOT EXISTS `vendas_itens` (
-  `id_venda` int NOT NULL,
-  `id_item` int NOT NULL,
-  `quantidade` int NOT NULL,
-  KEY `id_venda` (`id_venda`),
-  KEY `id_item` (`id_item`)
+CREATE TABLE `vendas_itens` (
+  `id_venda` int(11) NOT NULL,
+  `id_item` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `vendas_produtos`
+--
+
+CREATE TABLE `vendas_produtos` (
+  `id_venda` int(11) NOT NULL,
+  `id_produto` int(11) NOT NULL,
+  `quantidade` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para view `usuarios_inativos`
+--
+DROP TABLE IF EXISTS `usuarios_inativos`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `usuarios_inativos`  AS SELECT `usuarios`.`id_usuario` AS `id_usuario`, `usuarios`.`nome_usuario` AS `nome_usuario`, `usuarios`.`CPF` AS `CPF`, `usuarios`.`email` AS `email`, `usuarios`.`id_cargo` AS `id_cargo` FROM `usuarios` ;
+
+--
+-- Índices para tabelas despejadas
+--
+
+--
+-- Índices de tabela `cargos`
+--
+ALTER TABLE `cargos`
+  ADD PRIMARY KEY (`id_cargo`);
+
+--
+-- Índices de tabela `comandas`
+--
+ALTER TABLE `comandas`
+  ADD PRIMARY KEY (`id_comanda`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Índices de tabela `comanda_itens`
+--
+ALTER TABLE `comanda_itens`
+  ADD KEY `id_comanda` (`id_comanda`),
+  ADD KEY `id_item` (`id_item`);
+
+--
+-- Índices de tabela `comanda_produto`
+--
+ALTER TABLE `comanda_produto`
+  ADD KEY `id_comanda` (`id_comanda`),
+  ADD KEY `id_produto` (`id_produto`);
+
+--
+-- Índices de tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  ADD PRIMARY KEY (`id_fornecedor`),
+  ADD KEY `id_telefone` (`id_telefone`);
+
+--
+-- Índices de tabela `itens`
+--
+ALTER TABLE `itens`
+  ADD PRIMARY KEY (`id_item`),
+  ADD KEY `id_fornecedor` (`id_fornecedor`);
+
+--
+-- Índices de tabela `produtos`
+--
+ALTER TABLE `produtos`
+  ADD PRIMARY KEY (`id_produto`),
+  ADD KEY `id_fornecedor` (`id_fornecedor`);
+
+--
+-- Índices de tabela `telefone`
+--
+ALTER TABLE `telefone`
+  ADD PRIMARY KEY (`id_telefone`);
+
+--
+-- Índices de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD UNIQUE KEY `CPF` (`CPF`,`email`),
+  ADD KEY `id_cargo` (`id_cargo`);
+
+--
+-- Índices de tabela `vendas`
+--
+ALTER TABLE `vendas`
+  ADD PRIMARY KEY (`id_venda`),
+  ADD KEY `id_usuario` (`id_usuario`),
+  ADD KEY `id_comanda` (`id_comanda`);
+
+--
+-- Índices de tabela `vendas_itens`
+--
+ALTER TABLE `vendas_itens`
+  ADD KEY `id_venda` (`id_venda`),
+  ADD KEY `id_item` (`id_item`);
+
+--
+-- Índices de tabela `vendas_produtos`
+--
+ALTER TABLE `vendas_produtos`
+  ADD KEY `id_venda` (`id_venda`),
+  ADD KEY `id_produto` (`id_produto`);
+
+--
+-- AUTO_INCREMENT para tabelas despejadas
+--
+
+--
+-- AUTO_INCREMENT de tabela `cargos`
+--
+ALTER TABLE `cargos`
+  MODIFY `id_cargo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `comandas`
+--
+ALTER TABLE `comandas`
+  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  MODIFY `id_fornecedor` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `itens`
+--
+ALTER TABLE `itens`
+  MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT de tabela `produtos`
+--
+ALTER TABLE `produtos`
+  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `telefone`
+--
+ALTER TABLE `telefone`
+  MODIFY `id_telefone` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `vendas`
+--
+ALTER TABLE `vendas`
+  MODIFY `id_venda` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
