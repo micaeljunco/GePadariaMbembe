@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET"){
       
 </head>
 <body>
-
+<?php require_once __DIR__."/sidebar.php";?>
 <main class="container">
     <div class="nomePag">
         <h1>Gestão de Fornecedores</h1>

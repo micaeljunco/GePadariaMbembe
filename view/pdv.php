@@ -11,7 +11,7 @@
      <link rel="stylesheet" href="../css/padrao.css">
 </head>
 <body>
-
+<?php require_once __DIR__."/sidebar.php";?>
     <main class="main-pdv">
         
         <div class="adicionarItens">

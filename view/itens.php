@@ -25,6 +25,7 @@ input, label, select {
 }
 </style>
 <body>
+<?php require_once __DIR__."/sidebar.php";?>
     <h2>Inventário</h2>
     <button type="button" class="btn btn-primary" onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
     <form method="get" action="itens.php">
