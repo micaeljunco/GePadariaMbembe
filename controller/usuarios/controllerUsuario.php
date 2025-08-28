@@ -117,5 +117,14 @@ function excluir_usuario($id_usuario): void{
 }
 
 function pesquisar_usuario(): void{
-    
+    global $con;
+    $busca = $_POST["busca"];
+    if(is_numeric($busca)){
+    $sql = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
+    $stmt->execute();
+    exit();
+    }
+
 }
