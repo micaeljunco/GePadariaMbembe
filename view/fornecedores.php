@@ -21,6 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     <link rel="stylesheet" href="../css/padrao.css">
     <link rel="stylesheet" href="../css/ListaPadrao.css">
 
+    <script src="../src/js/fornecedores.js"></script>
 </head>
 
 <body>
@@ -34,7 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" required maxlength="18"
                 pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
 
-
             <label for="descFornecedor">Descrição:</label>
             <textarea name="descFornecedor" id="descFornecedor" required></textarea>
 
@@ -45,6 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             <button type="submit">Cadastrar</button>
         </form>
     </dialog>
+    
     <main class="container">
         <div class="nomePag">
             <h1>Gestão de Fornecedores</h1>
@@ -70,6 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                     <tr>
                         <th>ID</th>
                         <th>Nome</th>
+                        <th>Descrição</th>
                         <th>Telefone</th>
                         <th>CNPJ</th>
                         <th>Ações</th>
@@ -78,8 +80,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 <tbody>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <tr>
-                            <td><?= htmlspecialchars($fornecedor['id_fornecedor']) ?></td>
+                            <td data-id-fornecedor="<?= $fornecedor["id_fornecedor"] ?>">
+                                <?= htmlspecialchars($fornecedor['id_fornecedor']) ?>
+                            </td>
                             <td><?= htmlspecialchars($fornecedor['nome_fornecedor']) ?></td>
+                            <td><?= htmlspecialchars($fornecedor['descricao']) ?></td>
                             <td>(<?= htmlspecialchars($fornecedor['ddd']) ?>) <?= htmlspecialchars($fornecedor['numero']) ?>
                             </td>
                             <td><?= htmlspecialchars($fornecedor['cnpj']) ?></td>
@@ -89,7 +94,14 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                                         <i class="material-icons md-edit"></i>
                                     </div>
                                     <div class="excluir">
-                                        <i class="material-icons md-delete"></i>
+                                        <form action="../controller/fornecedores/deletarFornecedores.php" method="POST">
+                                            <input type="hidden" name="deletar" value="<?= $fornecedor[
+                                                "id_fornecedor"
+                                            ] ?>">
+                                            <button type="submit" class="btn btn-danger">Deletar</button>
+                                        </form>
+                                        <button type="button" class="btn btn-secondary"
+                                            onclick="editarFornecedor(this.parentElement.parentElement.parentElement.parentElement)">Editar</button>
                                     </div>
                                 </div>
                             </td>
@@ -105,5 +117,28 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     </main>
 
 </body>
+<dialog id="editarFornecedor" class="popup">
+    <h2>Editar Fornecedor</h2>
+    <form action="../controller/fornecedores/editarFornecedor.php" method="POST">
+        <input type="hidden" name="id_fornecedor" id="id_fornecedorEd">
+
+        <label for="nomeFornecedorEd">* Nome do Fornecedor:</label>
+        <input type="text" id="nomeFornecedorEd" name="nomeFornecedor" maxlength="255" minlength="1" required>
+
+        <label for="cnpjFornecedorEd">* CNPJ:</label>
+        <input type="text" id="cnpjFornecedorEd" name="cnpjFornecedor" required maxlength="18"
+            pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
+
+
+        <label for="descFornecedorEd">Descrição:</label>
+        <textarea name="descFornecedor" id="descFornecedorEd" required></textarea>
+
+        <label for="telFornecedorEd">* Telefone:</label>
+        <input type="text" name="telefone" id="telFornecedorEd" required maxlength="20"
+            pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy">
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</dialog>
 
 </html>
