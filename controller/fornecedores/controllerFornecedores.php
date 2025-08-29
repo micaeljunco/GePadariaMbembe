@@ -196,21 +196,13 @@ function cadastrar_fornecedor(): void
 function obterIdTelefoneFornecedor($id_fornecedor): int {
     global $con;
 
-    $sql = "SELECT id_telefone FROM fornecedor WHERE id_fornecedor = :id_fornecedor";
+    $sql = "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
     $stmt = $con->prepare($sql);
     $stmt->bindValue(":id_fornecedor", $id_fornecedor, PDO::PARAM_INT);
-
-    try {
-        if ($stmt->execute()):
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            return isset($result['id_telefone']) ? (int)$result['id_telefone'] : 0;
-        endif;
-    } catch (PDOException $e) {
-        echo "<script>alert('[ERRO]: " . $e->getMessage() . "')</script>";
-        return 0;
-    }
-
-    return 0;
+    $stmt->execute();
+    $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+    return $resultado->id_telefone;
+    
 }
 
 /**
