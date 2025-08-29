@@ -7,11 +7,27 @@ function adicionar_item(){
     // Se recebeu um novo item via POST, adiciona à lista da sessão
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
         $novoItem = trim($_POST['item']);
+        $quantidade = intval($_POST['quantidade'] ?? 1); // pega quantidade (padrão 1)
+    
         if ($novoItem !== '') {
-            // Adiciona o novo item na lista
-            $_SESSION['itens'][] = procurarItem($_POST['item']);
+            $item = procurarItem($_POST['item']);
+            if ($item) {
+                // adiciona a quantidade junto
+                $item['quantidade'] = $quantidade;
+                $_SESSION['itens'][] = $item;
+            }
         }
     }
+function valor_total() {
+    $totalGeral = 0;
+    foreach($_SESSION['item'] as $item):
+    $preco = floatval($item['preco']);
+    $quantidade = intval($item['quantidade'] ?? 1);
+    $subtotal = $preco * $quantidade;
+    $totalGeral += $subtotal;
+    
+    endforeach;
+}
     
     // Função para limpar a lista (opcional)
     if (isset($_GET['limpar']) && $_GET['limpar'] == 1) {
