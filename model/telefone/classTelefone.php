@@ -16,6 +16,11 @@ class Telefone
         $this->numero = $numero;
     }
 
+    public function getIDTelefone(): int
+    {
+        return $this->id_telefone;
+    }
+
     public function getDDD(): string
     {
         return (string) $this->ddd;
