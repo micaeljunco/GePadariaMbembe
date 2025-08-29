@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 </head>
 
 <body>
+    <?php require_once __DIR__."/sidebar.php"?>
     <dialog id="cadastroFornecedores" class="popup">
         <h2>Cadastro de Fornecedores</h2>
         <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST">
