@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Banco de dados: `sa_padaria_mokele`
 --
 
+CREATE DATABASE IF NOT EXISTS `sa_padaria_mokele`;
+USE `sa_padaria_mokele`;
+
 -- --------------------------------------------------------
 
 --
