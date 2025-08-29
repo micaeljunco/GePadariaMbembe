@@ -193,17 +193,36 @@ function cadastrar_fornecedor(): void
     }
 }
 
+function obterIdTelefoneFornecedor($id_fornecedor): int {
+    global $con;
+
+    $sql = "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(":id_fornecedor", $id_fornecedor, PDO::PARAM_INT);
+    $stmt->execute();
+    $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+    return $resultado->id_telefone;
+    
+}
+
+/**
+ *  POR FAVOR ALGUEM CORRIJA 
+ *  NÂO ESTOU CONSEGUINDO FAZER A EDIÇÂO DO TELEFONE
+ *  no código abaixo, caso tente editar, o id será 0, o que fará o 
+ *  fornecedor ficar sem telefone algum.
+ **/
+
 function editar_fornecedor(): void
 {
+    global $con;
     try {
-        global $con;
 
         $id_fornecedor = (int) $_POST["id_fornecedor"];
         $nome_fornecedor = new Nome($_POST["nomeFornecedor"]);
         $cnpj = new CNPJ($_POST["cnpjFornecedor"]);
         $desc = (string) $_POST["descFornecedor"];
         $telefone = (string) $_POST["telefone"];
-
+        $id_telefone = obterIdTelefoneFornecedor($id_fornecedor);
 
         // Regex para capturar o DDD e o número
         if (preg_match('/^\((\d{2})\)\s*(\d{4,5}-\d{4})$/', $telefone, $matches)) {
@@ -214,7 +233,7 @@ function editar_fornecedor(): void
             throw new Exception("Formato de telefone inválido");
         }
 
-        $id_telefone = cadastrar_telefone($ddd, $numero);
+        editar_telefone($id_telefone, $ddd, $numero);
 
         $fornecedor = new Fornecedor(
             $id_fornecedor,
@@ -225,12 +244,11 @@ function editar_fornecedor(): void
         );
 
         $sql = "UPDATE fornecedores
-        SET nome_fornecedor = :nome_fornecedor,
-            cnpj = :cnpj,
-            descricao = :descricao,
-            id_telefone = :id_telefone
-        WHERE id_fornecedor = :id_fornecedor";
-
+                SET nome_fornecedor = :nome_fornecedor,
+                    cnpj = :cnpj,
+                    descricao = :descricao,
+                    id_telefone = :id_telefone
+                WHERE id_fornecedor = :id_fornecedor";
 
         $stmt = $con->prepare($sql);
 
@@ -239,6 +257,7 @@ function editar_fornecedor(): void
         $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
         $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
         $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
+
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel editar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";

@@ -60,7 +60,11 @@
 }
 .infoCaixa{
     background-color: #EEEE;
-    margin-top: 10px;
+    margin: 10px 10px 10px 10px;
+}
+.infoCaixa h4{
+    background-color: #EEEE;
+    margin: 10px 10px 10px 10px;
 }
 
 .acoes{

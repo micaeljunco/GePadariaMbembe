@@ -26,3 +26,29 @@ function cadastrar_telefone($ddd, $numero) {
         return false;
     }
 }
+
+function editar_telefone($id_telefone, $ddd, $numero): int|false {
+    global $con;
+
+    $telefone = new Telefone(
+        $id_telefone,
+        $ddd,
+        $numero
+    );
+
+    $sql = "UPDATE `telefone` SET `ddd` = :ddd, `numero` = :numero WHERE `id_telefone` = :id_telefone";
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(":ddd", $telefone->getDDD());
+    $stmt->bindValue(":numero", $telefone->getNumero());
+    $stmt->bindValue(":id_telefone", $telefone->getIDTelefone());
+
+    try {
+        $stmt->execute();
+        echo "<script>alert('Telefone editado com sucesso!')</script>";
+        return true;
+    } catch (PDOException $e) {
+        echo "<script>alert('Erro: " . $e->getMessage() . "')</script>";
+        return false;
+    }
+}
+
