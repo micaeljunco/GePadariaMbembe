@@ -340,3 +340,7 @@ ul li.item-menu:hover .icon {
     scrollbar-width: none; /* Firefox */
     display: none; /* Chrome, Safari, Opera */
 }
+#dataHora{
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}
