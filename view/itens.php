@@ -26,7 +26,7 @@ $fornecedores = consulta_fornecedores();
 <body>
 <?php require_once __DIR__."/sidebar.php";?>
     <h2>Inventário</h2>
-    <button type="button" class="btn btn-primary"
+    <button type="button" id="abrirCadastroItens" class="btn btn-primary"
         onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
     <form method="get" action="itens.php">
         <input type="text" class="form-control" name="busca">
