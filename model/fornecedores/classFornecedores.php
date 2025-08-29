@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . "/../nome.php";
-require_once __DIR__ ."/cnpj.php";
+require_once __DIR__ . "/cnpj.php";
 
 class Fornecedor
 {
@@ -10,7 +10,7 @@ class Fornecedor
     private CNPJ $cnpj;
     private string $descricao;
     private int $id_telefone;
-    
+
 
     public function __construct(
         int $id_fornecedor,
@@ -26,10 +26,12 @@ class Fornecedor
         $this->id_telefone = $id_telefone;
     }
 
-    public function getIdFornecedor(): int {
+    public function getIdFornecedor(): int
+    {
         return $this->id_fornecedor;
     }
-    public function getNome(): string {
+    public function getNome(): string
+    {
         return $this->nome_fornecedor;
     }
     public function getCNPJ(): CNPJ
@@ -44,5 +46,4 @@ class Fornecedor
     {
         return $this->id_telefone;
     }
-    
 }
