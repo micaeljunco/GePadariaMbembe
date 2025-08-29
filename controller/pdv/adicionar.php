@@ -6,4 +6,5 @@ if($_SERVER["REQUEST_METHOD"] !== 'POST') {
  }
  
  adicionar_item();
+ valor_total();
 ?>
