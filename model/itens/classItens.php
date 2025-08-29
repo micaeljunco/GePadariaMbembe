@@ -36,7 +36,7 @@ class Item
         $this->unidade_medida = $unidade_medida;
     }
 
-    public function getNomeItem(): string
+    public function __toString(): string
     {
         return (string) $this->nome_itens;
     }
@@ -74,5 +74,8 @@ class Item
     public function getUniMed(): string
     {
         return $this->unidade_medida;
+    }
+    public function getIdItem(): int{
+        return $this->id_item;
     }
 }
