@@ -50,24 +50,24 @@ if (!isset($_SESSION['itens'])) {
                     </thead>
                     <?php if (isset($_SESSION['itens']) && count($_SESSION['itens']) > 0): ?>
                         <?php foreach ($_SESSION['itens'] as $item): ?><tr>
-                            <td><?= htmlspecialchars($item['nome_item']) ?></td>
-                            <td><?=htmlspecialchars($item['quant']) ?></td>  
-                            <td>R$ <?= number_format($item['val_unitario'], 2, ',', '.') ?></td>   
+                            <td><?=htmlspecialchars($item['nome_item']) ?></td>
+                            <td><?=htmlspecialchars($item['quantidade']) ?></td>  
+                            <td>R$<span class="subtotal"> <?=number_format($item['val_unitario']*$item['quantidade'], 2, ',', '.')?></span></td>   
+                            <td>
+                                <div class="acoes">
+                                    <div class="editar">
+                                        <i class="material-icons md-edit"></i>
+                                    </div>
+                                    <div class="excluir">
+                                    <i class="material-icons md-delete"></i>
+                                    </div>
+                                </div>
+                            </td></tr> 
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>Nenhum item no carrinho</p>
                     <?php endif; ?>
 
-                    <td>
-                        <div class="acoes">
-                            <div class="editar">
-                                <i class="material-icons md-edit"></i>
-                            </div>
-                            <div class="excluir">
-                            <i class="material-icons md-delete"></i>
-                            </div>
-                        </div>
-                    </td></tr> 
                 </table>
             </div>
 
@@ -82,8 +82,8 @@ if (!isset($_SESSION['itens'])) {
             <div class="infoCaixa">
 
                 <div class="info">
-                    <h4>Data e Hora: 13/05/2025 - 13:33</h4>
-                    <h4>Atendente: Yan Carlos</h4>
+                    
+                    
                 </div>
 
 
@@ -96,6 +96,7 @@ if (!isset($_SESSION['itens'])) {
                 <button class="btn btn-outline-danger">Cancelar</button>
                 <button class="btn btn-outline-success">Confirmar</button>
             </div>
+            <footer id="finalizarVenda">R$<span id="valorTotal">100,00</span></footer>
         </div>
     </main>
 
