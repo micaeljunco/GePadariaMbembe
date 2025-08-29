@@ -49,7 +49,7 @@ if (!isset($_SESSION['itens'])) {
                         <th>Ações</th>
                     </thead>
                     <?php if (isset($_SESSION['itens']) && count($_SESSION['itens']) > 0): ?>
-                        <?php foreach ($_SESSION['itens'] as $item): ?><tr>
+                        <?php foreach ($_SESSION['itens'] as $index => $item): ?><tr>
                             <td><?=htmlspecialchars($item['nome_item']) ?></td>
                             <td><?=htmlspecialchars($item['quantidade']) ?></td>  
                             <td>R$<span class="subtotal"> <?=number_format($item['val_unitario']*$item['quantidade'], 2, ',', '.')?></span></td>   
@@ -59,7 +59,7 @@ if (!isset($_SESSION['itens'])) {
                                         <i class="material-icons md-edit"></i>
                                     </div>
                                     <div class="excluir">
-                                    <i class="material-icons md-delete"></i>
+                                    <a href="../controller/pdv/controllerPdv.php?remover=<?= $index ?>"><i class="material-icons md-delete"></i></a>
                                     </div>
                                 </div>
                             </td></tr> 
@@ -82,7 +82,7 @@ if (!isset($_SESSION['itens'])) {
             <div class="infoCaixa">
 
                 <div class="info">
-                    
+                    <h4 id="dataHora"></h4>
                     
                 </div>
 
@@ -99,7 +99,21 @@ if (!isset($_SESSION['itens'])) {
             <footer id="finalizarVenda">R$<span id="valorTotal">100,00</span></footer>
         </div>
     </main>
+    <script>
+        function dataHora(){
+            const agora = new Date();
+            const ano = agora.getFullYear();
+            const mes = String(agora.getMonth() + 1).padStart(2, '0');
+            const dia = String(agora.getDate()).padStart(2, '0');
+            const hora = String(agora.getHours()).padStart(2, '0');
+            const min = String(agora.getMinutes()).padStart(2, '0');
+            const sec = String(agora.getSeconds()).padStart(2, '0');
 
+            document.getElementById('dataHora').textContent = `${dia}/${mes}/${ano} ${hora}:${min}:${sec}`;
+        }
+        setInterval(dataHora, 900);
+        dataHora();
+    </script>
 </body>
 
 </html>
