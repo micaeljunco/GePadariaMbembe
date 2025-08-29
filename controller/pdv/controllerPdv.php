@@ -12,13 +12,9 @@ function adicionar_item(){
             $_SESSION['itens'][] = procurarItem($_POST['item']);
         }
     }
-    
-    // Função para limpar a lista (opcional)
-    if (isset($_GET['limpar']) && $_GET['limpar'] == 1) {
-        $_SESSION['itens'] = [];
-        header('Location: ' . strtok($_SERVER["REQUEST_URI"], '?'));
-        exit;
-    }
+    $ultimoItem = end($_SESSION['itens']);
+    atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
+
     header("Location: ../../view/pdv.php");
 }
 function procurarItem($id){
@@ -28,4 +24,11 @@ function procurarItem($id){
     $stmt->bindParam(':id_item', $id);
     $stmt->execute();
     return $stmt->fetch();
+}
+
+function atualizar_total($val_uni, $quant): void {
+    $total = (float) $_SESSION['total'];
+    $subtotal = $val_uni * $quant;
+    $total += $subtotal;
+    $_SESSION['total'] = $total;
 }
