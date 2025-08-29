@@ -7,9 +7,15 @@ function adicionar_item(){
     // Se recebeu um novo item via POST, adiciona à lista da sessão
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
         $novoItem = trim($_POST['item']);
+        $quantidade = intval($_POST['quantidade'] ?? 1); // pega quantidade (padrão 1)
+    
         if ($novoItem !== '') {
-            // Adiciona o novo item na lista
-            $_SESSION['itens'][] = procurarItem($_POST['item']);
+            $item = procurarItem($_POST['item']);
+            if ($item) {
+                // adiciona a quantidade junto
+                $item['quantidade'] = $quantidade;
+                $_SESSION['itens'][] = $item;
+            }
         }
     }
     $ultimoItem = end($_SESSION['itens']);
