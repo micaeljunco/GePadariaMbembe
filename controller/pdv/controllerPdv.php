@@ -45,3 +45,15 @@ function procurarItem($id){
     $stmt->execute();
     return $stmt->fetch();
 }
+function removerItem(){
+if (isset($_GET['remover'])) {
+    $index = intval($_GET['remover']);
+    if (isset($_SESSION['itens'][$index])) {
+        unset($_SESSION['itens'][$index]); // remove do array
+        $_SESSION['itens'] = array_values($_SESSION['itens']); // reorganiza os índices
+    }
+    header("Location: ../../view/pdv.php");
+    exit;
+}
+
+}
