@@ -5,6 +5,7 @@ import time
 
 # Configuração do webdriver
 driver = webdriver.Chrome()
+driver.maximize_window()
 
 # Abre a página de usuários
 driver.get("http://localhost:8080/GePadariaMbembe/view/usuarios.php")
