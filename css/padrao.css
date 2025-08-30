@@ -1,25 +1,10 @@
+@import url("variaveis.css");
+/* FONTES */
 @import url("poppins.css");
+@import url("roboto-mono.css");
+
 @import url("sidebar.css");
 @import url("../src/node_modules/@material-icons/font/css/outline.css");
-
-/* Variáveis para fácil customização */
-:root {
-    --cor-primaria: #f3a853;
-    --cor-primaria-clara: #f6b76f;
-    --cor-secundaria: #967345;
-    --cor-fundo: #fff;
-    --cor-fundo-secundario: #f9f9f9;
-    --cor-texto: #222;
-    --cor-botao-cancelar: #fff;
-    --cor-botao-cancelar-borda: #f3a853;
-    --cor-link: #967345;
-    --ativo: #4dab13;
-    --atencao: #e93737;
-    --radius: 16px;
-    --sombra: 0 0px 15px 5px #96734580;
-    --fonte-principal: Poppins, sans-serif;
-    --espaco-padrao: 20px;
-}
 
 * {
     margin: 0;
@@ -117,24 +102,10 @@ form button:hover {
     background-color: var(--cor-secundaria);
 }
 
-#footerPagina {
-    background-color: var(--cor-primaria-clara);
-    color: var(--cor-texto);
-    padding: 2px;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1001;
-    box-shadow: var(--sombra);
-}
-
 #usuFooter {
     display: flex;
     align-items: center;
+    font-weight: normal;
 }
 
 h2 {
@@ -201,26 +172,30 @@ dialog {
     margin-bottom: 15px;
 }
 
-#footer-principal {
+#footerPagina {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: #f3a853;
+    background-color: var(--cor-primaria-escura);
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
+    padding: 5px 10px;
     font-size: 0.9rem;
     z-index: 1000;
 }
 
-#dataHora {
+#horaAtual {
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    font-family: "Courier New", Courier, monospace;
+}
+
+#horaAtual,
+#dataAtual {
+    font-family: "Roboto Mono", monospace;
     font-weight: bold;
 }
