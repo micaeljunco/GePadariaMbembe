@@ -1,0 +1,19 @@
+/* Variáveis para fácil customização */
+:root {
+    --cor-primaria: #f3a853;
+    --cor-primaria-escura: #bc8647;
+    --cor-primaria-clara: #f6b76f;
+    --cor-secundaria: #967345;
+    --cor-fundo: #fff;
+    --cor-fundo-secundario: #f9f9f9;
+    --cor-texto: #222;
+    --cor-botao-cancelar: #fff;
+    --cor-botao-cancelar-borda: #f3a853;
+    --cor-link: #967345;
+    --ativo: #4dab13;
+    --atencao: #e93737;
+    --radius: 16px;
+    --sombra: 0 0px 15px 5px #96734580;
+    --fonte-principal: Poppins, sans-serif;
+    --espaco-padrao: 20px;
+}
