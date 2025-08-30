@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once __DIR__ . "/../controller/itens/controllerItens.php";
 require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
@@ -20,18 +22,28 @@ $fornecedores = consulta_fornecedores();
     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.css">
 
     <link rel="stylesheet" href="../css/padrao.css">
-
-    <link rel="stylesheet" href="../css/ListaPadrao.css">
+    <link rel="stylesheet" href="../css/itens.css">
 </head>
 <body>
     <?= include "./partials/sidebar.html" ?>
-    <h2>Inventário</h2>
-    <button type="button" id="abrirCadastroItens" class="btn btn-primary"
-        onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
-    <form method="get" action="itens.php">
-        <input type="text" class="form-control" name="busca">
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    </form>
+
+    <main id="main-inventario">
+
+        <div id="topo-pagina">
+            <h1>Inventário</h1>
+        </div>
+
+        <div id="container-top">
+            <div id="cadastro_relatorio">
+                <button type="button" id="abrirCadastroItens" class="btn btn-outline-primary"
+                onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
+                <button type="button" class="btn btn-outline-secondary">Gerar Relatório</button>
+            </div>
+            <form method="get" action="itens.php" id="form-busca-itens">
+                <input type="text" class="form-control" name="busca">
+                <button type="submit" class="btn btn-secondary">Buscar</button>
+            </form>
+        </div>
     <dialog id="cadastroItens" class="popup">
         <h2>Cadastro de Itens</h2>
         <form action="../controller/itens/cadastrarItens.php" method="POST">
@@ -88,7 +100,7 @@ $fornecedores = consulta_fornecedores();
         </form>
     </dialog>
     <hr>
-    <table class="table table-success table-striped">
+    <table class="tabela">
         <thead>
             <tr>
                 <th>ID</th>
@@ -135,15 +147,19 @@ $fornecedores = consulta_fornecedores();
                                 $item["val_unitario"],
                             ) ?></span>
                         </td>
-                        <td>
+                        <td class="acoes">
                             <form action="../controller/itens/deletarItens.php" method="POST">
                                 <input type="hidden" name="deletar" value="<?= $item[
                                     "id_item"
                                 ] ?>">
-                                <button type="submit" class="btn btn-danger">Deletar</button>
+                                <button type="submit" class="botao-acoes">
+                                    <i class="material-icons md-delete deletar"></i>
+                                </button>
                             </form>
-                            <button type="button" class="btn btn-secondary"
-                                onclick="editarItem(this.parentElement.parentElement)">Editar</button>
+                            <button type="button" class="botao-acoes"
+                                onclick="editarItem(this.parentElement.parentElement)">
+                                    <i class="material-icons md-edit editar"></i>
+                                </button>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -218,8 +234,8 @@ $fornecedores = consulta_fornecedores();
         </form>
     </dialog>
     <script src="../src/js/itens.js"></script>
+</main>
     <?= include "./partials/footer.html" ?>
-
 </body>
 
 </html>

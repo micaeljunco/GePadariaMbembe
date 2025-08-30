@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $fornecedores = busca_fornecedores();
 } else {

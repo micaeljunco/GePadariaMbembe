@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -9,66 +8,56 @@
     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
 
     <!-- links Css -->
-     <link rel="stylesheet" href="../css/padrao.css">
-     <link rel="stylesheet" href="../css/loginYan.css"> 
+    <link rel="stylesheet" href="../css/padrao.css">
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-    <!-- corpo principal da pagina -->
-    <main class="conteiner">
-        <!-- div da parte amarela e a msg bonita, parte esquerda da pagina -->
-            <div class="amarelo">
-                <h1 class="text-center">Bem vindo!</h1>
-                <h2 class="text-center">Padaria <br> Mokele y Mbembe</h2>
-            </div>
+    <main id="login-page">
 
-            <!-- div do formulario, ou seja a parte direita da pagina -->
-            <div class="formulario">
+        <!-- Parte amarela com mensagem (esquerda) -->
+        <div id="login-titulo">
+            <h1>Bem-vindo!</h1>
+            <h2>Padaria <br> Mokele y Mbembe</h2>
+        </div>
 
-                <!-- topo do formulario, com a logo e a msg login -->
-                <div id="topoForm">
-                    <h1>Login</h1>
-                    <img src="../img/icon.png" alt="logoMokele">
+        <!-- Conteúdo do login (direita) -->
+        <div id="login-conteudo">
+            <header>
+                <h1>Login</h1>
+                <img src="../img/icon.png" alt="logoMokele">
+            </header>
+
+
+            <form action="../model/validarLogin.php" method="POST">
+                <div class="input-container">
+                    <input type="email" class="form-control" placeholder="E-mail" name="email" required>
                 </div>
-                
-                <!-- inicio do formulario -->
-                <form action="../model/validarLogin.php" method="POST">
 
-                    <!-- div com as informações que o usuario vai inserir(inputs) -->
-                    <div id="formInfo">
-                        <input type="email" class="form-control" placeholder="E-mail" name="email" required >
-                        <br>
+                <div class="input-container" id="container-senha">
+                    <input type="password" class="form-control" placeholder="Senha" id="senha" name="senha" required>
+                    <i alt="Exibir senha" id="senha-olho" class="input-icon material-icons md-visibility_off" onclick="vizualizacao()"></i>
+                </div>
 
-                        <div id="formSenha">
-                            <input type="password" class="form-control" placeholder="Senha" id="senha" name="senha" required>
-                            <img src="../img/exibir_senha.png" alt="Exibir senha" onclick="vizualizacao()">
-                        </div>
-                    </div>
-                    
-                    <br>
+                <div id="esq-senha"><a href="#">Esqueci minha senha</a></div>
+                <button type="submit" class="btn" id="btn-entrar">Entrar</button>
+            </form>
+        </div>
 
-                    <!-- div com os 2 botões de interação(esqueceu senha e o de logar) -->
-                    <div id="botoes">
-                    <p><a href="#">Esqueceu sua senha</a></p>
-
-                    <button type="submit" class="btn btn-outline-warning">Logar</button>
-                    </div>
-                    
-                </form>
-            </div>
     </main>
 
     <script>
-        function vizualizacao(){
+    function vizualizacao(){
+        const senha = document.getElementById("senha");
+        const olho = document.getElementById("senha-olho");
 
-            const senha = document.getElementById("senha")
-            if (senha.type === "text"){
-                senha.type = "password"
-            }
-            else{
-                senha.type = "text"
-            }
-            }
-        
+        if(senha.type === "password"){
+            senha.type = "text";
+            olho.classList.replace("md-visibility_off", "md-visibility"); // olho aberto
+        } else {
+            senha.type = "password";
+            olho.classList.replace("md-visibility", "md-visibility_off"); // olho fechado
+        }
+    }
     </script>
 </body>
 </html>
