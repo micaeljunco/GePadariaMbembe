@@ -4,9 +4,8 @@
         Usuário: <?php echo $_SESSION["nome"]; ?> <span id="usuLogado"> </span>
     </div>
 
-    <span id="dataHora"></span>
-
-    <span id="copy"> Copyright: 2025-2025 </span>
+    <span id="horaAtual"></span>
+    <span id="dataAtual"></span>
 </footer>
 
 <script>
@@ -19,9 +18,12 @@
         const min = String(agora.getMinutes()).padStart(2, "0");
         const sec = String(agora.getSeconds()).padStart(2, "0");
 
-        document.getElementById("dataHora").textContent =
-            `${dia}/${mes}/${ano} ${hora}:${min}:${sec}`;
+        document.getElementById("horaAtual").textContent =
+            `${hora}:${min}:${sec}`;
+
+        document.getElementById("dataAtual").textContent =
+            `${dia}/${mes}/${ano}`;
     }
-    setInterval(dataHora, 900);
+    setInterval(dataHora, 1000);
     dataHora();
 </script>
