@@ -1,9 +1,9 @@
-main.container{
+main.container {
     display: flex;
     flex-direction: column;
     justify-content: start;
 }
-.nomePag{
+.nomePag {
     background-color: var(--cor-primaria);
     width: 95%;
     height: 80px;
@@ -14,50 +14,51 @@ main.container{
     border-radius: 16px 16px 0 0;
     margin-bottom: 30px;
 }
-.tabela{
+.tabela {
     overflow-y: scroll;
     width: 95%;
     height: 100%;
 }
-.interacao{
+.interacao {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-bottom:30px ;
+    margin-bottom: 30px;
 }
-.busca{
+.busca {
     display: flex;
     flex-direction: row;
     width: 80%;
     height: 50px;
 }
-.busca .btn, .busca .form-control{
-    height: 100% ;
+.busca .btn,
+.busca .form-control {
+    height: 100%;
 }
-.busca .btn{
+.busca .btn {
     margin-left: 10px;
     margin-top: 0px;
 }
-.cadastro{
+.cadastro {
     width: 50%;
     display: flex;
     justify-content: right;
 }
-.cadastro .btn{
+.cadastro .btn {
     width: 240px;
 }
-.btn{
+.btn {
     border-radius: 16px;
     width: 7rem;
     height: 3.1rem;
 }
-.acoes{
+.acoes {
     display: flex;
 }
-.acoes img{
+.acoes img {
     cursor: pointer;
 }
-.excluir{
+.excluir {
     margin-left: 15px;
-    fill: red;
+    color: red;
 }
