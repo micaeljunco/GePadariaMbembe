@@ -4,7 +4,7 @@ require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
 $itens = consulta_itens();
 
-if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET["busca"])) {
+if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
     $itens = busca_item($_GET["busca"]);
 }
 $fornecedores = consulta_fornecedores();
@@ -24,7 +24,7 @@ $fornecedores = consulta_fornecedores();
     <link rel="stylesheet" href="../css/ListaPadrao.css">
 </head>
 <body>
-<?php require_once __DIR__."/sidebar.php";?>
+    <?= include "./partials/sidebar.html" ?>
     <h2>Inventário</h2>
     <button type="button" id="abrirCadastroItens" class="btn btn-primary"
         onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
@@ -218,6 +218,8 @@ $fornecedores = consulta_fornecedores();
         </form>
     </dialog>
     <script src="../src/js/itens.js"></script>
+    <?= include "./partials/footer.html" ?>
+
 </body>
 
 </html>

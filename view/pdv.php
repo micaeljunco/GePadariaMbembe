@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . "/../controller/pdv/controllerPdv.php";
-if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
-    $_SESSION['itens'] = [];
-    $_SESSION['total'] = 0.00;
+if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
+    $_SESSION["itens"] = [];
+    $_SESSION["total"] = 0.0;
 }
 ?>
 
@@ -22,7 +22,7 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
 </head>
 
 <body>
-    <?php require_once __DIR__ . "/sidebar.php"; ?>
+    <?= include "./partials/sidebar.html" ?>
     <main class="main-pdv">
 
         <div class="adicionarItens">
@@ -51,11 +51,24 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
                         <th>Preço</th>
                         <th>Ações</th>
                     </thead>
-                    <?php if (isset($_SESSION['itens']) && count($_SESSION['itens']) > 0): ?>
-                        <?php foreach ($_SESSION['itens'] as $index => $item): ?><tr>
-                            <td><?=htmlspecialchars($item['nome_item']) ?></td>
-                            <td><?=htmlspecialchars($item['quantidade']) ?></td>  
-                            <td>R$<span class="subtotal"> <?=number_format($item['val_unitario']*$item['quantidade'], 2, ',', '.')?></span></td>   
+                    <?php if (
+                        isset($_SESSION["itens"]) &&
+                        count($_SESSION["itens"]) > 0
+                    ): ?>
+                        <?php foreach (
+                            $_SESSION["itens"]
+                            as $index => $item
+                        ): ?><tr>
+                            <td><?= htmlspecialchars($item["nome_item"]) ?></td>
+                            <td><?= htmlspecialchars(
+                                $item["quantidade"],
+                            ) ?></td>
+                            <td>R$<span class="subtotal"> <?= number_format(
+                                $item["val_unitario"] * $item["quantidade"],
+                                2,
+                                ",",
+                                ".",
+                            ) ?></span></td>
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
@@ -65,7 +78,7 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
                                     <a href="../controller/pdv/controllerPdv.php?remover=<?= $index ?>"><i class="material-icons md-delete"></i></a>
                                     </div>
                                 </div>
-                            </td></tr> 
+                            </td></tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <p>Nenhum item no carrinho</p>
@@ -85,8 +98,8 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
             <div class="infoCaixa">
 
                 <div class="info">
-                    <h4 id="dataHora"></h4>
-                    
+                    <h4 id="dataHoraP"></h4>
+
                 </div>
 
 
@@ -103,7 +116,8 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
             </div>
             <footer id="finalizarVenda">
                 <span id="valorTotal">
-                    <?= 'R$ ' . number_format($_SESSION['total'], 2, ',', '.') ?>
+                    <?= 'R$ ' .
+                        number_format($_SESSION["total"], 2, ",", ".") ?>
                 </span>
             </footer>
 
@@ -119,11 +133,13 @@ if (!isset($_SESSION['itens']) or isset($_POST['limpar'])) {
             const min = String(agora.getMinutes()).padStart(2, '0');
             const sec = String(agora.getSeconds()).padStart(2, '0');
 
-            document.getElementById('dataHora').textContent = `${dia}/${mes}/${ano} ${hora}:${min}:${sec}`;
+            document.getElementById('dataHoraP').textContent = `${dia}/${mes}/${ano} ${hora}:${min}:${sec}`;
         }
         setInterval(dataHora, 900);
         dataHora();
     </script>
+    <?= include "./partials/footer.html" ?>
+
 </body>
 
 </html>

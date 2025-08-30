@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 </head>
 
 <body>
-    <?php require_once __DIR__."/sidebar.php"?>
+    <?= include "./partials/sidebar.html" ?>
     <dialog id="cadastroFornecedores" class="popup">
         <h2>Cadastro de Fornecedores</h2>
         <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST">
@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             <button type="submit">Cadastrar</button>
         </form>
     </dialog>
-    
+
     <main class="container">
         <div class="nomePag">
             <h1>Gestão de Fornecedores</h1>
@@ -81,14 +81,26 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                 <tbody>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <tr>
-                            <td data-id-fornecedor="<?= $fornecedor["id_fornecedor"] ?>">
-                                <?= htmlspecialchars($fornecedor['id_fornecedor']) ?>
+                            <td data-id-fornecedor="<?= $fornecedor[
+                                "id_fornecedor"
+                            ] ?>">
+                                <?= htmlspecialchars(
+                                    $fornecedor["id_fornecedor"],
+                                ) ?>
                             </td>
-                            <td><?= htmlspecialchars($fornecedor['nome_fornecedor']) ?></td>
-                            <td><?= htmlspecialchars($fornecedor['descricao']) ?></td>
-                            <td>(<?= htmlspecialchars($fornecedor['ddd']) ?>) <?= htmlspecialchars($fornecedor['numero']) ?>
+                            <td><?= htmlspecialchars(
+                                $fornecedor["nome_fornecedor"],
+                            ) ?></td>
+                            <td><?= htmlspecialchars(
+                                $fornecedor["descricao"],
+                            ) ?></td>
+                            <td>(<?= htmlspecialchars(
+                                $fornecedor["ddd"],
+                            ) ?>) <?= htmlspecialchars($fornecedor["numero"]) ?>
                             </td>
-                            <td><?= htmlspecialchars($fornecedor['cnpj']) ?></td>
+                            <td><?= htmlspecialchars(
+                                $fornecedor["cnpj"],
+                            ) ?></td>
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
@@ -116,8 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         </div>
 
     </main>
-
-</body>
+    <?= include "./partials/footer.html" ?>
 <dialog id="editarFornecedor" class="popup">
     <h2>Editar Fornecedor</h2>
     <form action="../controller/fornecedores/editarFornecedor.php" method="POST">
@@ -141,5 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         <button type="submit">Cadastrar</button>
     </form>
 </dialog>
+</body>
 
 </html>

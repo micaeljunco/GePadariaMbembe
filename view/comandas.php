@@ -10,8 +10,9 @@
     <link rel="stylesheet" href="../css/listaPadrao.css">
     <link rel="stylesheet" href="../css/comandas.css">
 </head>
-<body> 
-    <?php require_once __DIR__."/usuarios.php"?>
+<body>
+    <?php require_once __DIR__ . "/usuarios.php"; ?>
+    <?= include "./partials/sidebar.html" ?>
     <main class="container">
         <div class="nomePag">
             <h1>Emissão de Comandas</h1>
@@ -28,6 +29,6 @@
         </div>
 
     </main>
-    
+    <?= include "./partials/footer.html" ?>
 </body>
 </html>

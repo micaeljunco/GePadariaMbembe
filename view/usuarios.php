@@ -1,16 +1,15 @@
 <?php
-    session_start();
-    require_once __DIR__ ."/../controller/usuarios/controllerUsuario.php";
+session_start();
+require_once __DIR__ . "/../controller/usuarios/controllerUsuario.php";
 
+$usuarios = pesquisar_usuario();
+$cargos = buscar_cargos();
 
-    $usuarios = pesquisar_usuario();
-    $cargos = buscar_cargos();
-
-    $cargosMapa = [
-        1 => "Administrador",
-        2 => "Caixa",
-        3 => "Controlador de Estoque"
-    ];
+$cargosMapa = [
+    1 => "Administrador",
+    2 => "Caixa",
+    3 => "Controlador de Estoque",
+];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -25,11 +24,11 @@
     <link rel="stylesheet" href="../css/padrao.css">
     <link rel="stylesheet" href="../css/usuarios.css">
     <link rel="stylesheet" href="../css/listaPadrao.css">
-      
+
 </head>
 <body>
 
-    <?php require_once __DIR__."/sidebar.php";?>
+    <?= include "./partials/sidebar.html" ?>
 
     <main class="container">
         <div class="nomePag">
@@ -43,7 +42,7 @@
                         <input type="text" name="busca" class="form-control" placeholder="Pesquisar Usuário">
                         <button class="btn btn-outline-warning" type="submit">Buscar</button>
                     </form>
-                    
+
                 </div>
 
                 <div class="cadastro">
@@ -64,13 +63,17 @@
                         <input type="email" name="email" placeholder="Email" class="form-control">
                         <input type="text" name="cpf" placeholder="CPF" class="form-control">
                             <select name="cargo" id="cargo" class="form-select">
-                                <?php foreach($cargos as $cargo):?>
-                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
-                                <?php endforeach;?>
+                                <?php foreach ($cargos as $cargo): ?>
+                                    <option value="<?= $cargo[
+                                        "id_cargo"
+                                    ] ?>"><?php echo $cargo[
+    "nome_cargo"
+]; ?></option>
+                                <?php endforeach; ?>
                             </select>
-                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                            <button type="submit" class="btn btn-outline-warning">Salvar</button>
                     </form>
-                    
+
                 </div>
             </dialog>
 
@@ -84,45 +87,70 @@
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    <?php if(!$usuarios):?>
+                    <?php if (!$usuarios): ?>
                         <p>Nenhum usuario encontrado!</p>
-                    <?php endif;?>
-                    <?php foreach($usuarios as $usuario):?>
+                    <?php endif; ?>
+                    <?php foreach ($usuarios as $usuario): ?>
                         <tr>
-                            <td><?php echo $usuario["id_usuario"]?></td>
+                            <td><?php echo $usuario["id_usuario"]; ?></td>
 
-                            <td><?php echo $usuario["nome_usuario"]?></td>
+                            <td><?php echo $usuario["nome_usuario"]; ?></td>
 
-                            <td><?php echo $usuario["email"]?></td>
+                            <td><?php echo $usuario["email"]; ?></td>
 
-                            <td><?php echo $cargosMapa[$usuario["id_cargo"]]?></td>
+                            <td><?php echo $cargosMapa[
+                                $usuario["id_cargo"]
+                            ]; ?></td>
 
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
-                                            <img src="../img/edit.png" alt="Editar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').showModal()">
-                                            <dialog class="popupContainer" id="editarPopup<?=$usuario['id_usuario']?>">
+                                            <img src="../img/edit.png" alt="Editar" onclick="document.getElementById('editarPopup<?= $usuario[
+                                                "id_usuario"
+                                            ] ?>').showModal()">
+                                            <dialog class="popupContainer" id="editarPopup<?= $usuario[
+                                                "id_usuario"
+                                            ] ?>">
                                                 <div class="nomePopup">
                                                     <h2>Editar Usuarios</h2>
                                                 </div>
-                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?=$usuario['id_usuario']?>').close()">
+                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?= $usuario[
+                                                    "id_usuario"
+                                                ] ?>').close()">
 
                                                 <div class="popup">
                                                     <form action="../controller/usuarios/editarUsuario.php" method="POST">
-                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
+                                                        <input type="hidden" name="id_usuario" id="id_usuario" value="<?= htmlspecialchars(
+                                                            $usuario[
+                                                                "id_usuario"
+                                                            ],
+                                                        ) ?>">
 
-                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?=htmlspecialchars($usuario['nome_usuario'])?>">
+                                                        <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?= htmlspecialchars(
+                                                            $usuario[
+                                                                "nome_usuario"
+                                                            ],
+                                                        ) ?>">
 
-                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?=htmlspecialchars($usuario['email'])?>">
+                                                        <input type="text" name="email" placeholder="Email" class="form-control" value="<?= htmlspecialchars(
+                                                            $usuario["email"],
+                                                        ) ?>">
 
                                                             <select name="cargo" id="cargo" class="form-select">
-                                                                <?php foreach($cargos as $cargo):?>
-                                                                    <option value="<?=$cargo["id_cargo"]?>"><?php echo $cargo["nome_cargo"]?></option>
-                                                                <?php endforeach;?>
+                                                                <?php foreach (
+                                                                    $cargos
+                                                                    as $cargo
+                                                                ): ?>
+                                                                    <option value="<?= $cargo[
+                                                                        "id_cargo"
+                                                                    ] ?>"><?php echo $cargo[
+    "nome_cargo"
+]; ?></option>
+                                                                <?php endforeach; ?>
                                                             </select>
-                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>    
+                                                            <button type="submit" class="btn btn-outline-warning">Salvar</button>
                                                     </form>
-                                                    
+
                                                 </div>
                                         </dialog>
 
@@ -130,24 +158,31 @@
                                     </div>
 
                                     <div class="excluir">
-                                        <form action="../controller/usuarios/excluirUsuario.php" method="POST" id="formInativar<?=$usuario['id_usuario']?>" style="display: inline;">
-                                                <input type="hidden" name="id_usuario" value="<?=htmlspecialchars($usuario['id_usuario'])?>">
-                                                <img src="../img/inativar.png" alt="Excluir usuario" onclick="if(confirm('Tem certeza que deseja excluir esse usuario, a exclusão é irreversivel!')) document.getElementById('formInativar<?=$usuario['id_usuario']?>').submit()">
-                                       
+                                        <form action="../controller/usuarios/excluirUsuario.php" method="POST" id="formInativar<?= $usuario[
+                                            "id_usuario"
+                                        ] ?>" style="display: inline;">
+                                                <input type="hidden" name="id_usuario" value="<?= htmlspecialchars(
+                                                    $usuario["id_usuario"],
+                                                ) ?>">
+                                                <img src="../img/inativar.png" alt="Excluir usuario" onclick="if(confirm('Tem certeza que deseja excluir esse usuario, a exclusão é irreversivel!')) document.getElementById('formInativar<?= $usuario[
+                                                    "id_usuario"
+                                                ] ?>').submit()">
+
                                         </form>
-                                            
+
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                            
-                    <?php endforeach;?>
+
+                    <?php endforeach; ?>
                 </tbody>
             </table>
 
         </div>
 
     </main>
-    
+    <?= include "./partials/footer.html" ?>
+
 </body>
 </html>
