@@ -1,15 +1,15 @@
 body {
-    background-image: url(../img/blur-bg.png);
+    background-image: url(../img/mokele-general-bg.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
 #login-page {
-    height: 70vh;
-    width: 50vw;
+    height: 80vh;
+    width: 60vw;
     padding: 0;
-    padding-left: 25vw;
+    padding-left: 30vw;
     overflow: hidden;
 }
 
@@ -39,9 +39,8 @@ body {
     z-index: 30;
 }
 
-
 #login-titulo h1 {
-    max-width: 20vw;
+    max-width: 30vw;
     margin-top: auto;
     font-size: 2.5rem;
     font-weight: bold;
@@ -88,7 +87,7 @@ body {
 }
 
 #login-conteudo header {
-    padding-top: 40px;
+    padding: 10px 0;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -102,19 +101,66 @@ body {
     height: 180px;
 }
 
-.input-container{
+.input-container {
     position: relative;
+    padding: 0;
 }
 
-.input-icon{
+#container-senha input {
+    margin-bottom: 0;
+}
+
+.input-icon {
     position: absolute;
     top: 50%;
-    left: 87%;
+    left: 90%;
     transform: translateY(-50%);
 }
 
-#senha-olho{
+#senha-olho {
     cursor: pointer;
+}
+
+#esq-senha {
+    margin-top: 20px;
+}
+
+#btn-entrar {
+    background-color: var(--cor-primaria);
+    color: white;
+    transition: 0.3s;
+}
+
+#btn-entrar:hover {
+    background-color: var(--cor-primaria-clara);
+}
+
+a {
+    text-decoration: none;
+    color: var(--cor-link);
+    display: inline-block;
+    padding-bottom: 0px;
+    margin-bottom: -4px;
+    position: relative;
+}
+
+main a:hover {
+    text-decoration: none;
+}
+
+a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--cor-link);
+    transition: 0.3s;
+}
+
+a:hover::after {
+    width: 100%;
 }
 
 /* animação */
