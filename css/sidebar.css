@@ -25,7 +25,7 @@ nav {
 }
 
 .cabeca-do-menu {
-    background-color: #f3a853;
+    background-color: var(--cor-primaria);
     display: flex;
     align-items: center;
     justify-content: start;
@@ -74,7 +74,7 @@ nav {
     background-color: rgba(189, 159, 120, 0.45);
     backdrop-filter: blur(5px);
     padding-bottom: 20px;
-    box-shadow: 3px 0 0 #f3a853;
+    box-shadow: 3px 0 0 var(--cor-primaria);
     overflow: hidden;
     overflow-y: auto;
     position: fixed;
@@ -148,7 +148,7 @@ ul li.item-menu {
 }
 
 ul li.item-menu:hover {
-    background-color: #f3a853;
+    background-color: var(--cor-primaria);
 }
 
 ul li.item-menu:hover a,
