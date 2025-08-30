@@ -1,0 +1,105 @@
+@import "variaveis.css";
+
+#main-inventario {
+    flex-direction: column;
+    width: 90%;
+    padding: 0;
+    justify-content: start;
+}
+
+#topo-pagina {
+    background-color: var(--cor-primaria);
+    color: white;
+
+    width: 100%;
+
+    padding: 10px;
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+}
+
+#container-top {
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#form-busca-itens {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+#form-busca-itens input {
+    width: 80%;
+    margin: 0;
+}
+
+#form-busca-itens button {
+    width: 20%;
+}
+
+#cadastro_relatorio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+.tabela {
+    overflow-y: scroll;
+    width: 95%;
+}
+
+.tabela td,
+th {
+    text-align: center;
+}
+
+.tabela tr:nth-child(even) {
+    background-color: #0001;
+}
+
+.tabela thead {
+    border-bottom: 2px solid #dfdfdf;
+}
+
+.botao-acoes {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: row;
+}
+
+.acoes form {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.botao-acoes:hover {
+    background-color: inherit;
+}
+
+.botao-acoes .deletar {
+    color: var(--atencao);
+}
