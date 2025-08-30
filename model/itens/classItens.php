@@ -23,7 +23,7 @@ class Item
         string $validade,
         int $id_fornecedor,
         float $val_unitario,
-        string $unidade_medida
+        string $unidade_medida,
     ) {
         $this->id_item = $id_item;
         $this->nome_itens = $nome_itens;
@@ -36,7 +36,7 @@ class Item
         $this->unidade_medida = $unidade_medida;
     }
 
-    public function __toString(): string
+    public function getNomeItem(): string
     {
         return (string) $this->nome_itens;
     }
@@ -75,7 +75,8 @@ class Item
     {
         return $this->unidade_medida;
     }
-    public function getIdItem(): int{
+    public function getIdItem(): int
+    {
         return $this->id_item;
     }
 }
