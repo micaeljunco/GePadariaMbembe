@@ -34,7 +34,7 @@ if (
             </h1>
         </header>
 
-        <section id="sysStatus">
+        <!--<section id="sysStatus">
             <h2>Status do Sistema</h2>
             <div id="ctnrStatus">
 
@@ -70,35 +70,32 @@ if (
 
             </div>
 
-        </section>
+            </section>-->
 
         <section id="acsRapido">
             <h2>Acesso Rápido</h2>
             <div id="ctnrAcsRap">
                 <div class="itemMenu" id="itemMenuPDV">
-                    <span class="material-symbols-outlined">
-                        shopping_cart
-                    </span>
-                    <h3 class="tituloItemMenu">Painel de Vendas</h3>
+                    <i class="material-icons md-storefront">
+                    </i>
+                    <h3 class="tituloItemMenu">Ponto de Venda</h3>
                     <p class="descItemMenu">
                         Sistema completo para realizar vendas e integrado a comandas
                     </p>
                 </div>
 
-                <div class="itemMenu" id="itemMenuMoni">
-                    <span class="material-symbols-outlined">
-                        monitoring
-                    </span>
+                <!--<div class="itemMenu" id="itemMenuMoni">
+                    <i class="material-icons md-monitoring">
+                    </i>
                     <h3 class="tituloItemMenu">Monitoramento</h3>
                     <p class="descItemMenu">
                         Tenha uma visão sobre a padaria em forma de gráficos
                     </p>
-                </div>
+                </div>-->
 
                 <div class="itemMenu" id="itemMenuHist">
-                    <span class="material-symbols-outlined">
-                        history
-                    </span>
+                    <i class="material-icons md-receipt">
+                    </i>
                     <h3 class="tituloItemMenu">Histórico de Vendas</h3>
                     <p class="descItemMenu">
                         Acompanhe as últimas vendas da padaria
@@ -106,29 +103,35 @@ if (
                 </div>
 
                 <div class="itemMenu" id="itemMenuEsto">
-                    <span class="material-symbols-outlined">
-                        inventory_2
-                    </span>
-                    <h3 class="tituloItemMenu">Estoque</h3>
+                    <i class="material-icons md-inventory_2">
+                    </i>
+                    <h3 class="tituloItemMenu">Inventário</h3>
                     <p class="descItemMenu">
-                        Gerencie o estoque de produtos e insumos da padaria
+                        Gerencie o estoque de produtos e insumos da panificadora
                     </p>
                 </div>
 
                 <div class="itemMenu" id="itemMenuGEusu">
-                    <span class="material-symbols-outlined">
-                        groups
-                    </span>
-                    <h3 class="tituloItemMenu">Gerenciamento de Usuários</h3>
+                    <i class="material-icons md-groups">
+                    </i>
+                    <h3 class="tituloItemMenu">Fornecedores</h3>
                     <p class="descItemMenu">
-                        Adicione, edite ou desative usuários do sistema
+                        Adicione, edite ou delete usuários do sistema
+                    </p>
+                </div>
+
+                <div class="itemMenu" id="itemMenuForn">
+                    <i class="material-icons md-local_shipping">
+                    </i>
+                    <h3 class="tituloItemMenu">Gestão de Usuários</h3>
+                    <p class="descItemMenu">
+                        Adicione, edite ou delete fornecedores
                     </p>
                 </div>
 
                 <div class="itemMenu" id="itemMenuComa">
-                    <span class="material-symbols-outlined">
-                        confirmation_number
-                    </span>
+                    <i class="material-icons md-confirmation_number">
+                    </i>
                     <h3 class="tituloItemMenu">Comandas</h3>
                     <p class="descItemMenu">
                         Sistema de emissão de comandas
@@ -138,7 +141,7 @@ if (
             </div>
         </section>
 
-        <section id="diaInfo">
+        <!-- <section id="diaInfo">
 
             <h2>Dia de Hoje</h2>
 
@@ -147,7 +150,7 @@ if (
                     <h3>Itens Vendidos Hoje</h3>
                     <canvas id="grafVendasHora"></canvas>
                     <p>
-                        Total: <span id="totalVendasHoje">320</span>
+                        Total: <span id="totalVendasHoje">320</i
                     </p>
                 </div>
 
@@ -199,10 +202,30 @@ if (
 
             </div>
 
-        </section>
+        </section>-->
 
     </main>
     <?= include "./partials/footer.html" ?>
+    <script>
+    const divs = [...document.querySelectorAll('#acsRapido .itemMenu')]
+
+    // Coloque os links na mesma ordem das divs
+    const links = [
+      "./pdv.php",          // Ponto de Venda
+      "./hist_vendas.php",  // Histórico de Vendas
+      "./itens.php",        // Inventário
+      "./fornecedores.php", // Fornecedores
+      "./ususarios.php",    // Gestão de Usuários
+      "./comandas.php"      // Comandas
+    ]
+
+    divs.forEach((div, index) => {
+      div.addEventListener('click', () => {
+        window.location.href = links[index]
+      })
+    })
+    </script>
+
 </body>
 
 </html>
