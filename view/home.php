@@ -1,6 +1,15 @@
 <?php
 session_start();
-require_once "../conexao.php";
+
+if (
+    !isset($_SESSION["nome"]) ||
+    !isset($_SESSION["id_usuario"]) ||
+    !isset($_SESSION["id_cargo"])
+) {
+    // Melhor que usar JS, pois o usuario poderia desativá-lo.
+    header("Location: ./");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -10,7 +19,6 @@ require_once "../conexao.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/padrao.css">
     <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <title>Home</title>
 </head>
 
