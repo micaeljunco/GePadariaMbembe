@@ -27,9 +27,9 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
     <title>Painel de Vendas</title>
     <!-- link do Bootstrap -->
     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/pdv.css">
     <!-- link do CSS -->
     <link rel="stylesheet" href="../css/padrao.css">
+    <link rel="stylesheet" href="../css/pdv.css">
 
 </head>
 
@@ -55,8 +55,8 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                 </div>
             </form>
 
-            <div class="itens">
-                <table class="table">
+            <div id="container-table">
+                <table class="table" id="tabela-itens">
                     <thead>
                         <th>Nome</th>
                         <th>Quantidade</th>
@@ -93,12 +93,11 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                             </td></tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Nenhum item no carrinho</p>
+                        <td colspan="4">Nenhum item no carrinho</td>
                     <?php endif; ?>
 
                 </table>
             </div>
-
         </div>
 
         <div class="contabilizarVendas">
@@ -108,31 +107,26 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
             </div>
 
             <div class="infoCaixa">
-
-                <div class="info">
-                    <h4 id="dataHoraP"></h4>
-
-                </div>
-
-
-                <div class="logo">
-                    <img src="../img/icon.png" alt="Mokele">
-                </div>
+                <h4 id="dataHoraP"></h4>
+                <img src="../img/icon.png" class="logo" alt="Mokele">
             </div>
-            <div class="finalizarVenda">
+
+            <div id="infoFinal">
+                <p id="valorTotal">
+                    <span id="currency">Total:</span>
+                    <span id="total">R$
+                        <?= number_format($_SESSION["total"], 2, ",", ".") ?>
+                    </span>
+                </p>
+            </div>
+
+            <div id="finalizarVenda">
                 <form action="pdv.php" method="post">
                     <input type="hidden" name="limpar">
                     <button type="submit" class="btn btn-outline-danger">Limpar</button>
                 </form>
                 <button class="btn btn-outline-success">Confirmar</button>
             </div>
-            <footer id="finalizarVenda">
-                <span id="valorTotal">
-                    <?= 'R$ ' .
-                        number_format($_SESSION["total"], 2, ",", ".") ?>
-                </span>
-            </footer>
-
         </div>
     </main>
     <script>
@@ -145,7 +139,7 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
             const min = String(agora.getMinutes()).padStart(2, '0');
             const sec = String(agora.getSeconds()).padStart(2, '0');
 
-            document.getElementById('dataHoraP').textContent = `${dia}/${mes}/${ano} ${hora}:${min}:${sec}`;
+            document.getElementById('dataHoraP').textContent = `${hora}:${min}:${sec} ${dia}/${mes}/${ano}`;
         }
         setInterval(dataHora, 900);
         dataHora();
