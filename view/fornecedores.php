@@ -127,7 +127,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
         <?php else: ?>
             <p>Nenhum Fornecedor encontrado.</p>
         <?php endif; ?>
-        </div>
 
     </main>
     <?= include "./partials/footer.html" ?>
