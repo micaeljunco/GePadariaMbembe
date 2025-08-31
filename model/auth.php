@@ -1,12 +1,13 @@
 <?php
 session_start();
-require_once __DIR__ ."/../conexao.php";
-require_once __DIR__ ."/usuario/email.php";
-require_once __DIR__ ."/usuario/senha.php";
+require_once __DIR__ . "/../conexao.php";
+require_once __DIR__ . "/usuario/email.php";
+require_once __DIR__ . "/usuario/senha.php";
 
-class auth{
-
-    public static function login(Email $email, Senha $senha): bool{
+class auth
+{
+    public static function login(Email $email, Senha $senha): bool
+    {
         global $con;
 
         $sql = "SELECT * FROM usuarios WHERE email = :email";
@@ -16,24 +17,21 @@ class auth{
         $stmt->execute();
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$usuario) {
-            echo "<script>alert('E-mail ou senha Incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+        if (!$usuario) {
+            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
             return false;
         }
 
         if (!$senha->verificarSenha($usuario["senha"])) {
-            echo "<script>alert('E-mail ou senha Incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
             return false;
         }
-        
-        $_SESSION["nome"] = $usuario['nome_usuario'];
-            $_SESSION["id_usuario"] = $usuario['id_usuario'];
-            $_SESSION["id_cargo"] = $usuario['id_cargo'];
 
-            echo "<script>alert('Login realizado com Sucesso!');window.location.href='../view/home.php'</script>";
-            return true;
-        
+        $_SESSION["nome"] = $usuario["nome_usuario"];
+        $_SESSION["id_usuario"] = $usuario["id_usuario"];
+        $_SESSION["id_cargo"] = $usuario["id_cargo"];
 
+        echo "<script>alert('Login realizado com Sucesso!');window.location.href='../view/home.php'</script>";
+        return true;
     }
 }
-?>
