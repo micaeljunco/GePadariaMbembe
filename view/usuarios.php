@@ -1,5 +1,16 @@
 <?php
 session_start();
+
+if (
+    !isset($_SESSION["nome"]) ||
+    !isset($_SESSION["id_usuario"]) ||
+    !isset($_SESSION["id_cargo"])
+) {
+    // Melhor que usar JS, pois o usuario poderia desativá-lo.
+    header("Location: ./");
+    exit();
+}
+
 require_once __DIR__ . "/../controller/usuarios/controllerUsuario.php";
 
 $usuarios = pesquisar_usuario();

@@ -3,6 +3,16 @@ require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
 session_start();
 
+if (
+    !isset($_SESSION["nome"]) ||
+    !isset($_SESSION["id_usuario"]) ||
+    !isset($_SESSION["id_cargo"])
+) {
+    // Melhor que usar JS, pois o usuario poderia desativá-lo.
+    header("Location: ./");
+    exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $fornecedores = busca_fornecedores();
 } else {
