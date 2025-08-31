@@ -53,10 +53,9 @@ $cargosMapa = [
             <dialog class="popupContainer" id="criarPopup">
                 <div class="nomePopup">
                     <h2>Cadastro de Usuarios</h2>
+                    <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('criarPopup').close()">
                 </div>
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('criarPopup').close()">
 
-                <div class="popup">
                     <form action="../controller/usuarios/criarUsuario.php" method="POST">
                         <input type="text" name="nome" placeholder="Nome" class="form-control">
                         <input type="text" name="senha" placeholder="Senha" class="form-control">
@@ -73,8 +72,6 @@ $cargosMapa = [
                             </select>
                             <button type="submit" class="btn btn-outline-warning">Salvar</button>
                     </form>
-
-                </div>
             </dialog>
 
             </div>
