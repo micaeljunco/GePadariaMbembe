@@ -67,9 +67,18 @@ main input::placeholder {
 
 form label {
     text-align: left;
-    font-weight: lighter;
+    font-weight: 400;
     width: 100%;
     margin-bottom: 10px;
+}
+
+form select {
+    margin-bottom: 10px;
+}
+
+select > option[disabled] {
+    color: #888;
+    font-style: italic;
 }
 
 main a {
@@ -140,44 +149,72 @@ h2 {
 }
 
 /* CSS dos POPUPS */
-.popupContainer,
-dialog {
+
+.popupContainer {
     position: absolute;
+    padding: 0;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: none;
-    border-radius: 16px;
+    border-radius: var(--radius);
     height: 60vh;
     width: 85vh;
-    text-align: center;
-    justify-items: center;
+
+    display: none; /* default invisível */
+
+    box-shadow: var(--sombra);
 }
-.popup {
-    width: 90%;
+
+dialog[open].popupContainer {
+    display: flex;
+    justify-content: space-round;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
 }
-.popupContainer img {
-    cursor: pointer;
-    position: absolute;
-    top: 5%;
-    left: 94.5%;
-}
+
+/* header do popup */
 .nomePopup {
     background-color: var(--cor-primaria);
     color: white;
-    border-radius: 16px 16px 0 0;
-    margin-top: 5px;
-    width: 98%;
+    border-radius: var(--radius) var(--radius) 0 0;
+    width: 100%;
     padding: 10px;
-    margin-bottom: 15px;
+    margin: 0;
+    box-sizing: border-box;
+    position: relative;
 }
+
+.nomePopup h2 {
+    text-align: center;
+}
+
+/* botão fechar dentro do header */
+.nomePopup img {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+}
+
+/* form que rola */
+.popupContainer form {
+    overflow-y: auto; /* scroll só aparece quando precisa */
+    min-height: 0;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+/*FOOTER*/
 
 #footerPagina {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    background-color: var(--cor-primaria-escura);
+    background-color: var(--cor-primaria);
     color: white;
     display: flex;
     justify-content: space-between;
