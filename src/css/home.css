@@ -1,6 +1,6 @@
 @charset "UTF-8";
 
-#mainHome{
+#mainHome {
     width: 90vw;
     flex-wrap: wrap;
     padding: 1.5vw;
@@ -12,7 +12,7 @@
 /* CONFIGURAÇÃO DO HEADER */
 /* ---------------------- */
 
-#mainHome>#headerHome{
+#mainHome > #headerHome {
     background-color: var(--cor-primaria);
     color: white;
     padding: 1em;
@@ -23,7 +23,7 @@
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
-#headerHome h1{
+#headerHome h1 {
     margin: 0 auto;
     text-align: center;
 }
@@ -34,23 +34,33 @@
 
 #statusComandas p,
 #statusEstoque p,
-#statusPDV p{
+#statusPDV p {
     text-align: center;
 }
 
-#ctnrStatus, #ctnrAcsRap, #ctnrDiaInfo{
+#ctnrStatus,
+#ctnrAcsRap,
+#ctnrDiaInfo {
     padding: 20px 1.5vw;
     background-color: var(--cor-fundo-secundario);
     border-radius: var(--radius);
     box-shadow: inset var(--sombra);
 }
 
-#sysStatus h2, #acsRapido h2, #diaInfo h2{
+#ctnrAcsRap {
+    box-shadow: none;
+    background-color: white;
+}
+
+#sysStatus h2,
+#acsRapido h2,
+#diaInfo h2 {
     margin: 30px auto 30px auto;
     color: var(--cor-primaria);
 }
 
-#sysStatus h3, #diaInfo h3{
+#sysStatus h3,
+#diaInfo h3 {
     text-align: center;
     color: var(--cor-secundaria);
     margin-bottom: 10px;
@@ -60,7 +70,7 @@
 /* CONFIGURAÇÃO DO STATUS DO SISTEMA */
 /* --------------------------------- */
 
-#sysStatus{
+#sysStatus {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -68,25 +78,25 @@
 
 #statusComandas,
 #statusEstoque,
-#statusPDV{
+#statusPDV {
     width: 28vw;
 }
 
-#statusEstoque P{
+#statusEstoque P {
     color: var(--atencao);
     font-weight: bold;
 }
 
-#statusPDV .idPDV{
+#statusPDV .idPDV {
     font-weight: bold;
 }
 
-#statusPDV .statusAtivo{
+#statusPDV .statusAtivo {
     color: var(--ativo);
     font-weight: bold;
 }
 
-#statusPDV .atvPDV{
+#statusPDV .atvPDV {
     font-weight: bold;
 }
 
@@ -99,13 +109,13 @@
 /* CONFIGURAÇÃO DO ACESSO RAPIDO */
 /* ----------------------------- */
 
-#acsRapido{
+#acsRapido {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-#ctnrAcsRap{
+#ctnrAcsRap {
     padding: 1vw;
     display: flex;
     flex-wrap: wrap;
@@ -121,22 +131,22 @@
     text-align: center;
 }
 
-.itemMenu:hover{
-    box-shadow: var(--sombra);
-    transition: .2s ease;
+.itemMenu:hover {
+    box-shadow: 0px 0px 20px 5px #96734580;
+    transition: 0.3s ease;
 }
 
 /* --------------------------- */
 /* CONFIGURAÇÃO DO DIA DE HOJE */
 /* --------------------------- */
 
-#diaInfo{
+#diaInfo {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-#ctnrDiaInfo{
+#ctnrDiaInfo {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -144,13 +154,14 @@
 
 #vendHoje,
 #topProdutos,
-#movFaixaHora{
+#movFaixaHora {
     width: 28vw;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#totalVendasHoje, #horaPico{
+#totalVendasHoje,
+#horaPico {
     font-weight: bold;
 }
