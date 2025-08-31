@@ -27,11 +27,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fornecedores</title>
     <!-- Link do Bootstrap -->
-    <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
     <!-- Link do CSS -->
-    <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/ListaPadrao.css">
+    <link rel="stylesheet" href="../src/css/padrao.css">
+    <link rel="stylesheet" href="../src/css/listaPadrao.css">
 
     <script src="../src/js/fornecedores.js"></script>
 </head>

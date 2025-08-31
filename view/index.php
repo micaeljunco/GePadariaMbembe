@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <!-- link do bootstrap -->
-    <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
     <!-- links Css -->
-    <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/login.css">
+    <link rel="stylesheet" href="../src/css/padrao.css">
+    <link rel="stylesheet" href="../src/css/login.css">
 </head>
 <body>
     <main id="login-page">
@@ -24,7 +24,7 @@
         <div id="login-conteudo">
             <header>
                 <h1>Login</h1>
-                <img src="../img/icon.png" alt="logoMokele">
+                <img src="../src/img/icon.png" alt="logoMokele">
             </header>
 
 

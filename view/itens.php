@@ -29,10 +29,10 @@ $fornecedores = consulta_fornecedores();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventário</title>
-    <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
-    <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/itens.css">
+    <link rel="stylesheet" href="../src/css/padrao.css">
+    <link rel="stylesheet" href="../src/css/itens.css">
 </head>
 <body>
     <?= include "./partials/sidebar.html" ?>

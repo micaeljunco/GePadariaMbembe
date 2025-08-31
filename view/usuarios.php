@@ -29,12 +29,12 @@ $cargosMapa = [
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Usuarios</title>
     <!-- Link do Bootstrap -->
-     <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
+     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
 
     <!-- Link do CSS -->
-    <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/usuarios.css">
-    <link rel="stylesheet" href="../css/listaPadrao.css">
+    <link rel="stylesheet" href="../src/css/padrao.css">
+    <link rel="stylesheet" href="../src/css/usuarios.css">
+    <link rel="stylesheet" href="../src/css/listaPadrao.css">
 
 </head>
 <body>

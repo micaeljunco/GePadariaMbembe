@@ -26,10 +26,10 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Vendas</title>
     <!-- link do Bootstrap -->
-    <link rel="stylesheet" href="../bootstrap-5.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <!-- link do CSS -->
-    <link rel="stylesheet" href="../css/padrao.css">
-    <link rel="stylesheet" href="../css/pdv.css">
+    <link rel="stylesheet" href="../src/css/padrao.css">
+    <link rel="stylesheet" href="../src/css/pdv.css">
 
 </head>
 
@@ -108,7 +108,7 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
 
             <div class="infoCaixa">
                 <h4 id="dataHoraP"></h4>
-                <img src="../img/icon.png" class="logo" alt="Mokele">
+                <img src="../src/img/icon.png" class="logo" alt="Mokele">
             </div>
 
             <div id="infoFinal">
