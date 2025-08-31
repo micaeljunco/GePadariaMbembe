@@ -2,10 +2,11 @@ main.container {
     display: flex;
     flex-direction: column;
     justify-content: start;
+    padding: 0;
 }
 .nomePag {
     background-color: var(--cor-primaria);
-    width: 95%;
+    width: 100%;
     height: 80px;
     color: white;
     text-align: center;
@@ -15,9 +16,10 @@ main.container {
     margin-bottom: 30px;
 }
 .tabela {
-    overflow-y: scroll;
+    overflow-y: auto;
     width: 95%;
     height: 100%;
+    padding: 20px;
 }
 .interacao {
     display: flex;
