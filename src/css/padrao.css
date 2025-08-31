@@ -4,7 +4,7 @@
 @import url("roboto-mono.css");
 
 @import url("sidebar.css");
-@import url("../src/node_modules/@material-icons/font/css/outline.css");
+@import url("../../node_modules/@material-icons/font/css/outline.css");
 
 * {
     margin: 0;
