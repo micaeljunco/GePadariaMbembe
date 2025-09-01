@@ -191,7 +191,7 @@ dialog[open].popupContainer {
 }
 
 /* botão fechar dentro do header */
-.nomePopup img {
+.nomePopup i {
     cursor: pointer;
     position: absolute;
     top: 50%;
@@ -235,4 +235,40 @@ dialog[open].popupContainer {
 #dataAtual {
     font-family: "Roboto Mono", monospace;
     font-weight: bold;
+}
+
+#finalizarCompra {
+    height: 70vh;
+}
+
+#metodosPag {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
+.metodos {
+    font-size: 1.1em;
+    width: 100%;
+    border-radius: var(--radius);
+    gap: 20px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1;
+    padding: 10px;
+}
+
+.metodos:hover {
+    outline: 1px solid;
+    outline-color: var(--cor-primaria);
+}
+
+.metodos:active {
+    background-color: var(--cor-primaria);
+    color: white;
 }
