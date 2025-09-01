@@ -3,7 +3,7 @@ main form{
     justify-content: center;
 }
 .form-control{
-    width: 40%;
+    width: 50%;
     margin: 0;
 }
 .form-control + .form-control, .form-control + .btn{
@@ -12,4 +12,10 @@ main form{
 .interacao{
     width: 100%;
     justify-content: space-between;
+}
+#form-paia{
+    width: 50%;
+}
+#form-paia .btn{
+    width: 200px;
 }
