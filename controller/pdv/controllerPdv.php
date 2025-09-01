@@ -2,6 +2,8 @@
 require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../conexao.php";
 session_start();
+removerItem();
+recalcular_total();
 // adicionar_item(); // ← ESSENCIAL
 function adicionar_item()
 {
@@ -45,7 +47,17 @@ function removerItem()
         exit;
     }
 }
+function editarProduto($id_itens, $nome_item);
 
+function recalcular_total() {
+    $total = 0.0;
+    if (isset($_SESSION['itens'])) {
+        foreach ($_SESSION['itens'] as $item) {
+            $total += $item['val_unitario'] * $item['quantidade'];
+        }
+    }
+    $_SESSION['total'] = $total;
+}
 
 function atualizar_total($val_uni, $quant): void
 {
@@ -54,3 +66,4 @@ function atualizar_total($val_uni, $quant): void
     $total += $subtotal;
     $_SESSION['total'] = $total;
 }
+
