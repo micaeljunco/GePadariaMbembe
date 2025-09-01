@@ -10,7 +10,7 @@ if (
     header("Location: ./");
     exit();
 }
-
+    
 require_once __DIR__ . "/../controller/pdv/controllerPdv.php";
 if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
     $_SESSION["itens"] = [];
@@ -45,7 +45,7 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
 
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
-
+                    <!-- <label for="item"><i class="material-icons md-barcode"></i></label> -->
                     <input type="text" name="item" id="item" placeholder="Pesquisar Produto" class="form-control">
                     <input type="number" name="quantidade" id="quantidade" min="1" placeholder="Quantidade"
                         class="form-control">
@@ -60,6 +60,7 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                     <thead>
                         <th>Nome</th>
                         <th>Quantidade</th>
+                        <th>Valor Unitário</th>
                         <th>Preço</th>
                         <th>Ações</th>
                     </thead>
@@ -75,12 +76,9 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                             <td><?= htmlspecialchars(
                                 $item["quantidade"],
                             ) ?></td>
-                            <td>R$<span class="subtotal"> <?= number_format(
-                                $item["val_unitario"] * $item["quantidade"],
-                                2,
-                                ",",
-                                ".",
-                            ) ?></span></td>
+                            <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"]
+,2,",",".",) ?></span></td>
+                            <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"] * $item["quantidade"],2,",",".",) ?></span></td>
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
@@ -135,11 +133,8 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
             const ano = agora.getFullYear();
             const mes = String(agora.getMonth() + 1).padStart(2, '0');
             const dia = String(agora.getDate()).padStart(2, '0');
-            const hora = String(agora.getHours()).padStart(2, '0');
-            const min = String(agora.getMinutes()).padStart(2, '0');
-            const sec = String(agora.getSeconds()).padStart(2, '0');
 
-            document.getElementById('dataHoraP').textContent = `${hora}:${min}:${sec} ${dia}/${mes}/${ano}`;
+            document.getElementById('dataHoraP').textContent = `${dia}/${mes}/${ano}`;
         }
         setInterval(dataHora, 900);
         dataHora();
