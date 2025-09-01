@@ -104,10 +104,12 @@ body {
 .input-container {
     position: relative;
     padding: 0;
+    width: 100%;
 }
 
 #container-senha input {
     margin-bottom: 0;
+    flex: 1;
 }
 
 .input-icon {
