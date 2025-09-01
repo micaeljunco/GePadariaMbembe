@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+if (
+    !isset($_SESSION["nome"]) ||
+    !isset($_SESSION["id_usuario"]) ||
+    !isset($_SESSION["id_cargo"])
+) {
+    // Melhor que usar JS, pois o usuario poderia desativá-lo.
+    header("Location: ./");
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -11,21 +25,32 @@
     <link rel="stylesheet" href="../src/css/comandas.css">
 </head>
 <body>
-    <?php require_once __DIR__ . "/usuarios.php"; ?>
     <?= include "./partials/sidebar.html" ?>
     <main class="container">
-        <div class="nomePag">
+        <div class="nomePag m-0">
             <h1>Emissão de Comandas</h1>
         </div>
+
         <div class="interacao d-flex">
             <form action="comandas.php" class="d-flex">
                 <input type="text" class="form-control" placeholder="Digite o nome ou ID do produto">
                 <input type="text" class="form-control" placeholder="Digite a quantidade do produto">
                 <button type="submit" class="btn btn-outline-warning">adicionar</button>
             </form>
-            <form action="../controller/comandas/emitirComandas.php">
+            <form action="../controller/comandas/emitirComandas.php" class="d-flex justify-content-end" id="form-paia">
                 <button class="btn btn-outline-warning">Emitir Comanda</button>
             </form>
+        </div>
+
+        <div class="w-100"> 
+            <table class="table-hover table">
+                <thead>
+                    <th>Nome Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th>Ações</th>
+                </thead>
+            </table>
         </div>
 
     </main>

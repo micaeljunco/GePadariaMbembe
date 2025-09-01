@@ -58,22 +58,45 @@
     padding: 0;
 }
 
-.tabela {
+#ctnr-tabela {
+    width: 100%;
+    padding: 20px;
     overflow-y: scroll;
-    width: 95%;
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .tabela td,
 th {
     text-align: center;
+    padding: 8px 12px;
 }
 
 .tabela tr:nth-child(even) {
-    background-color: #0001;
+    background-color: rgb(242, 242, 242);
 }
 
 .tabela thead {
-    border-bottom: 2px solid #dfdfdf;
+    font-weight: bold;
+    color: white;
+    background-color: var(--cor-primaria);
+}
+
+.tabela th {
+    padding: 5px;
+    border: none;
+    margin: 0;
+}
+
+.tabela thead th:first-child {
+    border-top-left-radius: var(--radius);
+}
+
+.tabela thead th:last-child {
+    border-top-right-radius: var(--radius);
 }
 
 .botao-acoes {

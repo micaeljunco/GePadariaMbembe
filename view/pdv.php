@@ -84,11 +84,8 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                                     <div class="editar">
                                         <i class="material-icons md-edit"></i>
                                     </div>
-                                    <div class="excluir">
-                                    <a href="../controller/pdv/controllerPdv.php?remover=<?= $index ?>"><i class="material-icons md-delete"></i></a>
-                                    </div>
-                                </div>
-                            </td></tr>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <td colspan="4">Nenhum item no carrinho</td>
@@ -109,9 +106,9 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                 <img src="../src/img/icon.png" class="logo" alt="Mokele">
             </div>
 
-            <div id="infoFinal">
+            <div class="infoFinal">
                 <p id="valorTotal">
-                    <span id="currency">Total:</span>
+                    <span class="currency">Total:</span>
                     <span id="total">R$
                         <?= number_format($_SESSION["total"], 2, ",", ".") ?>
                     </span>
@@ -123,12 +120,79 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                     <input type="hidden" name="limpar">
                     <button type="submit" class="btn btn-outline-danger">Limpar</button>
                 </form>
-                <button class="btn btn-outline-success">Confirmar</button>
+                <button class="btn btn-outline-success"
+                    onclick="document.getElementById('finalizarCompra').showModal()">Finalizar</button>
             </div>
         </div>
     </main>
+    <dialog id="finalizarCompra" class="popupContainer">
+        <div class="nomePopup">
+            <h2>Finalizar Venda</h2>
+            <i class="material-icons md-close" onclick="document.getElementById('finalizarCompra').close()"></i>
+        </div>
+        <div id="metodosPag">
+            <div class="metodos" onclick="document.getElementById('metodoDinheiro').showModal(); document.getElementById('finalizarCompra').close()">
+                <img src="../src/img/dinheiro.png" alt="" width="50px">
+                <span>Dinheiro</span>
+            </div>
+            <div class="metodos" onclick="document.getElementById('metodoPIX').showModal(); document.getElementById('finalizarCompra').close()">
+                <img src="../src/img/pix.png" alt="" width="50px">
+                <span>PIX</span>
+            </div>
+            <div class="metodos" onclick="document.getElementById('').showModal(); document.getElementById('finalizarCompra').close()">
+                <img src="../src/img/cartao.png" alt="" width="50px">
+                <span>Cartão</span>
+            </div>
+            <div class="metodos" onclick="document.getElementById('').showModal(); document.getElementById('finalizarCompra').close()">
+                <img src="../src/img/boleto.png" alt="" width="50px">
+                <span>Boleto</span>
+            </div>
+        </div>
+
+        <div class="infoFinal">
+                <p id="valorTotal">
+                    <span class="currency">Total:</span>
+                    <span id="total">R$
+                        <?= number_format($_SESSION["total"], 2, ",", ".") ?>
+                    </span>
+                </p>
+                <p id="troco">
+                    <span class="currency">Troco:</span>
+                    <span id="total">R$
+                        <?= number_format($_SESSION["total"], 2, ",", ".") ?>
+                    </span>
+                </p>
+            </div>
+    </dialog>
+
+    <dialog id="metodoDinheiro" class="popupContainer">
+        <div class="nomePopup">
+            <h2>Método: Dinheiro</h2>
+            <i class="material-icons md-close" onclick="document.getElementById('metodoDinheiro').close()"></i>
+        </div>
+        <form class="form-finalizarPag">
+            <div class="botoes-compra">
+                <button type="submit" class="btn btn-outline-success">Continuar</button>
+                <button type="button" class="btn btn-outline-danger">Cancelar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="metodoPIX" class="popupContainer">
+        <div class="nomePopup">
+            <h2>Método: PIX</h2>
+            <i class="material-icons md-close" onclick="document.getElementById('metodoPIX').close()"></i>
+        </div>
+        <form class="form-finalizarPag">
+            <div class="botoes-compra">
+            <button type="submit" class="btn btn-outline-success">Continuar</button>
+            <button type="button" class="btn btn-outline-danger">Cancelar</button>
+            </div>
+        </form>
+    </dialog>
+
     <script>
-        function dataHora(){
+        function dataHora() {
             const agora = new Date();
             const ano = agora.getFullYear();
             const mes = String(agora.getMonth() + 1).padStart(2, '0');

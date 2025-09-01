@@ -136,20 +136,37 @@ th {
     margin: 0;
 }
 
-#infoFinal {
+.infoFinal {
     width: 100%;
     display: flex;
     justify-content: center;
+    gap: 20px;
 }
 
-#infoFinal {
+.infoFinal {
     font-weight: bold;
 }
 
-#infoFinal #currency {
+.infoFinal .currency {
     font-size: 1em;
 }
 
-#infoFinal #total {
+.infoFinal #total {
     font-size: 2em;
+}
+
+.form-finalizarPag {
+    width: 100%;
+}
+
+.botoes-compra {
+    width: 100%;
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.botoes-compra button {
+    flex: 1;
 }
