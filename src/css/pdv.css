@@ -92,11 +92,11 @@ th {
 }
 
 .topoPag-conta {
-    background-color: #eeee;
-    color: var(--cor-primaria);
+    background-color: var(--cor-primaria);
+    color: #eeeeee;
     width: 100%;
     text-align: center;
-    padding: 10px;
+    padding: 18px;
     border-radius: var(--radius) var(--radius) 0 0;
 }
 
@@ -107,6 +107,8 @@ th {
 
 .infoCaixa {
     background-color: #eeee;
+    margin-left: 10px; 
+    margin-right: 10px;
 }
 
 .infoCaixa h4 {
