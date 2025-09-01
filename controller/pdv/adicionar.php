@@ -5,7 +5,5 @@ if($_SERVER["REQUEST_METHOD"] !== 'POST') {
     header("location: ../../view/pdv.php");
  }
  
- adicionar_item();
- valor_total();
- removerItem();
+adicionar_item();
 ?>
