@@ -13,16 +13,17 @@ function verificar_acesso($id): void {
     }
 }
 
-function verificar_permissao($id): bool{
-    if($id == "1"){
+function verificar_permissao($id, string $pagina = null): bool {
+    if ($id == 1) { // Admin
         return true;
     }
 
     global $permissoes;
-    $nomePag = basename($_SERVER["PHP_SELF"]);
+    $pagina = $pagina ?? basename($_SERVER["PHP_SELF"]);
 
-    return in_array($nomePag, $permissoes[$id]);
+    return isset($permissoes[$id]) && in_array($pagina, $permissoes[$id], true);
 }
+
 
 
 function verificar_logado(): void{
