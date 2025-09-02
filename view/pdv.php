@@ -10,12 +10,28 @@ if (
     header("Location: ./");
     exit();
 }
-    
+
 require_once __DIR__ . "/../controller/pdv/controllerPdv.php";
-if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
+if (!isset($_SESSION["itens"])) {
     $_SESSION["itens"] = [];
+    $_SESSION['metodos_pagamento'] = [];
     $_SESSION["total"] = 0.0;
 }
+
+if (isset($_GET['finalizar'])) {
+    if (!isset($_SESSION["subtotal"])):
+        $_SESSION["subtotal"] = $_SESSION["total"];
+    endif;
+}
+
+if (!isset($_SESSION["troco"])) {
+    $_SESSION["troco"] = 0.0;
+}
+
+if (!isset($_SESSION['metodos_pagamento'])) {
+    $_SESSION['metodos_pagamento'] = [];
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -71,26 +87,33 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
                         <?php foreach (
                             $_SESSION["itens"]
                             as $index => $item
-                        ): ?><tr>
-                            <td><?= htmlspecialchars($item["nome_item"]) ?></td>
-                            <td><?= htmlspecialchars(
-                                $item["quantidade"],
-                            ) ?></td>
-                            <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"]
-,2,",",".",) ?></span></td>
-                            <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"] * $item["quantidade"],2,",",".",) ?></span></td>
-                            <td>
-                                <div class="acoes">
-                                    <div class="editar">
-                                        <i class="material-icons md-edit"></i>
-                                    </div>
+                        ): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($item["nome_item"]) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $item["quantidade"],
+                                ) ?></td>
+                                <td>R$<span class="subtotal"> <?= number_format(
+                                    $item["val_unitario"]
+                                    ,
+                                    2,
+                                    ",",
+                                    ".",
+                                ) ?></span></td>
+                                <td>R$<span class="subtotal">
+                                        <?= number_format($item["val_unitario"] * $item["quantidade"], 2, ",", ".", ) ?></span>
+                                </td>
+                                <td>
+                                    <div class="acoes">
+                                        <div class="editar">
+                                            <i class="material-icons md-edit"></i>
+                                        </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <td colspan="4">Nenhum item no carrinho</td>
+                        <td colspan="5">Nenhum item no carrinho</td>
                     <?php endif; ?>
-
                 </table>
             </div>
         </div>
@@ -116,77 +139,161 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
             </div>
 
             <div id="finalizarVenda">
-                <form action="pdv.php" method="post">
-                    <input type="hidden" name="limpar">
-                    <button type="submit" class="btn btn-outline-danger">Limpar</button>
+                <form action="../controller/pdv/cancelarVenda.php" method="post" onsubmit="return confirm('Você tem certeza de que quer cancelar essa venda?')">
+                    <input type="hidden" name="limpar" value="1">
+                    <button type="submit" class="btn btn-outline-danger">Cancelar</button>
                 </form>
-                <button class="btn btn-outline-success"
-                    onclick="document.getElementById('finalizarCompra').showModal()">Finalizar</button>
+                <form action="./pdv.php">
+                    <input type="hidden" name="finalizar" value="1">
+                    <button class="btn btn-outline-success" type="submit">Finalizar</button>
+                </form>
             </div>
         </div>
     </main>
+
     <dialog id="finalizarCompra" class="popupContainer">
         <div class="nomePopup">
             <h2>Finalizar Venda</h2>
             <i class="material-icons md-close" onclick="document.getElementById('finalizarCompra').close()"></i>
         </div>
         <div id="metodosPag">
-            <div class="metodos" onclick="document.getElementById('metodoDinheiro').showModal(); document.getElementById('finalizarCompra').close()">
+            <h4>Selecione um método: </h4>
+            <div class="metodos"
+                onclick="document.getElementById('metodoDinheiro').showModal(); document.getElementById('finalizarCompra').close()">
                 <img src="../src/img/dinheiro.png" alt="" width="50px">
                 <span>Dinheiro</span>
             </div>
-            <div class="metodos" onclick="document.getElementById('metodoPIX').showModal(); document.getElementById('finalizarCompra').close()">
-                <img src="../src/img/pix.png" alt="" width="50px">
-                <span>PIX</span>
-            </div>
-            <div class="metodos" onclick="document.getElementById('').showModal(); document.getElementById('finalizarCompra').close()">
+            <div class="metodos"
+                onclick="document.getElementById('metodoCartCred').showModal(); document.getElementById('finalizarCompra').close()">
                 <img src="../src/img/cartao.png" alt="" width="50px">
-                <span>Cartão</span>
+                <span>Cartão de Crétido</span>
             </div>
-            <div class="metodos" onclick="document.getElementById('').showModal(); document.getElementById('finalizarCompra').close()">
-                <img src="../src/img/boleto.png" alt="" width="50px">
-                <span>Boleto</span>
+            <div class="metodos"
+                onclick="document.getElementById('metodoCartDeb').showModal(); document.getElementById('finalizarCompra').close()">
+                <img src="../src/img/cartao.png" alt="" width="50px">
+                <span>Cartão de Débito</span>
             </div>
+        </div>
+        <div class="infoFinal">
+            <p id="valorTotal">
+                <span class="currency">A pagar:</span>
+                <span id="subtotal">R$
+                    <?= number_format($_SESSION["subtotal"], 2, ",", ".") ?>
+                </span>
+                <span class="currency">Troco:</span>
+                <span id="troco">R$
+                    <?= number_format($_SESSION["troco"], 2, ",", ".") ?>
+                </span>
+            </p>
+        </div>
+        <h4>Métodos de Pagamento Selecionados:</h4>
+        <div id="metodosSelecionados">
+            <?php if (!empty($_SESSION['metodos_pagamento'])): ?>
+                <ul>
+                    <?php foreach ($_SESSION['metodos_pagamento'] as $p): ?>
+                        <li>
+                            <?= htmlspecialchars($p['metodo']) ?> - Valor: R$
+                            <?= number_format($p['valor'], 2, ',', '.') ?>
+                            <?php if (!empty($p['cartao'])): ?>
+                                - Cartão: <?= htmlspecialchars($p['cartao']) ?>
+                            <?php endif; ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Nenhum método de pagamento usado até então.</p>
+            <?php endif; ?>
         </div>
 
         <div class="infoFinal">
-                <p id="valorTotal">
-                    <span class="currency">Total:</span>
-                    <span id="total">R$
-                        <?= number_format($_SESSION["total"], 2, ",", ".") ?>
-                    </span>
-                </p>
-                <p id="troco">
-                    <span class="currency">Troco:</span>
-                    <span id="total">R$
-                        <?= number_format($_SESSION["total"], 2, ",", ".") ?>
-                    </span>
-                </p>
-            </div>
+            <form action="../controller/pdv/finalizarVenda.php" method="post" id="finalizarEmDefinitivo">
+                <button type="submit" class="btn btn-success">Finalizar</button>
+            </form>
+        </div>
     </dialog>
 
     <dialog id="metodoDinheiro" class="popupContainer">
         <div class="nomePopup">
             <h2>Método: Dinheiro</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('metodoDinheiro').close()"></i>
         </div>
-        <form class="form-finalizarPag">
+        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+            <input type="hidden" name="metodo" value="dinheiro">
+            <h2>Valor a pagar</h2>
+            <div class="campo-modal">
+                <label for="campo-dinheiro">R$: </label>
+                <input type="number" name="dinheiro" class="form-control" id="campo-dinheiro" required step="0.01">
+            </div>
             <div class="botoes-compra">
+                <button type="button" class="btn btn-outline-danger"
+                    onclick="document.getElementById('metodoDinheiro').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
                 <button type="submit" class="btn btn-outline-success">Continuar</button>
-                <button type="button" class="btn btn-outline-danger">Cancelar</button>
             </div>
         </form>
     </dialog>
 
-    <dialog id="metodoPIX" class="popupContainer">
+    <dialog id="metodoCartDeb" class="popupContainer metodo-cartao">
         <div class="nomePopup">
-            <h2>Método: PIX</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('metodoPIX').close()"></i>
+            <h2>Método: Cartão de Débito</h2>
         </div>
-        <form class="form-finalizarPag">
+
+        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+            <input type="hidden" name="metodo" value="cartao-debito">
+            <h4>Valor a pagar</h4>
+            <div class="campo-modal">
+                <label for="campo-dinheiro">R$: </label>
+                <input type="number" name="cartao" class="form-control" id="campo-dinheiro" required step="0.01">
+            </div>
+            <hr>
+            <h4>Escolha o cartão de débito</h4>
+            <div class="campo-modal">
+                <label for="cartao_debito">Cartão:</label>
+                <select name="cartao_debito" id="cartao_debito" class="form-select" required>
+                    <option value="" selected disabled>Selecione</option>
+                    <option value="visa_debito">Visa</option>
+                    <option value="mastercard_debito">Mastercard</option>
+                    <option value="elo_debito">Elo</option>
+                    <option value="maestro_debito">Maestro</option>
+                    <option value="banricompras_debito">Banricompras</option>
+                </select>
+            </div>
+
             <div class="botoes-compra">
-            <button type="submit" class="btn btn-outline-success">Continuar</button>
-            <button type="button" class="btn btn-outline-danger">Cancelar</button>
+                <button type="button" class="btn btn-outline-danger"
+                    onclick="document.getElementById('metodoCartDeb').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
+                <button type="submit" class="btn btn-outline-success">Continuar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="metodoCartCred" class="popupContainer metodo-cartao">
+        <div class="nomePopup">
+            <h2>Método: Cartão de Crédito</h2>
+        </div>
+        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+            <input type="hidden" name="metodo" value="cartao-credito">
+            <h4>Valor a pagar</h4>
+            <div class="campo-modal">
+                <label for="campo-dinheiro">R$: </label>
+                <input type="number" name="cartao" class="form-control" id="campo-dinheiro" required step="0.01">
+            </div>
+            <hr>
+            <h4>Escolha o cartão de crédito</h4>
+            <div class="campo-modal">
+                <label for="cartao_debito">Cartão:</label>
+                <select name="cartao_credito" id="cartao_credito" class="form-select" required>
+                    <option value="" selected disabled>Selecione</option>
+                    <option value="visa_credito">Visa</option>
+                    <option value="mastercard_credito">Mastercard</option>
+                    <option value="elo_credito">Elo</option>
+                    <option value="amex_credito">American Express</option>
+                    <option value="hipercard_credito">Hipercard</option>
+                </select>
+            </div>
+
+            <div class="botoes-compra">
+                <button type="button" class="btn btn-outline-danger"
+                    onclick="document.getElementById('metodoCartCred').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
+                <button type="submit" class="btn btn-outline-success">Continuar</button>
             </div>
         </form>
     </dialog>
@@ -204,6 +311,12 @@ if (!isset($_SESSION["itens"]) or isset($_POST["limpar"])) {
         dataHora();
     </script>
     <?= include "./partials/footer.html" ?>
+
+    <?php if (isset($_GET["finalizar"])) : ?>
+    <script>
+        document.getElementById('finalizarCompra').showModal();
+    </script>
+    <?php endif; ?>
 
 </body>
 
