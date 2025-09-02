@@ -47,10 +47,6 @@ function removerItem()
         exit;
     }
 }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
 function recalcular_total() {
     $total = 0.0;
