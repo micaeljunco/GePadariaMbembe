@@ -1,15 +1,8 @@
 <?php
 session_start();
 
-if (
-    !isset($_SESSION["nome"]) ||
-    !isset($_SESSION["id_usuario"]) ||
-    !isset($_SESSION["id_cargo"])
-) {
-    // Melhor que usar JS, pois o usuario poderia desativá-lo.
-    header("Location: ./");
-    exit();
-}
+require_once __DIR__ ."/../controller/permissions/permission.php";
+verificar_logado();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -23,7 +16,7 @@ if (
 </head>
 
 <body>
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
 
     <main id="mainHome">
         <header id="headerHome">
@@ -212,10 +205,10 @@ if (
     // Coloque os links na mesma ordem das divs
     const links = [
       "./pdv.php",          // Ponto de Venda
-      "./hist_vendas.php",  // Histórico de Vendas
+      "./historicoVendas.php",  // Histórico de Vendas
       "./itens.php",        // Inventário
       "./fornecedores.php", // Fornecedores
-      "./ususarios.php",    // Gestão de Usuários
+      "./usuarios.php",    // Gestão de Usuários
       "./comandas.php"      // Comandas
     ]
 

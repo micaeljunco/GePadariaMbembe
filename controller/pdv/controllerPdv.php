@@ -47,7 +47,6 @@ function removerItem()
         exit;
     }
 }
-function editarProduto($id_itens, $nome_item);
 
 function recalcular_total() {
     $total = 0.0;
@@ -67,3 +66,64 @@ function atualizar_total($val_uni, $quant): void
     $_SESSION['total'] = $total;
 }
 
+
+function processa_metodos(): void {
+    // Detectar método
+    $metodo = $_POST['metodo'] ?? null;
+
+    if ($metodo) {
+        $pagamento = ['metodo' => $metodo];
+
+        // Dependendo do método, pegar valor e dados específicos
+        if ($metodo === 'dinheiro') {
+            $pagamento['valor'] = floatval($_POST['dinheiro'] ?? 0);
+        } elseif ($metodo === 'cartao-debito') {
+            $pagamento['valor'] = floatval($_POST['cartao'] ?? 0);
+            $pagamento['cartao'] = $_POST['cartao_debito'] ?? '';
+        } elseif ($metodo === 'cartao-credito') {
+            $pagamento['valor'] = floatval($_POST['cartao'] ?? 0);
+            $pagamento['cartao'] = $_POST['cartao_credito'] ?? '';
+        }
+
+        // Adicionar no array da sessão
+        $_SESSION['metodos_pagamento'][] = $pagamento;
+
+        atualizar_subtotal($pagamento['valor']);
+
+        //redirecionar para evitar reenvio de formulário
+        header("Location: ../../view/pdv.php?finalizar=1");
+        exit;
+    }
+
+}
+
+function atualizar_subtotal($valor) {
+    $subtotal = (float) ($_SESSION['subtotal'] ?? $_SESSION['total']);
+    $subtotal -= $valor;
+
+    $_SESSION['subtotal'] = max($subtotal, 0); // Evita subtotal negativo
+
+    // Se pagou mais que o total, calcula troco
+    $totalPago = 0.0;
+    foreach ($_SESSION['metodos_pagamento'] as $p) {
+        $totalPago += $p['valor'];
+    }
+
+    $totalCompra = $_SESSION['total'];
+    $_SESSION['troco'] = $totalPago > $totalCompra ? $totalPago - $totalCompra : 0.0;
+}
+
+
+function finalizar_compra(): void {
+    limpar_venda();
+}
+
+function limpar_venda() {
+    unset($_SESSION["itens"]);
+    unset($_SESSION["total"]);
+    unset($_SESSION["subtotal"]);
+    unset($_SESSION["troco"]);
+    unset($_SESSION["metodos_pagamento"]);
+    header("Location: ../../view/pdv.php");
+    exit;
+}

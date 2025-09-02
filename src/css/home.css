@@ -55,7 +55,7 @@
 #sysStatus h2,
 #acsRapido h2,
 #diaInfo h2 {
-    margin: 30px auto 30px auto;
+    margin: 0 auto;
     color: var(--cor-primaria);
 }
 
