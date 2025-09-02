@@ -64,3 +64,31 @@ main.container {
     margin-left: 15px;
     color: red;
 }
+
+.botao-acoes {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: row;
+}
+
+.acoes form {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.botao-acoes:hover {
+    background-color: inherit;
+}
+
+.botao-acoes .deletar {
+    color: var(--atencao);
+}
