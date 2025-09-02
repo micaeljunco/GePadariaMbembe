@@ -31,7 +31,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 </head>
 
 <body>
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
     <dialog id="cadastroFornecedores" class="popup">
         <h2>Cadastro de Fornecedores</h2>
         <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST">

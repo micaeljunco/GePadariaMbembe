@@ -16,7 +16,7 @@ verificar_logado();
 </head>
 
 <body>
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
 
     <main id="mainHome">
         <header id="headerHome">
@@ -205,10 +205,10 @@ verificar_logado();
     // Coloque os links na mesma ordem das divs
     const links = [
       "./pdv.php",          // Ponto de Venda
-      "./hist_vendas.php",  // Histórico de Vendas
+      "./historicoVendas.php",  // Histórico de Vendas
       "./itens.php",        // Inventário
       "./fornecedores.php", // Fornecedores
-      "./ususarios.php",    // Gestão de Usuários
+      "./usuarios.php",    // Gestão de Usuários
       "./comandas.php"      // Comandas
     ]
 

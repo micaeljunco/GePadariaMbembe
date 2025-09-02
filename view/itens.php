@@ -30,7 +30,7 @@ $fornecedores = consulta_fornecedores();
 </head>
 
 <body>
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
 
     <main id="main-inventario">
 

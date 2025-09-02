@@ -1,7 +1,9 @@
 <?php
 session_start();
 
-
+require_once __DIR__ ."/../controller/permissions/permission.php";
+verificar_logado();
+verificar_acesso($_SESSION["id_cargo"]);
 
 
 
@@ -103507,7 +103509,7 @@ session_start();
     <link rel="stylesheet" href="../src/css/historicoVendas.css">
 </head>
 <body>
-<?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
     
     <main class="container">
         <div class="nomePag">

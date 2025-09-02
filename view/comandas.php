@@ -22,7 +22,7 @@ verificar_acesso($_SESSION["id_cargo"]);
     <link rel="stylesheet" href="../src/css/comandas.css">
 </head>
 <body>
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
     <main class="container">
         <div class="nomePag m-0">
             <h1>Emissão de Comandas</h1>

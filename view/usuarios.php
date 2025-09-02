@@ -34,7 +34,7 @@ $cargosMapa = [
 </head>
 <body>
 
-    <?= include "./partials/sidebar.html" ?>
+<?= include "./partials/sidebar.php" ?>
 
     <main class="container">
         <div class="nomePag">
