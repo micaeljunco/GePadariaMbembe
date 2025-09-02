@@ -162,11 +162,13 @@ h2 {
     width: 85vh;
 
     display: none; /* default invisível */
+    outline: none;
 
     box-shadow: var(--sombra);
 }
 
 dialog[open].popupContainer {
+    outline: none;
     display: flex;
     justify-content: space-round;
     align-items: center;
