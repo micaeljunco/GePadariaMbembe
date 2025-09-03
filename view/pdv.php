@@ -1,18 +1,18 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
 require_once __DIR__ . "/../controller/pdv/controllerPdv.php";
 if (!isset($_SESSION["itens"])) {
     $_SESSION["itens"] = [];
-    $_SESSION['metodos_pagamento'] = [];
+    $_SESSION["metodos_pagamento"] = [];
     $_SESSION["total"] = 0.0;
 }
 
-if (isset($_GET['finalizar'])) {
+if (isset($_GET["finalizar"])) {
     if (!isset($_SESSION["subtotal"])):
         $_SESSION["subtotal"] = $_SESSION["total"];
     endif;
@@ -22,10 +22,9 @@ if (!isset($_SESSION["troco"])) {
     $_SESSION["troco"] = 0.0;
 }
 
-if (!isset($_SESSION['metodos_pagamento'])) {
-    $_SESSION['metodos_pagamento'] = [];
+if (!isset($_SESSION["metodos_pagamento"])) {
+    $_SESSION["metodos_pagamento"] = [];
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,9 +55,9 @@ if (!isset($_SESSION['metodos_pagamento'])) {
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
                     <!-- <label for="item"><i class="material-icons md-barcode"></i></label> -->
-                    <input type="text" name="item" id="item" placeholder="Pesquisar Produto" class="form-control">
+                    <input type="text" name="item" id="item" placeholder="Pesquisar Produto" class="form-control" required>
                     <input type="number" name="quantidade" id="quantidade" min="1" placeholder="Quantidade"
-                        class="form-control">
+                        class="form-control" required>
 
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
 
@@ -83,19 +82,26 @@ if (!isset($_SESSION['metodos_pagamento'])) {
                             as $index => $item
                         ): ?>
                             <tr>
-                                <td><?= htmlspecialchars($item["nome_item"]) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $item["nome_item"],
+                                ) ?></td>
                                 <td><?= htmlspecialchars(
                                     $item["quantidade"],
                                 ) ?></td>
                                 <td>R$<span class="subtotal"> <?= number_format(
-                                    $item["val_unitario"]
-                                    ,
+                                    $item["val_unitario"],
                                     2,
                                     ",",
                                     ".",
                                 ) ?></span></td>
                                 <td>R$<span class="subtotal">
-                                        <?= number_format($item["val_unitario"] * $item["quantidade"], 2, ",", ".", ) ?></span>
+                                        <?= number_format(
+                                            $item["val_unitario"] *
+                                                $item["quantidade"],
+                                            2,
+                                            ",",
+                                            ".",
+                                        ) ?></span>
                                 </td>
                                 <td>
                                     <div class="acoes">
@@ -182,14 +188,14 @@ if (!isset($_SESSION['metodos_pagamento'])) {
         </div>
         <h4>Métodos de Pagamento Selecionados:</h4>
         <div id="metodosSelecionados">
-            <?php if (!empty($_SESSION['metodos_pagamento'])): ?>
+            <?php if (!empty($_SESSION["metodos_pagamento"])): ?>
                 <ul>
-                    <?php foreach ($_SESSION['metodos_pagamento'] as $p): ?>
+                    <?php foreach ($_SESSION["metodos_pagamento"] as $p): ?>
                         <li>
-                            <?= htmlspecialchars($p['metodo']) ?> - Valor: R$
-                            <?= number_format($p['valor'], 2, ',', '.') ?>
-                            <?php if (!empty($p['cartao'])): ?>
-                                - Cartão: <?= htmlspecialchars($p['cartao']) ?>
+                            <?= htmlspecialchars($p["metodo"]) ?> - Valor: R$
+                            <?= number_format($p["valor"], 2, ",", ".") ?>
+                            <?php if (!empty($p["cartao"])): ?>
+                                - Cartão: <?= htmlspecialchars($p["cartao"]) ?>
                             <?php endif; ?>
                         </li>
                     <?php endforeach; ?>
@@ -306,7 +312,7 @@ if (!isset($_SESSION['metodos_pagamento'])) {
     </script>
     <?= include "./partials/footer.html" ?>
 
-    <?php if (isset($_GET["finalizar"])) : ?>
+    <?php if (isset($_GET["finalizar"])): ?>
     <script>
         document.getElementById('finalizarCompra').showModal();
     </script>
