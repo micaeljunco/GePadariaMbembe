@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
@@ -40,20 +40,20 @@ $fornecedores = consulta_fornecedores();
 
         <div id="container-top">
             <div id="cadastro_relatorio">
-                <button type="button" class="btn btn-outline-secondary">Gerar Relatório</button>
-                <button type="button" id="abrirCadastroItens" class="btn btn-outline-primary"
+                <button type="button" class="btn btn-outline-warning">Gerar Relatório</button>
+                <button type="button" id="abrirCadastroItens" class="btn btn-outline-warning"
                     onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
             </div>
             <form method="get" action="itens.php" id="form-busca-itens">
-                <input type="text" class="form-control" name="busca">
-                <button type="submit" class="btn btn-secondary">Buscar</button>
+                <input type="text" class="form-control" name="busca" placeholder="Buscar Itens no inventario">
+                <button type="submit" class="btn btn-outline-warning">Buscar</button>
             </form>
         </div>
 
         <dialog id="cadastroItens" class="popupContainer">
             <div class="nomePopup">
                 <h2>Cadastrar Item</h2>
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('cadastroItens').close()">
+                <i class="material-icons md-close" onclick="document.getElementById('cadastroItens').close()"></i>
             </div>
             <form action="../controller/itens/cadastrarItens.php" method="POST">
                 <label for="nomeItem" class="form-label">* Nome do Item:</label>
@@ -95,7 +95,7 @@ $fornecedores = consulta_fornecedores();
 
                 <label class="form-label" for="idFornecedor">Fornecedor:</label>
                 <select id="idFornecedor" class="form-select" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
+                    <option value="NULL" selected>Nenhum</option>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"
@@ -129,8 +129,12 @@ $fornecedores = consulta_fornecedores();
                     <?php if (!empty($itens) && gettype($itens) == "array"): ?>
                         <?php foreach ($itens as $item): ?>
                             <tr>
-                                <td><?= htmlspecialchars($item["id_item"]) ?></td>
-                                <td title="<?= htmlspecialchars($item["nome_item"]) ?>">
+                                <td><?= htmlspecialchars(
+                                    $item["id_item"],
+                                ) ?></td>
+                                <td title="<?= htmlspecialchars(
+                                    $item["nome_item"],
+                                ) ?>">
                                     <?php echo mb_strimwidth(
                                         $item["nome_item"],
                                         0,
@@ -138,7 +142,9 @@ $fornecedores = consulta_fornecedores();
                                         "...",
                                     ); ?>
                                 </td>
-                                <td><?= htmlspecialchars($item["quant_min"]) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $item["quant_min"],
+                                ) ?></td>
                                 <td><?= htmlspecialchars($item["quant"]) ?></td>
                                 <td><?= htmlspecialchars(
                                     ucfirst($item["categoria"]),
@@ -146,8 +152,12 @@ $fornecedores = consulta_fornecedores();
                                 <td><?= htmlspecialchars(
                                     ucfirst($item["unidade_medida"]),
                                 ) ?></td>
-                                <td><?= htmlspecialchars($item["validade"]) ?></td>
-                                <td data-id-fornecedor="<?= $item["id_fornecedor"] ?>">
+                                <td><?= htmlspecialchars(
+                                    $item["validade"],
+                                ) ?></td>
+                                <td data-id-fornecedor="<?= $item[
+                                    "id_fornecedor"
+                                ] ?>">
                                     <?= htmlspecialchars(
                                         fornecedor_item($item["id_fornecedor"]),
                                     ) ?>
@@ -175,8 +185,7 @@ $fornecedores = consulta_fornecedores();
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td>Não foi possível buscar itens no estoque.<br>
-                            <td colspan="8">Detalhes:
+                            <td colspan="9">
                                 <?php if (is_string($itens)) {
                                     echo $itens;
                                 } else {
@@ -192,7 +201,7 @@ $fornecedores = consulta_fornecedores();
         <dialog id="editarItem" class="popupContainer">
             <div class="nomePopup">
                 <h2>Editar Item</h2>
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('cadastroItens').close()">
+                <i class="material-icons md-close" onclick="document.getElementById('cadastroItens').close()"></i>
             </div>
             <form action="../controller/itens/editarItens.php" method="POST">
                 <input type="hidden" id="id_itemCampoEditar" name="id_item">
@@ -235,7 +244,7 @@ $fornecedores = consulta_fornecedores();
 
                 <label for="idFornecedorEd" class="form-label">Fornecedor:</label>
                 <select id="idFornecedorEd" class="form-select" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
+                    <option value="NULL" selected>Nenhum</option>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"

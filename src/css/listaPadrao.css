@@ -2,6 +2,7 @@ main.container {
     display: flex;
     flex-direction: column;
     justify-content: start;
+    width: 90%;
     padding: 0;
 }
 .nomePag {
@@ -91,4 +92,18 @@ main.container {
 
 .botao-acoes .deletar {
     color: var(--atencao);
+}
+
+.popup {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+}
+
+.popup input, .popup button{
+    width: 100%;
+}
+
+.popup button {
+    margin-top: auto;
 }

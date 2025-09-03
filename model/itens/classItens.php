@@ -10,7 +10,7 @@ class Item
     private int $quant;
     private string $categoria;
     private string $validade;
-    private int $id_fornecedor;
+    private ?int $id_fornecedor; //aceita nulo
     private float $val_unitario;
     private string $unidade_medida;
 
@@ -21,7 +21,7 @@ class Item
         int $quant,
         string $categoria,
         string $validade,
-        int $id_fornecedor,
+        ?int $id_fornecedor,
         float $val_unitario,
         string $unidade_medida,
     ) {
@@ -61,7 +61,7 @@ class Item
         return $this->validade;
     }
 
-    public function getIdFornecedor(): int
+    public function getIdFornecedor(): ?int
     {
         return $this->id_fornecedor;
     }

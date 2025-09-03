@@ -19,12 +19,13 @@ function consulta_itens(): array|string
     return "Não foi possível realizar a consulta.";
 }
 
-function busca_item($busca): array|string   {
+function busca_item($busca): array|string
+{
     global $con;
-    
+
     if ($busca === null) {
         return consulta_itens();
-    }    
+    }
 
     if (is_numeric($busca) && $busca > 0) {
         $sql = "SELECT * FROM itens WHERE id_item = :id_item";
@@ -44,7 +45,6 @@ function busca_item($busca): array|string   {
         return $e->getMessage();
     }
     return "Não foi possível realizar a consulta.";
-
 }
 
 function cadastrar_item(): void
@@ -59,6 +59,9 @@ function cadastrar_item(): void
         $unidade_medida = (string) $_POST["unidade_medida"];
         $validade = (string) $_POST["validade"];
         $id_fornecedor = (int) $_POST["idFornecedor"];
+        if ($id_fornecedor === 0) {
+            $id_fornecedor = null;
+        }
         $val_unitario = (float) $_POST["valUni"];
 
         $item = new Item(
@@ -70,7 +73,7 @@ function cadastrar_item(): void
             $validade,
             $id_fornecedor,
             $val_unitario,
-            $unidade_medida
+            $unidade_medida,
         );
 
         $sql = "INSERT INTO itens(nome_item, quant_min, quant, categoria, validade, id_fornecedor, val_unitario, unidade_medida)
@@ -82,11 +85,17 @@ function cadastrar_item(): void
         $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_INT);
         $stmt->bindValue(":categoria", $item->getCategoria(), PDO::PARAM_STR);
         $stmt->bindValue(":validade", $item->getValidade(), PDO::PARAM_STR);
-        $stmt->bindValue(
-            ":id_fornecedor",
-            $item->getIdFornecedor(),
-            PDO::PARAM_INT,
-        );
+
+        if ($item->getIdFornecedor() === null) {
+            $stmt->bindValue(":id_fornecedor", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(
+                ":id_fornecedor",
+                $item->getIdFornecedor(),
+                PDO::PARAM_INT,
+            );
+        }
+
         $stmt->bindValue(":val_unitario", $item->getValUni(), PDO::PARAM_STR);
         $stmt->bindValue(":unidade_medida", $item->getUniMed(), PDO::PARAM_STR);
 
@@ -115,14 +124,28 @@ function deletar_item(int $id_item): void
 
     try {
         if ($stmt->execute()) {
-            echo "<script>alert('Item deletado com sucesso.');window.location.href = '../../view/itens.php'</script>";
+            echo "<script>
+                    alert('Item deletado com sucesso.');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Não foi possível realizar a operação. Detalhes: " .
-            $e->getMessage() .
-            "');window.location.href = '../../view/itens.php'</script>";
+        // Verifica se é erro de integridade referencial (erro 1451)
+        if ($e->getCode() === '23000' && str_contains($e->getMessage(), '1451')) {
+            echo "<script>
+                    alert('Este item está associado a uma ou mais vendas e não pode ser deletado.');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
+        } else {
+            // Outro erro qualquer de banco
+            echo "<script>
+                    alert('Erro ao deletar o item. Detalhes: " . addslashes($e->getMessage()) . "');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
+        }
     }
 }
+
 
 function editar_item(): void
 {
@@ -142,6 +165,11 @@ function editar_item(): void
         $categoria = (string) $_POST["categoria"];
         $validade = (string) $_POST["validade"];
         $id_fornecedor = (int) $_POST["idFornecedor"];
+
+        if ($id_fornecedor === 0) {
+            $id_fornecedor = null;
+        }
+
         $val_unitario = (float) $_POST["valUni"];
         $unidade_medida = (string) $_POST["unidade_medida"];
 
@@ -154,8 +182,7 @@ function editar_item(): void
             $validade,
             $id_fornecedor,
             $val_unitario,
-            $unidade_medida
-            
+            $unidade_medida,
         );
 
         $sql = "UPDATE itens SET nome_item = :nome_item, quant_min = :quant_min, quant = :quant, categoria = :categoria,
@@ -167,15 +194,20 @@ function editar_item(): void
         $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_INT);
         $stmt->bindValue(":categoria", $item->getCategoria(), PDO::PARAM_STR);
         $stmt->bindValue(":validade", $item->getValidade(), PDO::PARAM_STR);
-        $stmt->bindValue(
-            ":id_fornecedor",
-            $item->getIdFornecedor(),
-            PDO::PARAM_INT,
-        );
+
+        if ($item->getIdFornecedor() === null) {
+            $stmt->bindValue(":id_fornecedor", null, PDO::PARAM_NULL);
+        } else {
+            $stmt->bindValue(
+                ":id_fornecedor",
+                $item->getIdFornecedor(),
+                PDO::PARAM_INT,
+            );
+        }
+
         $stmt->bindValue(":val_unitario", $item->getValUni(), PDO::PARAM_STR);
         $stmt->bindValue(":unidade_medida", $item->getUniMed(), PDO::PARAM_STR);
         $stmt->bindParam(":id_item", $id_item, PDO::PARAM_INT);
-
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel atualizar o item, Tente novamente!');window.location.href='../../view/itens.php'</script>";
