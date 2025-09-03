@@ -27,7 +27,6 @@ $cargosMapa = [
 
     <!-- Link do CSS -->
     <link rel="stylesheet" href="../src/css/padrao.css">
-    <link rel="stylesheet" href="../src/css/usuarios.css">
     <link rel="stylesheet" href="../src/css/listaPadrao.css">
 
 </head>
@@ -119,7 +118,6 @@ $cargosMapa = [
                                                     "id_usuario"
                                                 ] ?>').close()"></i>
                                                 </div>
-                                                <br>
                                                 
                                                 <div class="popup">
                                                     <form action="../controller/usuarios/editarUsuario.php" method="POST">

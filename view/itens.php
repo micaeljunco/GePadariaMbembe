@@ -185,8 +185,7 @@ $fornecedores = consulta_fornecedores();
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td>Não foi possível buscar itens no estoque.<br>
-                            <td colspan="8">Detalhes:
+                            <td colspan="9">
                                 <?php if (is_string($itens)) {
                                     echo $itens;
                                 } else {
