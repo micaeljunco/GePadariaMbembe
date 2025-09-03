@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
@@ -95,7 +95,7 @@ $fornecedores = consulta_fornecedores();
 
                 <label class="form-label" for="idFornecedor">Fornecedor:</label>
                 <select id="idFornecedor" class="form-select" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
+                    <option value="NULL" selected>Nenhum</option>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"
@@ -129,8 +129,12 @@ $fornecedores = consulta_fornecedores();
                     <?php if (!empty($itens) && gettype($itens) == "array"): ?>
                         <?php foreach ($itens as $item): ?>
                             <tr>
-                                <td><?= htmlspecialchars($item["id_item"]) ?></td>
-                                <td title="<?= htmlspecialchars($item["nome_item"]) ?>">
+                                <td><?= htmlspecialchars(
+                                    $item["id_item"],
+                                ) ?></td>
+                                <td title="<?= htmlspecialchars(
+                                    $item["nome_item"],
+                                ) ?>">
                                     <?php echo mb_strimwidth(
                                         $item["nome_item"],
                                         0,
@@ -138,7 +142,9 @@ $fornecedores = consulta_fornecedores();
                                         "...",
                                     ); ?>
                                 </td>
-                                <td><?= htmlspecialchars($item["quant_min"]) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $item["quant_min"],
+                                ) ?></td>
                                 <td><?= htmlspecialchars($item["quant"]) ?></td>
                                 <td><?= htmlspecialchars(
                                     ucfirst($item["categoria"]),
@@ -146,8 +152,12 @@ $fornecedores = consulta_fornecedores();
                                 <td><?= htmlspecialchars(
                                     ucfirst($item["unidade_medida"]),
                                 ) ?></td>
-                                <td><?= htmlspecialchars($item["validade"]) ?></td>
-                                <td data-id-fornecedor="<?= $item["id_fornecedor"] ?>">
+                                <td><?= htmlspecialchars(
+                                    $item["validade"],
+                                ) ?></td>
+                                <td data-id-fornecedor="<?= $item[
+                                    "id_fornecedor"
+                                ] ?>">
                                     <?= htmlspecialchars(
                                         fornecedor_item($item["id_fornecedor"]),
                                     ) ?>
@@ -235,7 +245,7 @@ $fornecedores = consulta_fornecedores();
 
                 <label for="idFornecedorEd" class="form-label">Fornecedor:</label>
                 <select id="idFornecedorEd" class="form-select" name="idFornecedor">
-                    <option value="0" selected>Nenhum</option>
+                    <option value="NULL" selected>Nenhum</option>
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"
