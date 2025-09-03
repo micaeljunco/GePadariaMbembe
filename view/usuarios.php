@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
