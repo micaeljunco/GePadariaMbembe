@@ -134,7 +134,7 @@ function finalizar_compra(): void
         
         echo "
         <script>
-        alert('Venda registrada com sucesso.');
+        alert('Venda realizada com sucesso.');
         window.location.href = '../../view/pdv.php';
         </script>";
         limpar_venda(false);
