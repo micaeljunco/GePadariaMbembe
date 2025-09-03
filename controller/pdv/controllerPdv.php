@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../conexao.php";
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 removerItem();
 recalcular_total();
 // adicionar_item(); // ← ESSENCIAL
