@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 28/08/2025 às 21:43
+-- Tempo de geração: 03/09/2025 às 18:47
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -18,11 +18,8 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Banco de dados: `sa_padaria_mokele`
+-- Banco de dados: `sa_padaria_mokele_revisao`
 --
-
-CREATE DATABASE IF NOT EXISTS `sa_padaria_mokele`;
-USE `sa_padaria_mokele`;
 
 -- --------------------------------------------------------
 
@@ -33,7 +30,7 @@ USE `sa_padaria_mokele`;
 CREATE TABLE `cargos` (
   `id_cargo` int(11) NOT NULL,
   `nome_cargo` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `cargos`
@@ -51,8 +48,8 @@ INSERT INTO `cargos` (`id_cargo`, `nome_cargo`) VALUES
 CREATE TABLE `comandas` (
   `id_comanda` int(11) NOT NULL,
   `id_usuario` int(11) DEFAULT NULL,
-  `valor_total` decimal(7,2) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `valor_total` decimal(7,2) DEFAULT 0.00
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -64,19 +61,7 @@ CREATE TABLE `comanda_itens` (
   `id_comanda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
   `quantidade` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `comanda_produto`
---
-
-CREATE TABLE `comanda_produto` (
-  `id_comanda` int(11) NOT NULL,
-  `id_produto` int(11) NOT NULL,
-  `quantidade` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -90,7 +75,7 @@ CREATE TABLE `fornecedores` (
   `cnpj` varchar(18) NOT NULL,
   `descricao` text DEFAULT NULL,
   `id_telefone` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -108,30 +93,27 @@ CREATE TABLE `itens` (
   `id_fornecedor` int(11) DEFAULT NULL,
   `val_unitario` decimal(6,2) NOT NULL,
   `unidade_medida` varchar(50) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `itens`
 --
 
 INSERT INTO `itens` (`id_item`, `nome_item`, `quant_min`, `quant`, `categoria`, `validade`, `id_fornecedor`, `val_unitario`, `unidade_medida`) VALUES
-(1, 'Ayaya', 1, 1, 'insumo', '2071-11-28', 0, 9999.99, 'Kg');
+(1, 'Ayaya', 1, 1, 'insumo', '2071-11-28', NULL, 9999.99, 'Kg');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `produtos`
+-- Estrutura para tabela `metodos_pag`
 --
 
-CREATE TABLE `produtos` (
-  `id_produto` int(11) NOT NULL,
-  `nome_produto` varchar(255) NOT NULL,
-  `quant_min` int(11) NOT NULL,
-  `quant` int(11) NOT NULL,
-  `validade` date NOT NULL,
-  `id_fornecedor` int(11) NOT NULL,
-  `preco` decimal(6,2) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `metodos_pag` (
+  `id_metodo` int(11) NOT NULL,
+  `id_venda` int(11) NOT NULL,
+  `metodo` varchar(50) NOT NULL,
+  `valor_pago` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -143,7 +125,7 @@ CREATE TABLE `telefone` (
   `id_telefone` int(11) NOT NULL,
   `ddd` varchar(2) NOT NULL,
   `numero` varchar(20) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -158,28 +140,14 @@ CREATE TABLE `usuarios` (
   `email` varchar(100) NOT NULL,
   `senha` varchar(255) NOT NULL,
   `id_cargo` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `usuarios`
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `CPF`, `email`, `senha`, `id_cargo`) VALUES
-(4, 'yan', '12345678908', 'yan@gmail.com', '$2y$10$j3oq2J5dqD.KmZj3KQbBcOYsvg.HjcsRrFfmQaCLY2yAXTVlVrcTq', 1);
-
--- --------------------------------------------------------
-
---
--- Estrutura stand-in para view `usuarios_inativos`
--- (Veja abaixo para a visão atual)
---
-CREATE TABLE `usuarios_inativos` (
-`id_usuario` int(11)
-,`nome_usuario` varchar(255)
-,`CPF` varchar(20)
-,`email` varchar(100)
-,`id_cargo` int(11)
-);
+(5, 'Admin', '12345678901', 'admin@gmail.com', '$2y$10$4tMwZPXOVJqiq40jk.FoUOaClcrqPTC/iPBSf8hw7V3oTGhtVOeDW', 1);
 
 -- --------------------------------------------------------
 
@@ -192,9 +160,8 @@ CREATE TABLE `vendas` (
   `id_usuario` int(11) NOT NULL,
   `id_comanda` int(11) DEFAULT NULL,
   `valor_total` decimal(7,2) NOT NULL,
-  `data_venda` date NOT NULL,
-  `metodo_pagamento` varchar(255) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `data_hora` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -203,31 +170,12 @@ CREATE TABLE `vendas` (
 --
 
 CREATE TABLE `vendas_itens` (
+  `id_venda_item` int(11) NOT NULL,
   `id_venda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
-  `quantidade` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `vendas_produtos`
---
-
-CREATE TABLE `vendas_produtos` (
-  `id_venda` int(11) NOT NULL,
-  `id_produto` int(11) NOT NULL,
-  `quantidade` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estrutura para view `usuarios_inativos`
---
-DROP TABLE IF EXISTS `usuarios_inativos`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `usuarios_inativos`  AS SELECT `usuarios`.`id_usuario` AS `id_usuario`, `usuarios`.`nome_usuario` AS `nome_usuario`, `usuarios`.`CPF` AS `CPF`, `usuarios`.`email` AS `email`, `usuarios`.`id_cargo` AS `id_cargo` FROM `usuarios` ;
+  `quantidade` int(11) NOT NULL,
+  `valor_unitario` decimal(10,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Índices para tabelas despejadas
@@ -250,15 +198,8 @@ ALTER TABLE `comandas`
 -- Índices de tabela `comanda_itens`
 --
 ALTER TABLE `comanda_itens`
-  ADD KEY `id_comanda` (`id_comanda`),
+  ADD PRIMARY KEY (`id_comanda`,`id_item`),
   ADD KEY `id_item` (`id_item`);
-
---
--- Índices de tabela `comanda_produto`
---
-ALTER TABLE `comanda_produto`
-  ADD KEY `id_comanda` (`id_comanda`),
-  ADD KEY `id_produto` (`id_produto`);
 
 --
 -- Índices de tabela `fornecedores`
@@ -275,11 +216,11 @@ ALTER TABLE `itens`
   ADD KEY `id_fornecedor` (`id_fornecedor`);
 
 --
--- Índices de tabela `produtos`
+-- Índices de tabela `metodos_pag`
 --
-ALTER TABLE `produtos`
-  ADD PRIMARY KEY (`id_produto`),
-  ADD KEY `id_fornecedor` (`id_fornecedor`);
+ALTER TABLE `metodos_pag`
+  ADD PRIMARY KEY (`id_metodo`),
+  ADD KEY `id_venda` (`id_venda`);
 
 --
 -- Índices de tabela `telefone`
@@ -292,7 +233,8 @@ ALTER TABLE `telefone`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`),
-  ADD UNIQUE KEY `CPF` (`CPF`,`email`),
+  ADD UNIQUE KEY `cpf_unico` (`CPF`),
+  ADD UNIQUE KEY `email_unico` (`email`),
   ADD KEY `id_cargo` (`id_cargo`);
 
 --
@@ -307,15 +249,9 @@ ALTER TABLE `vendas`
 -- Índices de tabela `vendas_itens`
 --
 ALTER TABLE `vendas_itens`
+  ADD PRIMARY KEY (`id_venda_item`),
   ADD KEY `id_venda` (`id_venda`),
   ADD KEY `id_item` (`id_item`);
-
---
--- Índices de tabela `vendas_produtos`
---
-ALTER TABLE `vendas_produtos`
-  ADD KEY `id_venda` (`id_venda`),
-  ADD KEY `id_produto` (`id_produto`);
 
 --
 -- AUTO_INCREMENT para tabelas despejadas
@@ -346,10 +282,10 @@ ALTER TABLE `itens`
   MODIFY `id_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT de tabela `produtos`
+-- AUTO_INCREMENT de tabela `metodos_pag`
 --
-ALTER TABLE `produtos`
-  MODIFY `id_produto` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `metodos_pag`
+  MODIFY `id_metodo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `telefone`
@@ -368,6 +304,67 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `vendas`
   MODIFY `id_venda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `vendas_itens`
+--
+ALTER TABLE `vendas_itens`
+  MODIFY `id_venda_item` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Restrições para tabelas despejadas
+--
+
+--
+-- Restrições para tabelas `comandas`
+--
+ALTER TABLE `comandas`
+  ADD CONSTRAINT `comandas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE SET NULL;
+
+--
+-- Restrições para tabelas `comanda_itens`
+--
+ALTER TABLE `comanda_itens`
+  ADD CONSTRAINT `comanda_itens_ibfk_1` FOREIGN KEY (`id_comanda`) REFERENCES `comandas` (`id_comanda`) ON DELETE CASCADE,
+  ADD CONSTRAINT `comanda_itens_ibfk_2` FOREIGN KEY (`id_item`) REFERENCES `itens` (`id_item`);
+
+--
+-- Restrições para tabelas `fornecedores`
+--
+ALTER TABLE `fornecedores`
+  ADD CONSTRAINT `fornecedores_ibfk_1` FOREIGN KEY (`id_telefone`) REFERENCES `telefone` (`id_telefone`);
+
+--
+-- Restrições para tabelas `itens`
+--
+ALTER TABLE `itens`
+  ADD CONSTRAINT `itens_ibfk_1` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedores` (`id_fornecedor`);
+
+--
+-- Restrições para tabelas `metodos_pag`
+--
+ALTER TABLE `metodos_pag`
+  ADD CONSTRAINT `metodos_pag_ibfk_1` FOREIGN KEY (`id_venda`) REFERENCES `vendas` (`id_venda`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_cargo`) REFERENCES `cargos` (`id_cargo`);
+
+--
+-- Restrições para tabelas `vendas`
+--
+ALTER TABLE `vendas`
+  ADD CONSTRAINT `vendas_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`),
+  ADD CONSTRAINT `vendas_ibfk_2` FOREIGN KEY (`id_comanda`) REFERENCES `comandas` (`id_comanda`) ON DELETE SET NULL;
+
+--
+-- Restrições para tabelas `vendas_itens`
+--
+ALTER TABLE `vendas_itens`
+  ADD CONSTRAINT `vendas_itens_ibfk_1` FOREIGN KEY (`id_venda`) REFERENCES `vendas` (`id_venda`) ON DELETE CASCADE,
+  ADD CONSTRAINT `vendas_itens_ibfk_2` FOREIGN KEY (`id_item`) REFERENCES `itens` (`id_item`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
