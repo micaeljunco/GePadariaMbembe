@@ -211,7 +211,11 @@ if (!isset($_SESSION["metodos_pagamento"])) {
 
         <div class="infoFinal">
             <form action="../controller/pdv/finalizarVenda.php" method="post" id="finalizarEmDefinitivo">
-                <button type="submit" class="btn btn-success">Finalizar</button>
+                <button type="submit" class="btn btn-success"
+                <?php if($_SESSION["subtotal"]>0): ?>
+                    disabled
+                <?php endif; ?>
+                >Finalizar</button>
             </form>
         </div>
     </dialog>
