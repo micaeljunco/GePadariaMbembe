@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
@@ -56,9 +56,8 @@ if (!isset($_SESSION['metodos_pagamento'])) {
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
                     <!-- <label for="item"><i class="material-icons md-barcode"></i></label> -->
-                    <input type="text" name="item" id="item" placeholder="Pesquisar Produto" class="form-control">
-                    <input type="number" name="quantidade" id="quantidade" min="1" placeholder="Quantidade"
-                        class="form-control">
+                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control">
+                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control">
 
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
 
@@ -99,9 +98,15 @@ if (!isset($_SESSION['metodos_pagamento'])) {
                                 </td>
                                 <td>
                                     <div class="acoes">
-                                        <div class="editar">
+                                        <a href="../controller/pdv/controllerPdv.php?editar=<?php echo $index; ?>"
+                                            class="editar">
                                             <i class="material-icons md-edit"></i>
-                                        </div>
+                                        </a>
+                                        <div class="remover">
+                                            <a href="../controller/pdv/controllerPdv.php?remover=<?php echo $index; ?>"
+                                                class="remover">
+                                                <i class="material-icons md-delete"></i>
+                                            </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
@@ -133,7 +138,8 @@ if (!isset($_SESSION['metodos_pagamento'])) {
             </div>
 
             <div id="finalizarVenda">
-                <form action="../controller/pdv/cancelarVenda.php" method="post" onsubmit="return confirm('Você tem certeza de que quer cancelar essa venda?')">
+                <form action="../controller/pdv/cancelarVenda.php" method="post"
+                    onsubmit="return confirm('Você tem certeza de que quer cancelar essa venda?')">
                     <input type="hidden" name="limpar" value="1">
                     <button type="submit" class="btn btn-outline-danger">Cancelar</button>
                 </form>
@@ -306,10 +312,10 @@ if (!isset($_SESSION['metodos_pagamento'])) {
     </script>
     <?= include "./partials/footer.html" ?>
 
-    <?php if (isset($_GET["finalizar"])) : ?>
-    <script>
-        document.getElementById('finalizarCompra').showModal();
-    </script>
+    <?php if (isset($_GET["finalizar"])): ?>
+        <script>
+            document.getElementById('finalizarCompra').showModal();
+        </script>
     <?php endif; ?>
 
 </body>
