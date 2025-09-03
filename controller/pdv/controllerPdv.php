@@ -124,14 +124,30 @@ function atualizar_subtotal($valor)
 
 function finalizar_compra(): void
 {
+    global $con;
+
     try {
-        $id_venda = cadastrar_venda(); // cadastra venda e retorna id
+        // Verifica se existe método de pagamento selecionado
+        verificar_metodo_pagamento();
 
-        venda_itens($id_venda);        // cadastra itens relacionados
+        // Inicia transação para garantir atomicidade
+        $con->beginTransaction();
 
+        // Verificar estoque para todos os itens antes de cadastrar a venda
+        verificar_estoque_itens();
+
+        // Cadastra venda e pega o ID
+        $id_venda = cadastrar_venda();
+
+        // Cadastra itens relacionados
+        venda_itens($id_venda);
+
+        // Cadastra métodos de pagamento
         insert_metodo_pag($id_venda);
 
-        
+        // Confirma a transação
+        $con->commit();
+
         echo "
         <script>
         alert('Venda realizada com sucesso.');
@@ -140,6 +156,11 @@ function finalizar_compra(): void
         limpar_venda(false);
 
     } catch (Exception $e) {
+        // Desfaz a transação caso algo falhe
+        if ($con->inTransaction()) {
+            $con->rollBack();
+        }
+
         echo "
         <script>
         alert('Erro ao registrar venda. Detalhes: " . addslashes($e->getMessage()) . "');
@@ -149,12 +170,60 @@ function finalizar_compra(): void
     }
 }
 
+function verificar_estoque_itens(): void
+{
+    global $con;
+
+    $itens = $_SESSION["itens"] ?? [];
+
+    foreach ($itens as $item) {
+        $id_item = $item["id_item"];
+        $quantidade_vendida = $item["quantidade"];
+
+        $stmt_check = $con->prepare("SELECT quant FROM itens WHERE id_item = :id_item");
+        $stmt_check->bindValue(":id_item", $id_item, PDO::PARAM_INT);
+        $stmt_check->execute();
+        $estoque_atual = $stmt_check->fetchColumn();
+
+        if ($estoque_atual === false) {
+            throw new Exception("Item ID $id_item não encontrado no estoque.");
+        }
+
+        if ($estoque_atual < $quantidade_vendida) {
+            throw new Exception("Estoque insuficiente para o item ID: $id_item. Estoque atual: $estoque_atual, quantidade solicitada: $quantidade_vendida.");
+        }
+    }
+}
+
+function verificar_metodo_pagamento(): void
+{
+    $metodos_pagamento = $_SESSION["metodos_pagamento"] ?? [];
+
+    if (empty($metodos_pagamento)) {
+        throw new Exception("Nenhum método de pagamento selecionado.");
+    }
+
+    // Opcional: pode também validar se os valores são válidos e > 0
+    $valor_total_pago = 0;
+    foreach ($metodos_pagamento as $metodo) {
+        if (!isset($metodo["valor"]) || $metodo["valor"] <= 0) {
+            throw new Exception("Valor inválido no método de pagamento.");
+        }
+        $valor_total_pago += $metodo["valor"];
+    }
+
+    if ($valor_total_pago <= 0) {
+        throw new Exception("Nenhum valor válido foi informado para os métodos de pagamento.");
+    }
+}
+
+
 function cadastrar_venda(): int
 {
     global $con;
 
     $id_usuario = $_SESSION["id_usuario"];
-    $data_hora = new DateTime();
+    $data_hora = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
     $valor_total = $_SESSION["total"];
 
     $venda = new Vendas(
@@ -195,22 +264,25 @@ function venda_itens(int $id_venda): void
     $itens = $_SESSION["itens"] ?? [];
 
     if (empty($itens)) {
-        return; // sem itens para cadastrar
+        return;
     }
 
     foreach ($itens as $item) {
+        $id_item = $item["id_item"];
+        $quantidade_vendida = $item["quantidade"];
+
+        // Inserir o item na venda
         $venda_itens = new VendaItens(
             0,
             $id_venda,
-            $item["id_item"],
-            $item["quantidade"]
+            $id_item,
+            $quantidade_vendida
         );
 
         $sql = "INSERT INTO `vendas_itens`(`id_venda`, `id_item`, `quantidade`) 
                 VALUES (:id_venda, :id_item, :quantidade)";
 
         $stmt = $con->prepare($sql);
-
         $stmt->bindValue(":id_venda", $venda_itens->getIdVenda(), PDO::PARAM_INT);
         $stmt->bindValue(":id_item", $venda_itens->getIdItem(), PDO::PARAM_INT);
         $stmt->bindValue(":quantidade", $venda_itens->getQuantidade(), PDO::PARAM_INT);
@@ -218,8 +290,22 @@ function venda_itens(int $id_venda): void
         if (!$stmt->execute()) {
             throw new Exception("Falha ao inserir item da venda.");
         }
+
+        // Atualizar o estoque
+        $sql_update = "UPDATE `itens` 
+                       SET `quant` = `quant` - :quantidade 
+                       WHERE `id_item` = :id_item";
+
+        $stmt_update = $con->prepare($sql_update);
+        $stmt_update->bindValue(":quantidade", $venda_itens->getQuantidade(), PDO::PARAM_INT);
+        $stmt_update->bindValue(":id_item", $venda_itens->getIdItem(), PDO::PARAM_INT);
+
+        if (!$stmt_update->execute()) {
+            throw new Exception("Falha ao atualizar o estoque do item ID: {$venda_itens->getIdItem()}");
+        }
     }
 }
+
 
 function insert_metodo_pag(int $id_venda) {
     global $con;
