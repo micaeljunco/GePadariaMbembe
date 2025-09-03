@@ -1,5 +1,5 @@
 <?php
-$dsn = "mysql:host=localhost;dbname=sa_padaria_mokele_revisao;charset=utf8";
+$dsn = "mysql:host=localhost;dbname=sa_padaria_mokele;charset=utf8";
 $user = "root";
 $password = "";
 
