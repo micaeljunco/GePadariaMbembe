@@ -177,7 +177,7 @@ CREATE TABLE `vendas_itens` (
   `id_venda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
   `quantidade` int(11) NOT NULL,
-  `valor_unitario` decimal(10,2) NOT NULL
+  -- `valor_unitario` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

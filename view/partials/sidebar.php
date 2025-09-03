@@ -1,8 +1,9 @@
 <?php
-require_once __DIR__ ."/../../controller/permissions/permission.php";
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+require_once __DIR__ ."/../../controller/permissions/permission.php";
+
 $idCargo = $_SESSION["id_cargo"];
 ?>
 

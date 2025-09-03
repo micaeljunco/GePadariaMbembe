@@ -32,21 +32,25 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 <body>
     <?= include "./partials/sidebar.php" ?>
-    <dialog id="cadastroFornecedores" class="popup">
-        <h2>Cadastro de Fornecedores</h2>
-        <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST">
+    <dialog id="cadastroFornecedores" class="popupContainer">
+        <div class="nomePopup">
+            <h2>Cadastro de Fornecedores</h2>
+            <i class="material-icons md-close" onclick="document.getElementById('cadastroFornecedores').close()"></i>
+        </div>
+        
+        <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST" class="w-100">
             <label for="nomeFornecedor">* Nome do Fornecedor:</label>
-            <input type="text" id="nomeFornecedor" name="nomeFornecedor" maxlength="255" minlength="1" required>
+            <input type="text" class="form-control" id="nomeFornecedor" name="nomeFornecedor" maxlength="255" minlength="1" required>
 
             <label for="cnpjFornecedor">* CNPJ:</label>
-            <input type="text" id="cnpjFornecedor" name="cnpjFornecedor" required maxlength="18"
+            <input type="text" class="form-control" id="cnpjFornecedor" name="cnpjFornecedor" required maxlength="18"
                 pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
 
             <label for="descFornecedor">Descrição:</label>
-            <textarea name="descFornecedor" id="descFornecedor" required></textarea>
+            <textarea class="form-control" name="descFornecedor" id="descFornecedor" required></textarea>
 
             <label for="telFornecedor">* Telefone:</label>
-            <input type="text" name="telefone" id="telFornecedor" required maxlength="20"
+            <input type="text" class="form-control" name="telefone" id="telFornecedor" required maxlength="20"
                 pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy">
 
             <button type="submit">Cadastrar</button>

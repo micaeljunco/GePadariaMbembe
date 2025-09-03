@@ -40,20 +40,20 @@ $fornecedores = consulta_fornecedores();
 
         <div id="container-top">
             <div id="cadastro_relatorio">
-                <button type="button" class="btn btn-outline-secondary">Gerar Relatório</button>
-                <button type="button" id="abrirCadastroItens" class="btn btn-outline-primary"
+                <button type="button" class="btn btn-outline-warning">Gerar Relatório</button>
+                <button type="button" id="abrirCadastroItens" class="btn btn-outline-warning"
                     onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
             </div>
             <form method="get" action="itens.php" id="form-busca-itens">
-                <input type="text" class="form-control" name="busca">
-                <button type="submit" class="btn btn-secondary">Buscar</button>
+                <input type="text" class="form-control" name="busca" placeholder="Buscar Itens no inventario">
+                <button type="submit" class="btn btn-outline-warning">Buscar</button>
             </form>
         </div>
 
         <dialog id="cadastroItens" class="popupContainer">
             <div class="nomePopup">
                 <h2>Cadastrar Item</h2>
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('cadastroItens').close()">
+                <i class="material-icons md-close" onclick="document.getElementById('cadastroItens').close()"></i>
             </div>
             <form action="../controller/itens/cadastrarItens.php" method="POST">
                 <label for="nomeItem" class="form-label">* Nome do Item:</label>
@@ -202,7 +202,7 @@ $fornecedores = consulta_fornecedores();
         <dialog id="editarItem" class="popupContainer">
             <div class="nomePopup">
                 <h2>Editar Item</h2>
-                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('cadastroItens').close()">
+                <i class="material-icons md-close" onclick="document.getElementById('cadastroItens').close()"></i>
             </div>
             <form action="../controller/itens/editarItens.php" method="POST">
                 <input type="hidden" id="id_itemCampoEditar" name="id_item">

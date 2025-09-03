@@ -178,3 +178,7 @@ a:hover::after {
         width: 50%;
     }
 }
+#esq-senha a{
+    color: var(--cor-link);
+    cursor: pointer;
+}
