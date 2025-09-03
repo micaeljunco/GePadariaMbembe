@@ -124,14 +124,28 @@ function deletar_item(int $id_item): void
 
     try {
         if ($stmt->execute()) {
-            echo "<script>alert('Item deletado com sucesso.');window.location.href = '../../view/itens.php'</script>";
+            echo "<script>
+                    alert('Item deletado com sucesso.');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Não foi possível realizar a operação. Detalhes: " .
-            $e->getMessage() .
-            "');window.location.href = '../../view/itens.php'</script>";
+        // Verifica se é erro de integridade referencial (erro 1451)
+        if ($e->getCode() === '23000' && str_contains($e->getMessage(), '1451')) {
+            echo "<script>
+                    alert('Este item está associado a uma ou mais vendas e não pode ser deletado.');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
+        } else {
+            // Outro erro qualquer de banco
+            echo "<script>
+                    alert('Erro ao deletar o item. Detalhes: " . addslashes($e->getMessage()) . "');
+                    window.location.href = '../../view/itens.php';
+                  </script>";
+        }
     }
 }
+
 
 function editar_item(): void
 {
