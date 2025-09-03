@@ -96,8 +96,7 @@ verificar_logado();
                 </div>
 
                 <div class="itemMenu" id="itemMenuEsto">
-                    <i class="material-icons md-inventory_2">
-                    </i>
+                    <i class="material-icons md-inventory_2"></i>
                     <h3 class="tituloItemMenu">Inventário</h3>
                     <p class="descItemMenu">
                         Gerencie o estoque de produtos e insumos da panificadora
@@ -105,8 +104,7 @@ verificar_logado();
                 </div>
 
                 <div class="itemMenu" id="itemMenuGEusu">
-                    <i class="material-icons md-groups">
-                    </i>
+                    <i class="material-icons md-local_shipping"></i>
                     <h3 class="tituloItemMenu">Fornecedores</h3>
                     <p class="descItemMenu">
                         Adicione, edite ou delete usuários do sistema
@@ -114,8 +112,7 @@ verificar_logado();
                 </div>
 
                 <div class="itemMenu" id="itemMenuForn">
-                    <i class="material-icons md-local_shipping">
-                    </i>
+                    <i class="material-icons md-groups"></i>
                     <h3 class="tituloItemMenu">Gestão de Usuários</h3>
                     <p class="descItemMenu">
                         Adicione, edite ou delete fornecedores
