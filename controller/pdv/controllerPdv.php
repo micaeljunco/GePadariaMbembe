@@ -2,38 +2,53 @@
 require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../conexao.php";
 session_start();
-removerItem();
 recalcular_total();
 // adicionar_item(); // ← ESSENCIAL
+removerItem();
+editarItem();
 function adicionar_item()
 {
     // Se recebeu um novo item via POST, adiciona à lista da sessão
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
         $novoItem = trim($_POST['item']);
+        $idItem = isset($_POST['id_item']) ? $_POST['id_item'] : null;
         $quantidade = intval($_POST['quantidade'] ?? 1); // pega quantidade (padrão 1)
 
-        if ($novoItem !== '') {
-            $item = procurarItem($_POST['item']);
+        if ($novoItem !== '' || $idItem !== null) {
+            $item = procurarItem($idItem, $novoItem);
             if ($item) {
                 // adiciona a quantidade junto
                 $item['quantidade'] = $quantidade;
                 $_SESSION['itens'][] = $item;
             }
         }
+        $ultimoItem = end($_SESSION['itens']);
+        atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
+    
+        unset($_SESSION['editar']);
+        header("Location: ../../view/pdv.php");
     }
-    $ultimoItem = end($_SESSION['itens']);
-    atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
-
-    header("Location: ../../view/pdv.php");
 }
-function procurarItem($id)
+
+function procurarItem($id = null, $nome_item = null)
 {
     global $con;
-    $sql = "SELECT * FROM itens WHERE id_item = :id_item";
+    $sql = "SELECT * FROM itens WHERE 1=1";
+    if ($id !== null && $id !== '') {
+        $sql .= " AND id_item = :id_item";
+    }
+    if ($nome_item !== null && $nome_item !== '') {
+        $sql .= " AND nome_item = :nome_item";
+    }
     $stmt = $con->prepare($sql);
-    $stmt->bindParam(':id_item', $id);
+    if ($id !== null && $id !== '') {
+        $stmt->bindParam(':id_item', $id, PDO::PARAM_INT);
+    }
+    if ($nome_item !== null && $nome_item !== '') {
+        $stmt->bindParam(':nome_item', $nome_item, PDO::PARAM_STR);
+    }
     $stmt->execute();
-    return $stmt->fetch();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 function removerItem()
 {
@@ -41,7 +56,30 @@ function removerItem()
         $index = intval($_GET['remover']);
         if (isset($_SESSION['itens'][$index])) {
             unset($_SESSION['itens'][$index]); // remove do array
-            $_SESSION['itens'] = array_values($_SESSION['itens']); // reorganiza os índices
+            $_SESSION['itens'] = array_values(array: $_SESSION['itens']); // reorganiza os índices
+        }
+        header("Location: ../../view/pdv.php");
+        exit;
+    }
+}
+function editarItem()
+{
+    if (isset($_GET['editar'])) {
+        $index = intval($_GET['editar']);
+
+        if (isset($_SESSION['itens'][$index])) {
+            // pega o item selecionado
+            $itemSelecionado = $_SESSION['itens'][$index];
+
+            // remove da lista
+            unset($_SESSION['itens'][$index]);
+            $_SESSION['itens'] = array_values($_SESSION['itens']);
+
+            // guarda info para reaproveitar
+            $_SESSION['editar'] = [
+                'nome' => $itemSelecionado['nome_item'],
+                'quantidade' => $itemSelecionado['quantidade']
+            ];
         }
         header("Location: ../../view/pdv.php");
         exit;
