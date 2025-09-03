@@ -58,7 +58,7 @@ $cargosMapa = [
             <dialog class="popupContainer" id="criarPopup">
                 <div class="nomePopup">
                     <h2>Cadastro de Usuarios</h2>
-                    <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('criarPopup').close()">
+                    <i class="material-icons md-close" onclick="document.getElementById('criarPopup').close()"></i>
                 </div>
 
                     <form action="../controller/usuarios/criarUsuario.php" method="POST">
@@ -107,19 +107,20 @@ $cargosMapa = [
                             <td>
                                 <div class="acoes">
                                     <div class="editar">
-                                            <img src="../img/edit.png" alt="Editar" onclick="document.getElementById('editarPopup<?= $usuario[
+                                            <i class="material-icons md-edit" onclick="document.getElementById('editarPopup<?= $usuario[
                                                 "id_usuario"
-                                            ] ?>').showModal()">
+                                            ] ?>').showModal()"></i>
                                             <dialog class="popupContainer" id="editarPopup<?= $usuario[
                                                 "id_usuario"
                                             ] ?>">
                                                 <div class="nomePopup">
                                                     <h2>Editar Usuarios</h2>
-                                                </div>
-                                                <img src="../img/Fechar.png" alt="Fechar" onclick="document.getElementById('editarPopup<?= $usuario[
+                                                    <i class="material-icons md-close" onclick="document.getElementById('editarPopup<?= $usuario[
                                                     "id_usuario"
-                                                ] ?>').close()">
-
+                                                ] ?>').close()"></i>
+                                                </div>
+                                                <br>
+                                                
                                                 <div class="popup">
                                                     <form action="../controller/usuarios/editarUsuario.php" method="POST">
                                                         <input type="hidden" name="id_usuario" id="id_usuario" value="<?= htmlspecialchars(
@@ -166,9 +167,9 @@ $cargosMapa = [
                                                 <input type="hidden" name="id_usuario" value="<?= htmlspecialchars(
                                                     $usuario["id_usuario"],
                                                 ) ?>">
-                                                <img src="../img/inativar.png" alt="Excluir usuario" onclick="if(confirm('Tem certeza que deseja excluir esse usuario, a exclusão é irreversivel!')) document.getElementById('formInativar<?= $usuario[
+                                                <i class="material-icons md-delete" onclick="if(confirm('Tem certeza que deseja excluir esse usuario, a exclusão é irreversivel!')) document.getElementById('formInativar<?= $usuario[
                                                     "id_usuario"
-                                                ] ?>').submit()">
+                                                ] ?>').submit()"></i>
 
                                         </form>
 
