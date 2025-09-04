@@ -40,7 +40,7 @@ $fornecedores = consulta_fornecedores();
 
         <div id="container-top">
             <div id="cadastro_relatorio">
-                <button type="button" class="btn btn-outline-warning">Gerar Relatório</button>
+                <!-- <button type="button" class="btn btn-outline-warning">Gerar Relatório</button> -->
                 <button type="button" id="abrirCadastroItens" class="btn btn-outline-warning"
                     onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
             </div>
