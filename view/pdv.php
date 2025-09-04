@@ -55,8 +55,8 @@ if (!isset($_SESSION["metodos_pagamento"])) {
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
                     <!-- <label for="item"><i class="material-icons md-barcode"></i></label> -->
-                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control">
-                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control">
+                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control" required>
+                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control" required>
 
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
 
@@ -64,7 +64,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
             </form>
 
             <div id="container-table">
-                <table class="table" id="tabela-itens">
+                <table class="tabela" id="tabela-itens">
                     <thead>
                         <th>Nome</th>
                         <th>Quantidade</th>
@@ -312,18 +312,6 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </form>
     </dialog>
 
-    <script>
-        function dataHora() {
-            const agora = new Date();
-            const ano = agora.getFullYear();
-            const mes = String(agora.getMonth() + 1).padStart(2, '0');
-            const dia = String(agora.getDate()).padStart(2, '0');
-
-            document.getElementById('dataHoraP').textContent = `${dia}/${mes}/${ano}`;
-        }
-        setInterval(dataHora, 900);
-        dataHora();
-    </script>
     <?= include "./partials/footer.html" ?>
 
     <?php if (isset($_GET["finalizar"])): ?>
