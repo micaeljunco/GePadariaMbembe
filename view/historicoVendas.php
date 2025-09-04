@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
 
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/vendas.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 
 <body>

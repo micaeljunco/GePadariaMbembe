@@ -28,6 +28,7 @@ $cargosMapa = [
     <!-- Link do CSS -->
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/listaPadrao.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 
 </head>
 <body>
