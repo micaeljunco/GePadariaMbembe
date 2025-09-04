@@ -66,7 +66,7 @@ linhas = tabela.find_elements(By.TAG_NAME, "tr")
 
 usuario_encontrado = False
 for linha in linhas:
-    if "Mokelinho da Silva" in linha.text and "mokele.teste@example.com" in linha.text:
+    if "Mokelinho da Silva" in linha.text and "mokele.teste@exemplo.com" in linha.text:
         usuario_encontrado = True
         break
 
@@ -74,6 +74,14 @@ if usuario_encontrado:
     print("Teste passou: usuário cadastrado com sucesso!")
 else:
     print("Teste falhou: usuário não encontrado na tabela.")
+
+time.sleep(2)
+
+# Espera o alerta aparecer e clica em "OK"
+WebDriverWait(driver, 10).until(EC.alert_is_present())
+alert = driver.switch_to.alert
+alert.accept()
+
 
 # Fecha o navegador
 time.sleep(5)
