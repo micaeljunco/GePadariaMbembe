@@ -245,3 +245,9 @@ th {
 .tabela thead th:last-child {
     border-top-right-radius: var(--radius);
 }
+.remover{
+    color:#c20404;
+}
+.editar{
+    color: #000000
+}
