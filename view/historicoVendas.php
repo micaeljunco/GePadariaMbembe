@@ -25,6 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
 
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/vendas.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 
 <body>
@@ -43,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                     onclick="document.getElementById('cadastroItens').showModal()">Cadastrar</button>
             </div>-->
             <form method="get" action="historicoVendas.php" id="form-busca-vendas">
-                <input type="text" class="form-control" name="busca" placeholder="Buscar vendas no histórico">
+                <input type="text" class="form-control" name="busca" placeholder="Buscar vendas no histórico por ID ou vendedor">
                 <button type="submit" class="btn btn-outline-warning">Buscar</button>
             </form>
         </div>
@@ -54,7 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                     <tr>
                         <th>ID</th>
                         <th>Vendedor</th>
-                        <!--<th>ID Comanda</th>-->
                         <th>Valor Total</th>
                         <th>Data-Hora</th>
                         <th>Detalhes</th>
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                             <td>
                                 <i class="material-icons md-open_in_full"
                                     onclick="window.location.href='historicoVendas.php?exibir=<?= htmlspecialchars(
-                                        $venda["id_venda"],
+                                        $venda["id_venda"]
                                     ) ?>'"></i>
                             </td>
                         </tr>

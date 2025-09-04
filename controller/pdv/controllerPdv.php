@@ -1,39 +1,67 @@
 <?php
+// Inclui as classes e arquivos necessários para manipulação de itens, vendas e conexão com o banco
 require_once __DIR__ . "/../../model/itens/classItens.php";
 require_once __DIR__ . "/../../model/vendas/vendas.php";
 require_once __DIR__ . "/../../model/vendas/vendas_itens.php";
 require_once __DIR__ . "/../../model/vendas/metodo_pag.php";
 require_once __DIR__ . "/../../conexao.php";
 
-session_start();
+// Inicia a sessão caso ainda não tenha sido iniciada
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Recalcula o total da venda ao carregar o controlador
 recalcular_total();
-// adicionar_item(); // ← ESSENCIAL
+
+// Funções principais do PDV (adicionar, remover e editar itens)
+// adicionar_item(); // ← ESSENCIAL (descomentando, ativa a função de adicionar item)
 removerItem();
 editarItem();
+
+/**
+ * Adiciona um item ao carrinho (sessão)
+ */
 function adicionar_item()
 {
-    // Se recebeu um novo item via POST, adiciona à lista da sessão
+    // Verifica se o formulário foi enviado via POST e se o campo 'item' está presente
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
-        $novoItem = trim($_POST['item']);
-        $idItem = isset($_POST['id_item']) ? $_POST['id_item'] : null;
-        $quantidade = intval($_POST['quantidade'] ?? 1); // pega quantidade (padrão 1)
+        $valor = trim($_POST['item']);
+        $idItem = null;
+        $novoItem = null;
 
+        // Se o valor for numérico, trata como ID, senão como nome
+        if (is_numeric($valor)) {
+            $idItem = $valor;   // se for número -> ID
+        } else {
+            $novoItem = $valor; // se for texto -> Nome
+        }
+
+        // Pega a quantidade informada (padrão 1)
+        $quantidade = intval($_POST['quantidade'] ?? 1);
+
+        // Procura o item no banco e adiciona ao carrinho se encontrado
         if ($novoItem !== '' || $idItem !== null) {
             $item = procurarItem($idItem, $novoItem);
             if ($item) {
-                // adiciona a quantidade junto
                 $item['quantidade'] = $quantidade;
                 $_SESSION['itens'][] = $item;
             }
         }
+
+        // Atualiza o total da venda
         $ultimoItem = end($_SESSION['itens']);
         atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
-    
+
+        // Limpa dados de edição e redireciona para a tela do PDV
         unset($_SESSION['editar']);
         header("Location: ../../view/pdv.php");
     }
 }
 
+/**
+ * Procura um item no banco de dados pelo ID ou nome
+ */
 function procurarItem($id = null, $nome_item = null)
 {
     global $con;
@@ -54,6 +82,10 @@ function procurarItem($id = null, $nome_item = null)
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Remove um item do carrinho (sessão) pelo índice
+ */
 function removerItem()
 {
     if (isset($_GET['remover'])) {
@@ -66,6 +98,10 @@ function removerItem()
         exit;
     }
 }
+
+/**
+ * Edita um item do carrinho, removendo-o e salvando seus dados para edição
+ */
 function editarItem()
 {
     if (isset($_GET['editar'])) {
@@ -79,7 +115,7 @@ function editarItem()
             unset($_SESSION['itens'][$index]);
             $_SESSION['itens'] = array_values($_SESSION['itens']);
 
-            // guarda info para reaproveitar
+            // guarda info para reaproveitar no formulário
             $_SESSION['editar'] = [
                 'nome' => $itemSelecionado['nome_item'],
                 'quantidade' => $itemSelecionado['quantidade']
@@ -90,6 +126,9 @@ function editarItem()
     }
 }
 
+/**
+ * Recalcula o total da venda somando todos os itens do carrinho
+ */
 function recalcular_total()
 {
     $total = 0.0;
@@ -101,6 +140,9 @@ function recalcular_total()
     $_SESSION['total'] = $total;
 }
 
+/**
+ * Atualiza o total da venda ao adicionar um novo item
+ */
 function atualizar_total($val_uni, $quant): void
 {
     $total = (float) $_SESSION['total'];
@@ -109,16 +151,18 @@ function atualizar_total($val_uni, $quant): void
     $_SESSION['total'] = $total;
 }
 
-
+/**
+ * Processa o método de pagamento selecionado e atualiza o subtotal/troco
+ */
 function processa_metodos(): void
 {
-    // Detectar método
+    // Detecta o método de pagamento enviado pelo formulário
     $metodo = $_POST['metodo'] ?? null;
 
     if ($metodo) {
         $pagamento = ['metodo' => $metodo];
 
-        // Dependendo do método, pegar valor e dados específicos
+        // Dependendo do método, pega valor e dados específicos
         if ($metodo === 'dinheiro') {
             $pagamento['valor'] = floatval($_POST['dinheiro'] ?? 0);
         } elseif ($metodo === 'cartao-debito') {
@@ -129,18 +173,21 @@ function processa_metodos(): void
             $pagamento['cartao'] = $_POST['cartao_credito'] ?? '';
         }
 
-        // Adicionar no array da sessão
+        // Adiciona o método de pagamento na sessão
         $_SESSION['metodos_pagamento'][] = $pagamento;
 
+        // Atualiza o subtotal (valor restante a pagar)
         atualizar_subtotal($pagamento['valor']);
 
-        //redirecionar para evitar reenvio de formulário
+        // Redireciona para evitar reenvio do formulário
         header("Location: ../../view/pdv.php?finalizar=1");
         exit;
     }
-
 }
 
+/**
+ * Atualiza o subtotal (valor restante a pagar) e calcula o troco, se houver
+ */
 function atualizar_subtotal($valor)
 {
     $subtotal = (float) ($_SESSION['subtotal'] ?? $_SESSION['total']);
@@ -158,7 +205,9 @@ function atualizar_subtotal($valor)
     $_SESSION['troco'] = $totalPago > $totalCompra ? $totalPago - $totalCompra : 0.0;
 }
 
-
+/**
+ * Finaliza a compra, cadastrando a venda, itens e métodos de pagamento no banco
+ */
 function finalizar_compra(): void
 {
     global $con;
@@ -170,21 +219,22 @@ function finalizar_compra(): void
         // Inicia transação para garantir atomicidade
         $con->beginTransaction();
 
-        // Verificar estoque para todos os itens antes de cadastrar a venda
+        // Verifica o estoque de todos os itens antes de cadastrar a venda
         verificar_estoque_itens();
 
         // Cadastra venda e pega o ID
         $id_venda = cadastrar_venda();
 
-        // Cadastra itens relacionados
+        // Cadastra itens relacionados à venda
         venda_itens($id_venda);
 
-        // Cadastra métodos de pagamento
+        // Cadastra métodos de pagamento utilizados
         insert_metodo_pag($id_venda);
 
         // Confirma a transação
         $con->commit();
 
+        // Exibe mensagem de sucesso e limpa a venda
         echo "
         <script>
         alert('Venda realizada com sucesso.');
@@ -198,6 +248,7 @@ function finalizar_compra(): void
             $con->rollBack();
         }
 
+        // Exibe mensagem de erro e limpa a venda
         echo "
         <script>
         alert('Erro ao registrar venda. Detalhes: " . addslashes($e->getMessage()) . "');
@@ -207,6 +258,9 @@ function finalizar_compra(): void
     }
 }
 
+/**
+ * Verifica se há estoque suficiente para todos os itens da venda
+ */
 function verificar_estoque_itens(): void
 {
     global $con;
@@ -232,6 +286,9 @@ function verificar_estoque_itens(): void
     }
 }
 
+/**
+ * Verifica se pelo menos um método de pagamento foi selecionado e se os valores são válidos
+ */
 function verificar_metodo_pagamento(): void
 {
     $metodos_pagamento = $_SESSION["metodos_pagamento"] ?? [];
@@ -240,7 +297,7 @@ function verificar_metodo_pagamento(): void
         throw new Exception("Nenhum método de pagamento selecionado.");
     }
 
-    // Opcional: pode também validar se os valores são válidos e > 0
+    // Valida se os valores dos métodos são válidos e maiores que zero
     $valor_total_pago = 0;
     foreach ($metodos_pagamento as $metodo) {
         if (!isset($metodo["valor"]) || $metodo["valor"] <= 0) {
@@ -254,7 +311,9 @@ function verificar_metodo_pagamento(): void
     }
 }
 
-
+/**
+ * Cadastra a venda no banco de dados e retorna o ID gerado
+ */
 function cadastrar_venda(): int
 {
     global $con;
@@ -294,6 +353,9 @@ function cadastrar_venda(): int
     return (int) $con->lastInsertId();
 }
 
+/**
+ * Cadastra os itens vendidos na tabela vendas_itens e atualiza o estoque
+ */
 function venda_itens(int $id_venda): void
 {
     global $con;
@@ -308,7 +370,7 @@ function venda_itens(int $id_venda): void
         $id_item = $item["id_item"];
         $quantidade_vendida = $item["quantidade"];
 
-        // Inserir o item na venda
+        // Cria objeto de item vendido
         $venda_itens = new VendaItens(
             0,
             $id_venda,
@@ -316,6 +378,7 @@ function venda_itens(int $id_venda): void
             $quantidade_vendida
         );
 
+        // Insere o item na tabela vendas_itens
         $sql = "INSERT INTO `vendas_itens`(`id_venda`, `id_item`, `quantidade`) 
                 VALUES (:id_venda, :id_item, :quantidade)";
 
@@ -328,7 +391,7 @@ function venda_itens(int $id_venda): void
             throw new Exception("Falha ao inserir item da venda.");
         }
 
-        // Atualizar o estoque
+        // Atualiza o estoque do item
         $sql_update = "UPDATE `itens` 
                        SET `quant` = `quant` - :quantidade 
                        WHERE `id_item` = :id_item";
@@ -343,7 +406,9 @@ function venda_itens(int $id_venda): void
     }
 }
 
-
+/**
+ * Cadastra os métodos de pagamento utilizados na venda
+ */
 function insert_metodo_pag(int $id_venda) {
     global $con;
 
@@ -354,6 +419,7 @@ function insert_metodo_pag(int $id_venda) {
     }
 
     foreach ($metodos_pagamento as $metodo) {
+        // Se houver cartão, adiciona a informação ao método (opcional)
         if (!empty($p["cartao"])):
             $metodo["metodo"] .= ["cartao"];
         endif;
@@ -379,6 +445,9 @@ function insert_metodo_pag(int $id_venda) {
     }
 }
 
+/**
+ * Limpa os dados da venda da sessão e redireciona para o PDV, se necessário
+ */
 function limpar_venda($redirecionar)
 {
     unset($_SESSION["itens"]);

@@ -12,6 +12,7 @@ verificar_logado();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/home.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
     <title>Home</title>
 </head>
 
@@ -119,14 +120,14 @@ verificar_logado();
                     </p>
                 </div>
 
-                <div class="itemMenu" id="itemMenuComa">
+                <!-- <div class="itemMenu" id="itemMenuComa">
                     <i class="material-icons md-confirmation_number">
                     </i>
                     <h3 class="tituloItemMenu">Comandas</h3>
                     <p class="descItemMenu">
                         Sistema de emissão de comandas
                     </p>
-                </div>
+                </div> -->
 
             </div>
         </section>

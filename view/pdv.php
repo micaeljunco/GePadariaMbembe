@@ -1,27 +1,35 @@
 <?php
+// Inicia a sessão para manipular variáveis globais do usuário
 session_start();
 
+// Inclui o arquivo de permissões e verifica se o usuário está logado e tem acesso
 require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
 verificar_acesso($_SESSION["id_cargo"]);
 
+// Inclui o controlador do PDV (Ponto de Venda)
 require_once __DIR__ . "/../controller/pdv/controllerPdv.php";
+
+// Inicializa variáveis de sessão caso não existam
 if (!isset($_SESSION["itens"])) {
     $_SESSION["itens"] = [];
     $_SESSION["metodos_pagamento"] = [];
     $_SESSION["total"] = 0.0;
 }
 
+// Se a venda está sendo finalizada, define o subtotal
 if (isset($_GET["finalizar"])) {
     if (!isset($_SESSION["subtotal"])):
         $_SESSION["subtotal"] = $_SESSION["total"];
     endif;
 }
 
+// Inicializa o troco se não existir
 if (!isset($_SESSION["troco"])) {
     $_SESSION["troco"] = 0.0;
 }
 
+// Inicializa métodos de pagamento se não existir
 if (!isset($_SESSION["metodos_pagamento"])) {
     $_SESSION["metodos_pagamento"] = [];
 }
@@ -34,37 +42,37 @@ if (!isset($_SESSION["metodos_pagamento"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Painel de Vendas</title>
-    <!-- link do Bootstrap -->
+    <!-- Importa o Bootstrap para estilização -->
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <!-- link do CSS -->
+    <!-- Importa os arquivos CSS personalizados -->
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/pdv.css">
-
+    <!-- Para favicon .png -->
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 
 <body>
+    <!-- Inclui o menu lateral -->
     <?= include "./partials/sidebar.php" ?>
     <main class="main-pdv">
 
         <div class="adicionarItens">
-
             <div class="topoPag">
                 <h1>Adicionar Produtos</h1>
             </div>
 
+            <!-- Formulário para adicionar itens ao carrinho -->
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
-                    <!-- <label for="item"><i class="material-icons md-barcode"></i></label> -->
-                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control">
-                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control">
-
+                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control" required>
+                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control" required>
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
-
                 </div>
             </form>
 
+            <!-- Tabela de itens adicionados ao carrinho -->
             <div id="container-table">
-                <table class="table" id="tabela-itens">
+                <table class="tabela" id="tabela-itens">
                     <thead>
                         <th>Nome</th>
                         <th>Quantidade</th>
@@ -81,42 +89,28 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                             as $index => $item
                         ): ?>
                             <tr>
-                                <td><?= htmlspecialchars(
-                                    $item["nome_item"],
-                                ) ?></td>
-                                <td><?= htmlspecialchars(
-                                    $item["quantidade"],
-                                ) ?></td>
-                                <td>R$<span class="subtotal"> <?= number_format(
-                                    $item["val_unitario"],
-                                    2,
-                                    ",",
-                                    ".",
-                                ) ?></span></td>
+                                <td><?= htmlspecialchars($item["nome_item"]) ?></td>
+                                <td><?= htmlspecialchars($item["quantidade"]) ?></td>
+                                <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"], 2, ",", ".") ?></span></td>
                                 <td>R$<span class="subtotal">
-                                        <?= number_format(
-                                            $item["val_unitario"] *
-                                                $item["quantidade"],
-                                            2,
-                                            ",",
-                                            ".",
-                                        ) ?></span>
+                                        <?= number_format($item["val_unitario"] * $item["quantidade"], 2, ",", ".") ?></span>
                                 </td>
                                 <td>
                                     <div class="acoes">
-                                        <a href="../controller/pdv/controllerPdv.php?editar=<?php echo $index; ?>"
-                                            class="editar">
+                                        <!-- Botão para editar o item -->
+                                        <a href="../controller/pdv/controllerPdv.php?editar=<?php echo $index; ?>" class="editar">
                                             <i class="material-icons md-edit"></i>
                                         </a>
+                                        <!-- Botão para remover o item -->
                                         <div class="remover">
-                                            <a href="../controller/pdv/controllerPdv.php?remover=<?php echo $index; ?>"
-                                                class="remover">
+                                            <a href="../controller/pdv/controllerPdv.php?remover=<?php echo $index; ?>" class="remover">
                                                 <i class="material-icons md-delete"></i>
                                             </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
+                        <!-- Mensagem caso não haja itens no carrinho -->
                         <td colspan="5">Nenhum item no carrinho</td>
                     <?php endif; ?>
                 </table>
@@ -124,7 +118,6 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </div>
 
         <div class="contabilizarVendas">
-
             <div class="topoPag-conta">
                 <h2>Sistema de Vendas</h2>
             </div>
@@ -134,6 +127,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <img src="../src/img/icon.png" class="logo" alt="Mokele">
             </div>
 
+            <!-- Exibe o valor total da venda -->
             <div class="infoFinal">
                 <p id="valorTotal">
                     <span class="currency">Total:</span>
@@ -143,12 +137,15 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 </p>
             </div>
 
+            <!-- Botões para cancelar ou finalizar a venda -->
             <div id="finalizarVenda">
+                <!-- Formulário para cancelar a venda -->
                 <form action="../controller/pdv/cancelarVenda.php" method="post"
                     onsubmit="return confirm('Você tem certeza de que quer cancelar essa venda?')">
                     <input type="hidden" name="limpar" value="1">
                     <button type="submit" class="btn btn-outline-danger">Cancelar</button>
                 </form>
+                <!-- Formulário para finalizar a venda -->
                 <form action="./pdv.php">
                     <input type="hidden" name="finalizar" value="1">
                     <button class="btn btn-outline-success" type="submit" 
@@ -161,6 +158,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </div>
     </main>
 
+    <!-- Modal para finalizar a compra e escolher métodos de pagamento -->
     <dialog id="finalizarCompra" class="popupContainer">
         <div class="nomePopup">
             <h2>Finalizar Venda</h2>
@@ -168,16 +166,19 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </div>
         <div id="metodosPag">
             <h4>Selecione um método: </h4>
+            <!-- Opção Dinheiro -->
             <div class="metodos"
                 onclick="document.getElementById('metodoDinheiro').showModal(); document.getElementById('finalizarCompra').close()">
                 <img src="../src/img/dinheiro.png" alt="" width="50px">
                 <span>Dinheiro</span>
             </div>
+            <!-- Opção Cartão de Crédito -->
             <div class="metodos"
                 onclick="document.getElementById('metodoCartCred').showModal(); document.getElementById('finalizarCompra').close()">
                 <img src="../src/img/cartao.png" alt="" width="50px">
                 <span>Cartão de Crétido</span>
             </div>
+            <!-- Opção Cartão de Débito -->
             <div class="metodos"
                 onclick="document.getElementById('metodoCartDeb').showModal(); document.getElementById('finalizarCompra').close()">
                 <img src="../src/img/cartao.png" alt="" width="50px">
@@ -215,6 +216,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
             <?php endif; ?>
         </div>
 
+        <!-- Botão para finalizar a venda definitivamente -->
         <div class="infoFinal">
             <form action="../controller/pdv/finalizarVenda.php" method="post" id="finalizarEmDefinitivo">
                 <button type="submit" class="btn btn-success"
@@ -226,6 +228,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </div>
     </dialog>
 
+    <!-- Modal para pagamento em dinheiro -->
     <dialog id="metodoDinheiro" class="popupContainer">
         <div class="nomePopup">
             <h2>Método: Dinheiro</h2>
@@ -245,11 +248,11 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </form>
     </dialog>
 
+    <!-- Modal para pagamento com cartão de débito -->
     <dialog id="metodoCartDeb" class="popupContainer metodo-cartao">
         <div class="nomePopup">
             <h2>Método: Cartão de Débito</h2>
         </div>
-
         <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
             <input type="hidden" name="metodo" value="cartao-debito">
             <h4>Valor a pagar</h4>
@@ -270,7 +273,6 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                     <option value="banricompras_debito">Banricompras</option>
                 </select>
             </div>
-
             <div class="botoes-compra">
                 <button type="button" class="btn btn-outline-danger"
                     onclick="document.getElementById('metodoCartDeb').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
@@ -279,6 +281,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </form>
     </dialog>
 
+    <!-- Modal para pagamento com cartão de crédito -->
     <dialog id="metodoCartCred" class="popupContainer metodo-cartao">
         <div class="nomePopup">
             <h2>Método: Cartão de Crédito</h2>
@@ -303,7 +306,6 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                     <option value="hipercard_credito">Hipercard</option>
                 </select>
             </div>
-
             <div class="botoes-compra">
                 <button type="button" class="btn btn-outline-danger"
                     onclick="document.getElementById('metodoCartCred').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
@@ -312,20 +314,10 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         </form>
     </dialog>
 
-    <script>
-        function dataHora() {
-            const agora = new Date();
-            const ano = agora.getFullYear();
-            const mes = String(agora.getMonth() + 1).padStart(2, '0');
-            const dia = String(agora.getDate()).padStart(2, '0');
-
-            document.getElementById('dataHoraP').textContent = `${dia}/${mes}/${ano}`;
-        }
-        setInterval(dataHora, 900);
-        dataHora();
-    </script>
+    <!-- Inclui o rodapé -->
     <?= include "./partials/footer.html" ?>
 
+    <!-- Script para abrir o modal de finalização de compra caso esteja finalizando -->
     <?php if (isset($_GET["finalizar"])): ?>
         <script>
             document.getElementById('finalizarCompra').showModal();
@@ -333,5 +325,4 @@ if (!isset($_SESSION["metodos_pagamento"])) {
     <?php endif; ?>
 
 </body>
-
 </html>

@@ -59,9 +59,9 @@ driver.find_element(By.NAME, "nome").send_keys("Mokelinho da Silva")  # Nome do 
 time.sleep(1)
 driver.find_element(By.NAME, "senha").send_keys("senha123")  # Senha
 time.sleep(1)
-driver.find_element(By.NAME, "email").send_keys("mokele.teste@example.com")  # E-mail
+driver.find_element(By.NAME, "email").send_keys("mokele.teste@exemplo.com")
 time.sleep(1)
-driver.find_element(By.NAME, "cpf").send_keys("12345678900")  # CPF
+driver.find_element(By.NAME, "cpf").send_keys("12345678955")
 time.sleep(1)
 
 # Seleciona o cargo no campo dropdown
