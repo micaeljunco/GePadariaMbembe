@@ -1,16 +1,22 @@
 <?php
+// Inclui classes e controladores necessários para manipulação de fornecedores e telefones, além da conexão com o banco
 require_once __DIR__ . "/../../model/fornecedores/classFornecedores.php";
 require_once __DIR__ . "/../../controller/telefone/controllerTelefone.php";
 require_once __DIR__ . "/../../conexao.php";
 
+/**
+ * Consulta todos os fornecedores com seus respectivos telefones (se houver).
+ * Retorna um array associativo com os dados ou uma string com a mensagem de erro.
+ */
 function consulta_fornecedores(): array|string
 {
     global $con;
 
+    // Consulta SQL para pegar fornecedores e seus telefones (LEFT JOIN para incluir fornecedores sem telefone)
     $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-    FROM fornecedores
-    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
-    ORDER BY fornecedores.nome_fornecedor ASC";
+            FROM fornecedores
+            LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+            ORDER BY fornecedores.nome_fornecedor ASC";
     $stmt = $con->prepare($sql);
 
     try {
@@ -18,20 +24,24 @@ function consulta_fornecedores(): array|string
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     } catch (PDOException $e) {
-        return $e->getMessage();
+        return $e->getMessage();  // Retorna mensagem de erro caso falhe
     }
     return "Não foi possível realizar a consulta.";
 }
+
+/**
+ * Busca fornecedores pelo parâmetro GET 'busca', que pode ser ID ou nome.
+ * Se nenhum parâmetro for enviado, retorna todos os fornecedores.
+ */
 function busca_fornecedores()
 {
     global $con;
 
-    // Se o formulario for enviado busca o fornecedor pelo id ou nome
     if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET["busca"])) {
         $busca = trim($_GET["busca"]);
 
-        // Verifica se a busca é um numero ou um nome
         if (is_numeric($busca)) {
+            // Busca por ID exato
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
                     FROM fornecedores
                     LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
@@ -40,6 +50,7 @@ function busca_fornecedores()
             $stmt = $con->prepare($sql);
             $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
         } else {
+            // Busca por nome que inicia com o valor informado
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
                     FROM fornecedores
                     LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
@@ -49,7 +60,7 @@ function busca_fornecedores()
             $stmt->bindValue(":busca", "$busca%", PDO::PARAM_STR);
         }
     } else {
-        // Query normal
+        // Retorna todos os fornecedores caso não haja busca
         $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
                 FROM fornecedores
                 LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
@@ -60,6 +71,11 @@ function busca_fornecedores()
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Retorna o nome do fornecedor dado um ID (item_id_fornecedor).
+ * Se não houver fornecedor, retorna "Nenhum".
+ */
 function fornecedor_item(?int $item_id_fornecedor): string
 {
     if ($item_id_fornecedor === null) {
@@ -68,14 +84,9 @@ function fornecedor_item(?int $item_id_fornecedor): string
 
     global $con;
 
-    $sql =
-        "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
+    $sql = "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
     $stmt = $con->prepare($sql);
-    $stmt->bindValue(
-        ":item_id_fornecedor",
-        $item_id_fornecedor,
-        PDO::PARAM_INT,
-    );
+    $stmt->bindValue(":item_id_fornecedor", $item_id_fornecedor, PDO::PARAM_INT);
 
     try {
         $stmt->execute();
@@ -90,39 +101,45 @@ function fornecedor_item(?int $item_id_fornecedor): string
     return $fornecedor["nome_fornecedor"];
 }
 
+/**
+ * Função para alterar fornecedor, buscando por ID ou nome via POST.
+ * Retorna os dados do fornecedor encontrado ou null.
+ */
 function alterar_fornecedor()
 {
     global $con;
-    //inicializa variaveis.
     $fornecedor = null;
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!empty($_POST["busca_fornecedor"])) {
             $busca = trim($_POST["busca_fornecedor"]);
 
-            //Verifica se a busca e um numero (id) ou um nome.
             if (is_numeric($busca)) {
-                $sql =
-                    "SELECT * FROM fornecedores WHERE id_fornecedor = :busca";
+                // Busca por ID
+                $sql = "SELECT * FROM fornecedores WHERE id_fornecedor = :busca";
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
             } else {
-                $sql =
-                    "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome";
+                // Busca por nome com início igual ao termo buscado
+                $sql = "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome";
                 $stmt = $con->prepare($sql);
                 $stmt->bindValue(":busca_nome", "$busca%", PDO::PARAM_STR);
             }
             $stmt->execute();
-            $fornecedor = $stmt->fetch(PDO::FETCH_ASSOC); // Corrigido: era $fornecedor, deve ser $fornecedor
+            $fornecedor = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            //Se o fornecedor nao for encontrado, exibe um alerta.
             if (!$fornecedor) {
                 echo "<script>alert('Fornecedor não encontrado!');</script>";
             }
         }
     }
-    return $fornecedor; // Adicionado retorno da função
+    return $fornecedor;
 }
 
+/**
+ * Deleta fornecedor do banco pelo ID.
+ * Mostra alertas de sucesso ou erro e redireciona para a página de fornecedores.
+ */
 function deletar_fornecedores($id_fornecedor)
 {
     global $con;
@@ -142,29 +159,36 @@ function deletar_fornecedores($id_fornecedor)
     }
 }
 
+/**
+ * Cadastra um novo fornecedor.
+ * Recebe dados do formulário via POST, cria objeto Fornecedor e insere no banco.
+ * Valida telefone e cadastra telefone antes de vincular ao fornecedor.
+ */
 function cadastrar_fornecedor(): void
 {
     try {
         global $con;
 
+        // Criação dos objetos Nome e CNPJ usando os dados do POST
         $nome_fornecedor = new Nome($_POST["nomeFornecedor"]);
         $cnpj = new CNPJ($_POST["cnpjFornecedor"]);
         $desc = (string) $_POST["descFornecedor"];
         $telefone = (string) $_POST["telefone"];
 
-        // Regex para capturar o DDD e o número
+        // Validação e extração do DDD e número via regex
         if (
             preg_match('/^\((\d{2})\)\s*(\d{4,5}-\d{4})$/', $telefone, $matches)
         ) {
-            $ddd = $matches[1]; // "47"
-            $numero = $matches[2]; // "9999-9999" ou "99999-9999"
+            $ddd = $matches[1];
+            $numero = $matches[2];
         } else {
-            // Formato inválido
             throw new Exception("Formato de telefone inválido");
         }
 
+        // Cadastra telefone e obtém seu ID
         $id_telefone = cadastrar_telefone($ddd, $numero);
 
+        // Cria o objeto fornecedor com id 0 (novo)
         $fornecedor = new Fornecedor(
             0,
             $nome_fornecedor,
@@ -173,27 +197,14 @@ function cadastrar_fornecedor(): void
             $id_telefone,
         );
 
+        // Insere fornecedor no banco
         $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao, id_telefone)
             VALUES (:nome_fornecedor, :cnpj, :descricao, :id_telefone)";
-
         $stmt = $con->prepare($sql);
-
-        $stmt->bindValue(
-            ":nome_fornecedor",
-            $fornecedor->getNome(),
-            PDO::PARAM_STR,
-        );
+        $stmt->bindValue(":nome_fornecedor", $fornecedor->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
-        $stmt->bindValue(
-            ":descricao",
-            $fornecedor->getDescricao(),
-            PDO::PARAM_STR,
-        );
-        $stmt->bindValue(
-            ":id_telefone",
-            $fornecedor->getIdTelefone(),
-            PDO::PARAM_INT,
-        );
+        $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
+        $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel cadastrar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
@@ -203,6 +214,7 @@ function cadastrar_fornecedor(): void
         echo "<script>alert('Fornecedor cadastrado com sucesso!');window.location.href='../../view/fornecedores.php'</script>";
         exit();
     } catch (InvalidArgumentException $e) {
+        // Captura erros de validação e redireciona com alerta
         echo "<script>alert('" .
             addslashes($e->getMessage()) .
             "');window.location.href='../view/fornecedores.php'</script>";
@@ -210,12 +222,14 @@ function cadastrar_fornecedor(): void
     }
 }
 
+/**
+ * Obtém o ID do telefone associado a um fornecedor pelo seu ID.
+ */
 function obterIdTelefoneFornecedor($id_fornecedor): int
 {
     global $con;
 
-    $sql =
-        "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
+    $sql = "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
     $stmt = $con->prepare($sql);
     $stmt->bindValue(":id_fornecedor", $id_fornecedor, PDO::PARAM_INT);
     $stmt->execute();
@@ -224,12 +238,10 @@ function obterIdTelefoneFornecedor($id_fornecedor): int
 }
 
 /**
- *  POR FAVOR ALGUEM CORRIJA
- *  NÂO ESTOU CONSEGUINDO FAZER A EDIÇÂO DO TELEFONE
- *  no código abaixo, caso tente editar, o id será 0, o que fará o
- *  fornecedor ficar sem telefone algum.
- **/
-
+ * Edita um fornecedor existente.
+ * Atualiza nome, CNPJ, descrição e telefone.
+ * Problema comentado: ao editar telefone, o id_telefone pode ser 0, removendo telefone do fornecedor.
+ */
 function editar_fornecedor(): void
 {
     global $con;
@@ -239,21 +251,24 @@ function editar_fornecedor(): void
         $cnpj = new CNPJ($_POST["cnpjFornecedor"]);
         $desc = (string) $_POST["descFornecedor"];
         $telefone = (string) $_POST["telefone"];
+
+        // Obtém o ID do telefone atual do fornecedor
         $id_telefone = obterIdTelefoneFornecedor($id_fornecedor);
 
-        // Regex para capturar o DDD e o número
+        // Valida e extrai DDD e número do telefone
         if (
             preg_match('/^\((\d{2})\)\s*(\d{4,5}-\d{4})$/', $telefone, $matches)
         ) {
-            $ddd = $matches[1]; // "47"
-            $numero = $matches[2]; // "9999-9999" ou "99999-9999"
+            $ddd = $matches[1];
+            $numero = $matches[2];
         } else {
-            // Formato inválido
             throw new Exception("Formato de telefone inválido");
         }
 
+        // Atualiza o telefone no banco
         editar_telefone($id_telefone, $ddd, $numero);
 
+        // Cria objeto fornecedor atualizado
         $fornecedor = new Fornecedor(
             $id_fornecedor,
             $nome_fornecedor,
@@ -262,6 +277,7 @@ function editar_fornecedor(): void
             $id_telefone,
         );
 
+        // Atualiza dados do fornecedor no banco
         $sql = "UPDATE fornecedores
                 SET nome_fornecedor = :nome_fornecedor,
                     cnpj = :cnpj,
@@ -270,28 +286,11 @@ function editar_fornecedor(): void
                 WHERE id_fornecedor = :id_fornecedor";
 
         $stmt = $con->prepare($sql);
-
-        $stmt->bindValue(
-            ":id_fornecedor",
-            $fornecedor->getIdFornecedor(),
-            PDO::PARAM_INT,
-        );
-        $stmt->bindValue(
-            ":nome_fornecedor",
-            $fornecedor->getNome(),
-            PDO::PARAM_STR,
-        );
+        $stmt->bindValue(":id_fornecedor", $fornecedor->getIdFornecedor(), PDO::PARAM_INT);
+        $stmt->bindValue(":nome_fornecedor", $fornecedor->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
-        $stmt->bindValue(
-            ":descricao",
-            $fornecedor->getDescricao(),
-            PDO::PARAM_STR,
-        );
-        $stmt->bindValue(
-            ":id_telefone",
-            $fornecedor->getIdTelefone(),
-            PDO::PARAM_INT,
-        );
+        $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
+        $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel editar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
