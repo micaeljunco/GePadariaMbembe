@@ -46,6 +46,16 @@ time.sleep(1)
 driver.find_element(By.NAME, "quant").send_keys("50")
 time.sleep(1)
 
+# Categoria (select)
+categoria_select = Select(driver.find_element(By.NAME, "categoria"))
+categoria_select.select_by_visible_text("Insumo")
+time.sleep(1)
+
+# Unidade de Medida (select)
+uni_select = Select(driver.find_element(By.NAME, "unidade_medida"))
+uni_select.select_by_visible_text("Kg")
+time.sleep(1)
+
 driver.find_element(By.NAME, "validade").send_keys("31-12-2025")
 time.sleep(1)
 
@@ -57,19 +67,21 @@ time.sleep(1)
 driver.find_element(By.NAME, "valUni").send_keys("7.50")
 time.sleep(1)
 
-# Categoria (select)
-categoria_select = Select(driver.find_element(By.NAME, "categoria"))
-categoria_select.select_by_visible_text("Insumo")
-time.sleep(1)
 
-# Unidade de Medida (select)
-uni_select = Select(driver.find_element(By.NAME, "unidade_medida"))
-uni_select.select_by_visible_text("Kg")
-time.sleep(1)
+
+
 
 # 3. Clica no botão "Cadastrar" do popup
 salvar_btn = driver.find_element(By.XPATH, "//dialog[@id='cadastroItens']//button[contains(text(),'Cadastrar')]")
 salvar_btn.click()
+
+time.sleep(1)
+
+# Espera o alerta aparecer e clica em "OK"
+WebDriverWait(driver, 10).until(EC.alert_is_present())
+alert = driver.switch_to.alert
+alert.accept()
+
 
 time.sleep(5)
 driver.quit()
