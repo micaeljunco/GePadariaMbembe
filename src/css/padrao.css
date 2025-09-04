@@ -188,7 +188,7 @@ dialog[open].popupContainer {
     position: relative;
 }
 
-.nomePopup h2 {
+.nomePopup h2, h1 {
     text-align: center;
 }
 
