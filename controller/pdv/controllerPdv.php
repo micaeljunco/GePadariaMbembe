@@ -5,34 +5,44 @@ require_once __DIR__ . "/../../model/vendas/vendas_itens.php";
 require_once __DIR__ . "/../../model/vendas/metodo_pag.php";
 require_once __DIR__ . "/../../conexao.php";
 
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 recalcular_total();
 // adicionar_item(); // ← ESSENCIAL
 removerItem();
 editarItem();
 function adicionar_item()
 {
-    // Se recebeu um novo item via POST, adiciona à lista da sessão
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
-        $novoItem = trim($_POST['item']);
-        $idItem = isset($_POST['id_item']) ? $_POST['id_item'] : null;
-        $quantidade = intval($_POST['quantidade'] ?? 1); // pega quantidade (padrão 1)
+        $valor = trim($_POST['item']);
+        $idItem = null;
+        $novoItem = null;
+
+        if (is_numeric($valor)) {
+            $idItem = $valor;   // se for número -> ID
+        } else {
+            $novoItem = $valor; // se for texto -> Nome
+        }
+
+        $quantidade = intval($_POST['quantidade'] ?? 1);
 
         if ($novoItem !== '' || $idItem !== null) {
             $item = procurarItem($idItem, $novoItem);
             if ($item) {
-                // adiciona a quantidade junto
                 $item['quantidade'] = $quantidade;
                 $_SESSION['itens'][] = $item;
             }
         }
+
         $ultimoItem = end($_SESSION['itens']);
         atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
-    
+
         unset($_SESSION['editar']);
         header("Location: ../../view/pdv.php");
     }
 }
+
 
 function procurarItem($id = null, $nome_item = null)
 {
