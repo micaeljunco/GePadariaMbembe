@@ -72,12 +72,12 @@ $idCargo = $_SESSION["id_cargo"];
         <?php endif; ?>
 
         <?php if (verificar_permissao($idCargo, "comandas.php")): ?>
-        <li class="item-menu">
+        <!-- <li class="item-menu">
             <a href="./comandas.php">
                 <i class="material-icons md-confirmation_number item-menu-icon"></i>
                 <span>Comandas</span>
             </a>
-        </li>
+        </li> -->
         <?php endif; ?>
 
         <!-- Logout sempre aparece -->

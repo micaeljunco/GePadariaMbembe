@@ -119,14 +119,14 @@ verificar_logado();
                     </p>
                 </div>
 
-                <div class="itemMenu" id="itemMenuComa">
+                <!-- <div class="itemMenu" id="itemMenuComa">
                     <i class="material-icons md-confirmation_number">
                     </i>
                     <h3 class="tituloItemMenu">Comandas</h3>
                     <p class="descItemMenu">
                         Sistema de emissão de comandas
                     </p>
-                </div>
+                </div> -->
 
             </div>
         </section>
