@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `sa_padaria_mokele`
 --
+create database sa_padaria_mokele;
+use database sa_padaria_mokele;
 
 -- --------------------------------------------------------
 
