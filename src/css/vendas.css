@@ -1,0 +1,146 @@
+@import "variaveis.css";
+
+#main-vendas {
+    flex-direction: column;
+    width: 90%;
+    padding: 0;
+    justify-content: start;
+}
+
+#topo-pagina {
+    background-color: var(--cor-primaria);
+    color: white;
+
+    width: 100%;
+
+    padding: 10px;
+    margin-bottom: 20px;
+
+    text-align: center;
+
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
+}
+
+#container-top {
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+#form-busca-vendas {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+#form-busca-vendas input {
+    width: 80%;
+    margin: 0;
+}
+
+#form-busca-vendas button {
+    width: 20%;
+}
+
+#cadastro_relatorio {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+}
+
+#ctnr-tabela {
+    width: 100%;
+    padding: 20px;
+    overflow-y: scroll;
+}
+
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela td,
+th {
+    text-align: center;
+    padding: 8px 12px;
+}
+
+.tabela tr:nth-child(even) {
+    background-color: rgb(242, 242, 242);
+}
+
+.tabela thead {
+    font-weight: bold;
+    color: white;
+    background-color: var(--cor-primaria);
+}
+
+.tabela th {
+    padding: 5px;
+    border: none;
+    margin: 0;
+}
+
+.tabela thead th:first-child {
+    border-top-left-radius: var(--radius);
+}
+
+.tabela thead th:last-child {
+    border-top-right-radius: var(--radius);
+}
+
+.botao-acoes {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+.acoes {
+    display: flex;
+    flex-direction: row;
+}
+
+.acoes form {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.botao-acoes:hover {
+    background-color: inherit;
+}
+
+.botao-acoes .deletar {
+    color: var(--atencao);
+}
+
+#ctnrDetalhes {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    outline: none;
+}
+
+#exibirDetalhes {
+    height: 70vh;
+    width: 50vw;
+    max-width: 70vw;
+    max-height: 90vh;
+}
