@@ -1,3 +1,9 @@
+<?php
+if (session_status() === PHP_SESSION_ACTIVE) {
+    session_destroy();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -10,6 +16,7 @@
     <!-- links Css -->
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/login.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 <body>
     <main id="login-page">
@@ -68,9 +75,9 @@
             <i class="material-icons md-close" onclick="document.getElementById('popupEsqueceuSenha').close()"></i>
         </div>
         <div class="h-100 w-100 overflow-y-auto">
-            <form action="" class="d-flex flex-column justify-content-center align-items-center">
+            <form action="../controller/recuperarSenha/controllerRecuperarSenha.php" method="POST" class="d-flex flex-column justify-content-center align-items-center">
                 <label for="Email">Digite o seu E-mail para receber o codigo:</label>
-                <input type="text" class="form-control">
+                <input type="email" name="email" class="form-control" required>
                 <button class="btn btn-outline-warning">Enviar Codigo</button> 
             </form>
             <form action="">

@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     <link rel="stylesheet" href="../src/css/itens.css">
 
     <script src="../src/js/fornecedores.js"></script>
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 
 <body>

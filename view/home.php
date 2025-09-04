@@ -12,6 +12,7 @@ verificar_logado();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/home.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
     <title>Home</title>
 </head>
 

@@ -157,6 +157,10 @@ th {
 .infoFinal #total {
     font-size: 2em;
 }
+.logo{
+    display: block;
+    margin: 0 auto;
+}
 
 .form-finalizarPag {
     width: 100%;

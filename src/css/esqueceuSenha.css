@@ -1,0 +1,21 @@
+#esqueceuSenha{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--cor-fundo);
+    padding: var(--espaco-padrao);
+    border-radius: var(--radius);
+    position: absolute;
+    top: 48%;
+    left: 53%;
+    transform: translate(-50%, -50%);
+    height: 70vh;
+    max-height: 95vh;
+    width: 50vw;
+    box-shadow: var(--sombra);
+}
+form{
+    margin-top: 30px;
+    height: 100%;
+}

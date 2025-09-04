@@ -27,6 +27,7 @@ $fornecedores = consulta_fornecedores();
 
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/itens.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 
 <body>
