@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     <!-- Link do CSS -->
     <link rel="stylesheet" href="../src/css/padrao.css">
-    <link rel="stylesheet" href="../src/css/listaPadrao.css">
+    <link rel="stylesheet" href="../src/css/itens.css">
 
     <script src="../src/js/fornecedores.js"></script>
     <link rel="icon" type="image/png" href="../src/img/icon.png">
@@ -33,137 +33,121 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
 <body>
     <?= include "./partials/sidebar.php" ?>
-    <dialog id="cadastroFornecedores" class="popupContainer">
-        <div class="nomePopup">
-            <h2>Cadastro de Fornecedores</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('cadastroFornecedores').close()"></i>
-        </div>
-        
-        <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST" class="w-100">
-            <label for="nomeFornecedor">* Nome do Fornecedor:</label>
-            <input type="text" class="form-control" id="nomeFornecedor" name="nomeFornecedor" maxlength="255" minlength="1" required>
 
-            <label for="cnpjFornecedor">* CNPJ:</label>
-            <input type="text" class="form-control" id="cnpjFornecedor" name="cnpjFornecedor" required maxlength="18"
-                pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
+    <main id="main-inventario">
 
-            <label for="descFornecedor">Descrição:</label>
-            <textarea class="form-control" name="descFornecedor" id="descFornecedor" required></textarea>
-
-            <label for="telFornecedor">* Telefone:</label>
-            <input type="text" class="form-control" name="telefone" id="telFornecedor" required maxlength="20"
-                pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy">
-
-            <button type="submit">Cadastrar</button>
-        </form>
-    </dialog>
-
-    <main class="container">
-        <div class="nomePag">
+        <div id="topo-pagina">
             <h1>Gestão de Fornecedores</h1>
         </div>
-        <div class="tabela">
-            <div class="interacao">
 
-                <form action="fornecedores.php" method="GET" class="busca">
-                    <div class="busca">
-                        <input type="text" class="form-control" name="busca" placeholder="Pesquisar Fornecedores">
-                        <button class="btn btn-outline-warning">Buscar</button>
-                </form>
+        <div id="container-top">
+            <div id="cadastro_relatorio">
+                <button type="button" id="abrirCadastroFornecedores" class="btn btn-outline-warning"
+                    onclick="document.getElementById('cadastroFornecedores').showModal()">Cadastrar Fornecedores</button>
             </div>
-            <div class="cadastro">
-                <button class="btn btn-outline-warning"
-                    onclick="document.getElementById('cadastroFornecedores').showModal()">Cadastrar
-                    Fornecedores</button>
-            </div>
+
+            <form method="get" action="fornecedores.php" id="form-busca-itens" class="busca">
+                <input type="text" class="form-control" name="busca" placeholder="Pesquisar Fornecedores">
+                <button type="submit" class="btn btn-outline-warning">Buscar</button>
+            </form>
         </div>
-        <?php if (!empty($fornecedores)): ?>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Nome</th>
-                        <th>Descrição</th>
-                        <th>Telefone</th>
-                        <th>CNPJ</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($fornecedores as $fornecedor): ?>
-                        <tr>
-                            <td data-id-fornecedor="<?= $fornecedor[
-                                "id_fornecedor"
-                            ] ?>">
-                                <?= htmlspecialchars(
-                                    $fornecedor["id_fornecedor"],
-                                ) ?>
-                            </td>
-                            <td><?= htmlspecialchars(
-                                $fornecedor["nome_fornecedor"],
-                            ) ?></td>
-                            <td><?= htmlspecialchars(
-                                $fornecedor["descricao"],
-                            ) ?></td>
-                            <td>(<?= htmlspecialchars(
-                                $fornecedor["ddd"],
-                            ) ?>) <?= htmlspecialchars($fornecedor["numero"]) ?>
-                            </td>
-                            <td><?= htmlspecialchars(
-                                $fornecedor["cnpj"],
-                            ) ?></td>
-                            <td>
-                                <div class="acoes">
-                                    <div class="botao-acoes">
-                                        <form action="../controller/fornecedores/deletarFornecedores.php" method="POST">
-                                            <input type="hidden" name="deletar" value="<?= $fornecedor[
-                                                "id_fornecedor"
-                                            ] ?>">
-                                            <button type="submit" class="botao-acoes">
-                                                <i class="material-icons md-delete deletar"></i>
-                                            </button>
-                                        </form>
-                                        <button type="button" class="botao-acoes"
-                                            onclick="editarFornecedor(this.parentElement.parentElement.parentElement.parentElement)"><i
-                                                class="material-icons md-edit editar">
 
-                                            </i></button>
-                                    </div>
-                                </div>
-                            </td>
+        <dialog id="cadastroFornecedores" class="popupContainer">
+            <div class="nomePopup">
+                <h2>Cadastro de Fornecedores</h2>
+                <i class="material-icons md-close" onclick="document.getElementById('cadastroFornecedores').close()"></i>
+            </div>
+            <form action="../controller/fornecedores/cadastrarFornecedores.php" method="POST" class="w-100">
+                <label for="nomeFornecedor" class="form-label">* Nome do Fornecedor:</label>
+                <input type="text" class="form-control" id="nomeFornecedor" name="nomeFornecedor" maxlength="255" minlength="1" required>
+
+                <label for="cnpjFornecedor" class="form-label">* CNPJ:</label>
+                <input type="text" class="form-control" id="cnpjFornecedor" name="cnpjFornecedor" required maxlength="18"
+                    pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
+
+                <label for="descFornecedor" class="form-label">Descrição:</label>
+                <textarea class="form-control" name="descFornecedor" id="descFornecedor" required></textarea>
+
+                <label for="telFornecedor" class="form-label">* Telefone:</label>
+                <input type="text" class="form-control" name="telefone" id="telFornecedor" required maxlength="20"
+                    pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy">
+
+                <button type="submit" class="btn btn-outline-warning">Cadastrar</button>
+            </form>
+        </dialog>
+
+        <div id="ctnr-tabela">
+            <?php if (!empty($fornecedores)): ?>
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Descrição</th>
+                            <th>Telefone</th>
+                            <th>CNPJ</th>
+                            <th>Ações</th>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php else: ?>
-            <p>Nenhum Fornecedor encontrado.</p>
-        <?php endif; ?>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($fornecedores as $fornecedor): ?>
+                            <tr>
+                                <td data-id-fornecedor="<?= $fornecedor["id_fornecedor"] ?>">
+                                    <?= htmlspecialchars($fornecedor["id_fornecedor"]) ?>
+                                </td>
+                                <td><?= htmlspecialchars($fornecedor["nome_fornecedor"]) ?></td>
+                                <td><?= htmlspecialchars($fornecedor["descricao"]) ?></td>
+                                <td>(<?= htmlspecialchars($fornecedor["ddd"]) ?>) <?= htmlspecialchars($fornecedor["numero"]) ?></td>
+                                <td><?= htmlspecialchars($fornecedor["cnpj"]) ?></td>
+                                <td class="acoes">
+                                    <form action="../controller/fornecedores/deletarFornecedores.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="deletar" value="<?= $fornecedor["id_fornecedor"] ?>">
+                                        <button type="submit" class="botao-acoes">
+                                            <i class="material-icons md-delete deletar"></i>
+                                        </button>
+                                    </form>
+                                    <button type="button" class="botao-acoes"
+                                        onclick="editarFornecedor(this.parentElement.parentElement.parentElement.parentElement)">
+                                        <i class="material-icons md-edit editar"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php else: ?>
+                <p>Nenhum Fornecedor encontrado.</p>
+            <?php endif; ?>
+        </div>
+
+        <dialog id="editarFornecedor" class="popupContainer">
+            <div class="nomePopup">
+                <h2>Editar Fornecedor</h2>
+                <i class="material-icons md-close" onclick="document.getElementById('editarFornecedor').close()"></i>
+            </div>
+            <form action="../controller/fornecedores/editarFornecedor.php" method="POST" class="w-100">
+                <input type="hidden" name="id_fornecedor" id="id_fornecedorEd">
+
+                <label for="nomeFornecedorEd" class="form-label">* Nome do Fornecedor:</label>
+                <input type="text" id="nomeFornecedorEd" name="nomeFornecedor" maxlength="255" minlength="1" class="form-control" required>
+
+                <label for="cnpjFornecedorEd" class="form-label">* CNPJ:</label>
+                <input type="text" id="cnpjFornecedorEd" name="cnpjFornecedor" maxlength="18" pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00" class="form-control" required>
+
+                <label for="descFornecedorEd" class="form-label">Descrição:</label>
+                <textarea name="descFornecedor" id="descFornecedorEd" class="form-control" required></textarea>
+
+                <label for="telFornecedorEd" class="form-label">* Telefone:</label>
+                <input type="text" name="telefone" id="telFornecedorEd" maxlength="20" pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy" class="form-control" required>
+
+                <button type="submit" class="btn btn-outline-warning">Salvar</button>
+            </form>
+        </dialog>
 
     </main>
+
     <?= include "./partials/footer.html" ?>
-    <dialog id="editarFornecedor" class="popup">
-        <h2>Editar Fornecedor</h2>
-        <form action="../controller/fornecedores/editarFornecedor.php" method="POST">
-            <input type="hidden" name="id_fornecedor" id="id_fornecedorEd">
-
-            <label for="nomeFornecedorEd">* Nome do Fornecedor:</label>
-            <input type="text" id="nomeFornecedorEd" name="nomeFornecedor" maxlength="255" minlength="1" required>
-
-            <label for="cnpjFornecedorEd">* CNPJ:</label>
-            <input type="text" id="cnpjFornecedorEd" name="cnpjFornecedor" required maxlength="18"
-                pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" title="Formato esperado: 00.000.000/0000-00">
-
-
-            <label for="descFornecedorEd">Descrição:</label>
-            <textarea name="descFornecedor" id="descFornecedorEd" required></textarea>
-
-            <label for="telFornecedorEd">* Telefone:</label>
-            <input type="text" name="telefone" id="telFornecedorEd" required maxlength="20"
-                pattern="^\(\d{2}\)\s?\d{4,5}-\d{4}$" title="Formato esperado: (xx) xxxx-yyyy ou (xx) xxxxx-yyyy">
-
-            <button type="submit">Cadastrar</button>
-        </form>
-    </dialog>
 </body>
+
 
 </html>

@@ -274,3 +274,7 @@ dialog[open].popupContainer {
     background-color: var(--cor-primaria);
     color: white;
 }
+
+form {
+    border: none;
+}
