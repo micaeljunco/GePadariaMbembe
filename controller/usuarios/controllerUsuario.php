@@ -21,7 +21,6 @@ function buscar_cargos(): array {
     return $cargos = $stmt->fetchALL(PDO::FETCH_ASSOC);
 }
 
-
 function cadastrar_usuario(): void{
     global $con;
 
@@ -115,26 +114,28 @@ function excluir_usuario($id_usuario): void{
     exit();
 }
 
-function pesquisar_usuario(): array{
+function pesquisar_usuario(): array {
     global $con;
 
     if (!isset($_POST["busca"]) || empty(trim($_POST["busca"]))) {
         return buscar_usuario();
     }
 
-    
     $busca = trim($_POST["busca"]);
 
-    if(is_numeric($busca)){
-    $sql = "SELECT * FROM usuarios WHERE id_usuario LIKE :id_usuario";
-    $stmt = $con->prepare($sql);
-    $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
-    }else{
-        $sql = "SELECT * FROM usuarios WHERE nome_usuario = :nome_usuario";
+    if (is_numeric($busca)) {
+        // Busca exata pelo id_usuario
+        $sql = "SELECT * FROM usuarios WHERE id_usuario = :id_usuario";
         $stmt = $con->prepare($sql);
-        $nomeParam = "%". $busca . "%";
+        $stmt->bindParam(":id_usuario", $busca, PDO::PARAM_INT);
+    } else {
+        // Busca por nome_usuario usando LIKE para busca parcial
+        $sql = "SELECT * FROM usuarios WHERE nome_usuario LIKE :nome_usuario";
+        $stmt = $con->prepare($sql);
+        $nomeParam = $busca . "%";
         $stmt->bindParam(":nome_usuario", $nomeParam, PDO::PARAM_STR);
     }
+
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
