@@ -16,6 +16,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     <!-- links Css -->
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/login.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 <body>
     <main id="login-page">

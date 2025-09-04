@@ -20,6 +20,7 @@ verificar_acesso($_SESSION["id_cargo"]);
     <link rel="stylesheet" href="../src/css/padrao.css">
     <link rel="stylesheet" href="../src/css/listaPadrao.css">
     <link rel="stylesheet" href="../src/css/comandas.css">
+    <link rel="icon" type="image/png" href="../src/img/icon.png">
 </head>
 <body>
 <?= include "./partials/sidebar.php" ?>
