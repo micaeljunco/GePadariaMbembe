@@ -27,6 +27,14 @@ class auth
             return false;
         }
 
+        // Verifica se a senha é temporária
+        if ($usuario["senha_temporaria"] == 1) {
+            $_SESSION["id_usuario"] = $usuario["id_usuario"];
+            echo "<script>alert('Você está usando uma senha temporária, por favor crie uma nova senha.');window.location.href='../view/alterarSenha.php'</script>";
+            return false;
+        }
+
+        // Se for senha normal, faz login normalmente
         $_SESSION["nome"] = $usuario["nome_usuario"];
         $_SESSION["id_usuario"] = $usuario["id_usuario"];
         $_SESSION["id_cargo"] = $usuario["id_cargo"];
