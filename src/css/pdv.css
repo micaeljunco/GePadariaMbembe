@@ -251,3 +251,8 @@ th {
 .editar{
     color: #000000
 }
+
+#finalizarVenda {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
