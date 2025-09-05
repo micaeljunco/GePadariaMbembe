@@ -18,12 +18,12 @@ class auth
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if (!$usuario) {
-            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../'</script>";
             return false;
         }
 
         if (!$senha->verificarSenha($usuario["senha"])) {
-            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../view/index.php'</script>";
+            echo "<script>alert('E-mail ou senha incorretos, tente novamente!');window.location.href='../'</script>";
             return false;
         }
 
