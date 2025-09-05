@@ -1,8 +1,9 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
-verificar_logado();
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">

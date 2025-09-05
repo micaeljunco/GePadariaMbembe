@@ -1,14 +1,18 @@
 <?php
 session_start();
 
-require_once __DIR__ . "/../controller/permissions/permission.php";
-verificar_logado();
-verificar_acesso($_SESSION["id_cargo"]);
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
+verificar_acesso($_SESSION["id_cargo"]); //Verifica o nivel de acesso para liberar as paginas corretas
 
+//Chama o arquivo de controller de vendas
 require_once "../controller/vendas/controllerVendas.php";
 
+//Atribui todas as vendas a variavel $vendas
 $vendas = consulta_vendas();
 
+//Se o metodo for GET e existir busca na URL vai exibir a venda com o id da venda ou nome do vemdedor
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
     $vendas = busca_venda($_GET["busca"]);
 }
@@ -61,10 +65,12 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- se vendas nao estiver vazio e o type de vendas for um array executara a tabela abaixo -->
                     <?php if (
                         !empty($vendas) &&
                         gettype($vendas) == "array"
                     ): ?>
+                    <!-- Para cada venda em $vendas exibe as informações da venda-->
                         <?php foreach ($vendas as $venda): ?>
                         <tr>
                             <td><?= htmlspecialchars($venda["id_venda"]) ?></td>
@@ -83,11 +89,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                             </td>
                         </tr>
                         <?php endforeach; ?>
+                        <!-- se nao existir o array $vendas mas existir um valor em $vendas, exibira $vendas -->
                     <?php else: ?>
                         <tr>
                             <td colspan="9">
                                 <?php if (is_string($vendas)) {
                                     echo $vendas;
+                                    // se nao existir nenhum valor em $vendas retorna essa mensagem
                                 } else {
                                     echo "Nenhuma venda encontrada.";
                                 } ?>
@@ -98,13 +106,17 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
             </table>
         </div>
     </main>
-
+    
+    <!-- Se busca existir na url e nao for vazio vai declarar as variaveis abaixo -->
     <?php if (isset($_GET["exibir"])):
 
         $id_venda = (int) $_GET["exibir"];
+        //utiliza de funções do controller para declarar as variaveis necessarias
         $venda_detalhes = detalhes_venda($id_venda);
         $venda_metodos = metodos_venda($id_venda);
         ?>
+
+        <!-- Popup de exibir detalhes da venda -->
     <dialog id="exibirDetalhes" class="popupContainer">
         <div class="nomePopup">
                 <h2>Detalhes da Venda #<?= htmlspecialchars($id_venda) ?></h2>
@@ -126,6 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Para cada det(detalhe da venda) em $venda_detalhes exibe os detalhes da venda -->
                     <?php foreach ($venda_detalhes as $det): ?>
                         <tr>
                             <td><?= htmlspecialchars($det["nome_item"]) ?></td>

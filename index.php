@@ -1,4 +1,6 @@
 <?php
+
+//Caso a sessão ja exista, destroi ela
 if (session_status() === PHP_SESSION_ACTIVE) {
     session_destroy();
 }
@@ -34,7 +36,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
                 <img src="src/img/icon.png" alt="logoMokele">
             </header>
 
-
+            <!-- Formulario de Login -->
             <form action="model/validarLogin.php" method="POST">
                 <div class="input-container">
                     <input type="email" class="form-control" placeholder="E-mail" name="email" required>
@@ -52,6 +54,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
 
     </main>
 
+    <!-- Script para vizualização da senha -->
     <script>
     function vizualizacao(){
         const senha = document.getElementById("senha");
