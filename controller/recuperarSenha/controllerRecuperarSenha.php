@@ -30,7 +30,7 @@ function recuperar_senha(): void{
     
             //SIMULA O ENVIO DO EMAIL(GRAVA EM TXT)
             simularEnvioEmail($email, $senha_temporaria);
-            echo "<script>alert('Uma senha temporaria foi gerada e enviada(simulação). Verifique o arquivo emails_simulados.txt');window.location.href='../../view/index.php';</script>";
+            echo "<script>alert('Uma senha temporaria foi gerada e enviada(simulação). Verifique o arquivo emails_simulados.txt');window.location.href='../../index.php';</script>";
         }else{
             echo "<script>alert('E-mail não encontrado!');</script>";
         }

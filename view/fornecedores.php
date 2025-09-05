@@ -1,12 +1,14 @@
 <?php
+//inclui o arquivo de controller dos fornecedores e incia a sessão
 require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
-
 session_start();
 
-require_once __DIR__ . "/../controller/permissions/permission.php";
-verificar_logado();
-verificar_acesso($_SESSION["id_cargo"]);
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
+verificar_acesso($_SESSION["id_cargo"]); //Verifica o nivel de acesso para liberar as paginas corretas
 
+//Se o metodo for get(padrão) executara uma busca de todos os fornecedores, caso contrario buscara um em especifico
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
     $fornecedores = busca_fornecedores();
 } else {
@@ -40,18 +42,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             <h1>Gestão de Fornecedores</h1>
         </div>
 
+        <!-- Chama o popup de cadastro de fornecedores atraves de um dialog com js -->
         <div id="container-top">
             <div id="cadastro_relatorio">
                 <button type="button" id="abrirCadastroFornecedores" class="btn btn-outline-warning"
                     onclick="document.getElementById('cadastroFornecedores').showModal()">Cadastrar Fornecedores</button>
             </div>
-
             <form method="get" action="fornecedores.php" id="form-busca-itens" class="busca">
                 <input type="text" class="form-control" name="busca" placeholder="Pesquisar Fornecedores">
                 <button type="submit" class="btn btn-outline-warning">Buscar</button>
             </form>
         </div>
-
+        
+        <!-- popup de cadastro de fornecedores -->
         <dialog id="cadastroFornecedores" class="popupContainer">
             <div class="nomePopup">
                 <h2>Cadastro de Fornecedores</h2>
@@ -76,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
             </form>
         </dialog>
 
+        <!-- Tabela de exibição dos fornecedores -->
         <div id="ctnr-tabela">
             <?php if (!empty($fornecedores)): ?>
                 <table class="tabela">
@@ -90,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Para cada fornecedor em $fornecedores, exibe os dados dos fornecedores -->
                         <?php foreach ($fornecedores as $fornecedor): ?>
                             <tr>
                                 <td data-id-fornecedor="<?= $fornecedor["id_fornecedor"] ?>">
@@ -115,11 +120,13 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                <!-- Caso nenhum fornecedore exista exibe essa mensagem -->
             <?php else: ?>
                 <p>Nenhum Fornecedor encontrado.</p>
             <?php endif; ?>
         </div>
-
+        
+        <!-- Função de Editar fornecedores -->
         <dialog id="editarFornecedor" class="popupContainer">
             <div class="nomePopup">
                 <h2>Editar Fornecedor</h2>

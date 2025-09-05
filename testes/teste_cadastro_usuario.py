@@ -24,7 +24,7 @@ driver.maximize_window()  # Maximiza a janela
 
 # === LOGIN ===
 # Abre a página de login do sistema
-driver.get("http://localhost:8080/GePadariaMbembe/view/index.php")
+driver.get("http://localhost:8080/GePadariaMbembe/")
 
 # Preenche e-mail e senha
 time.sleep(2)  # Pausa de 2 segundos

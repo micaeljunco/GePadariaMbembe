@@ -1,9 +1,13 @@
 <?php
-session_start();
+session_start(); //inicia a sessão
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
-verificar_logado();
-verificar_acesso($_SESSION["id_cargo"]);
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
+verificar_acesso($_SESSION["id_cargo"]); //Verifica o nivel de acesso para liberar as paginas corretas
+
+
+
 ?>
 
 <!DOCTYPE html>

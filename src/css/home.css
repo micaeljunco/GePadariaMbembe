@@ -3,9 +3,11 @@
 #mainHome {
     width: 90vw;
     flex-wrap: wrap;
-    padding: 1.5vw;
-    padding-top: 50px;
     overflow: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
 }
 
 /* ---------------------- */
@@ -17,8 +19,7 @@
     color: white;
     padding: 1em;
     padding-bottom: 1.5em;
-    position: absolute;
-    top: 0;
+    margin-bottom: auto;
     width: 100%;
     border-radius: var(--radius) var(--radius) 0 0;
 }
@@ -44,12 +45,17 @@
     padding: 20px 1.5vw;
     background-color: var(--cor-fundo-secundario);
     border-radius: var(--radius);
-    box-shadow: inset var(--sombra);
 }
 
 #ctnrAcsRap {
     box-shadow: none;
     background-color: white;
+}
+
+#ctnrAcsRap {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
 }
 
 #sysStatus h2,
@@ -70,11 +76,7 @@
 /* CONFIGURAÇÃO DO STATUS DO SISTEMA */
 /* --------------------------------- */
 
-#sysStatus {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
+
 
 #statusComandas,
 #statusEstoque,
@@ -101,9 +103,30 @@
 }
 
 #ctnrStatus {
+    margin: 0 20px;
     display: flex;
     justify-content: space-around;
 }
+
+#sysStatus {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#ctnrStatus {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* espaçamento entre eles */
+}
+
+#ctnrStatus > * {
+    flex: 0 0 calc(33.333% - 20px); /* 3 por linha */
+    box-sizing: border-box;
+}
+
 
 /* ----------------------------- */
 /* CONFIGURAÇÃO DO ACESSO RAPIDO */
@@ -124,8 +147,10 @@
 .itemMenu {
     background-color: var(--cor-fundo-secundario);
     padding: 20px;
+    height: 150px;
     width: 27.33vw;
-    margin: 0.5vw;
+    margin:auto;
+    margin-bottom: 20px;
     border-radius: var(--radius);
     cursor: pointer;
     text-align: center;
@@ -164,4 +189,9 @@
 #totalVendasHoje,
 #horaPico {
     font-weight: bold;
+}
+
+#itensAcesso {
+    display: flex;
+    justify-content:center ;
 }

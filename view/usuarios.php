@@ -1,15 +1,19 @@
 <?php
 session_start();
 
-require_once __DIR__ . "/../controller/permissions/permission.php";
-verificar_logado();
-verificar_acesso($_SESSION["id_cargo"]);
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
+verificar_acesso($_SESSION["id_cargo"]); //Verifica o nivel de acesso para liberar as paginas corretas
 
+//Inclue o controller de usuario
 require_once __DIR__ . "/../controller/usuarios/controllerUsuario.php";
 
+//Declara as variaves com as funções do controller
 $usuarios = pesquisar_usuario();
 $cargos = buscar_cargos();
 
+//Cargos mapa para exibir o cargo do usuario
 $cargosMapa = [
     1 => "Administrador",
     2 => "Caixa",
@@ -66,6 +70,7 @@ $cargosMapa = [
             <input type="text" name="cpf" placeholder="CPF" class="form-control" required>
 
             <select name="cargo" id="cargo" class="form-select" required>
+                <!-- para cada cargo em $cargos exibe o nome do cargo -->
                 <?php foreach ($cargos as $cargo): ?>
                     <option value="<?= $cargo["id_cargo"] ?>"><?= $cargo["nome_cargo"] ?></option>
                 <?php endforeach; ?>
@@ -76,9 +81,11 @@ $cargosMapa = [
     </dialog>
 
     <div id="ctnr-tabela">
+        <!-- se $usuarios estiver vazio exibirá essa mensagem -->
         <?php if (!$usuarios): ?>
             <p>Nenhum usuário encontrado!</p>
         <?php else: ?>
+            <!-- caso existir algo em $usuarios exibira os dados dos usuarios -->
             <table class="tabela">
                 <thead>
                     <tr>
@@ -90,6 +97,7 @@ $cargosMapa = [
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Para cada usuario em $usuarios exibe os dados dos usuarios -->
                     <?php foreach ($usuarios as $usuario): ?>
                         <tr>
                             <td><?= $usuario["id_usuario"] ?></td>

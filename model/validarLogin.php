@@ -4,7 +4,7 @@ require_once __DIR__ . "/usuario/senha.php";
 require_once __DIR__ . "/auth.php";
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../view/index.php");
+    header("Location: ../");
 }
 
 try {
@@ -15,6 +15,6 @@ try {
 } catch (Exception $e) {
     echo "<script>alert('Erro: " .
         addslashes($e->getMessage()) .
-        "');window.location.href='../view/index.php'</script>";
+        "');window.location.href='../'</script>";
     exit();
 }
