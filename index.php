@@ -11,12 +11,12 @@ if (session_status() === PHP_SESSION_ACTIVE) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <!-- link do bootstrap -->
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
 
     <!-- links Css -->
-    <link rel="stylesheet" href="../src/css/padrao.css">
-    <link rel="stylesheet" href="../src/css/login.css">
-    <link rel="icon" type="image/png" href="../src/img/icon.png">
+    <link rel="stylesheet" href="src/css/padrao.css">
+    <link rel="stylesheet" href="src/css/login.css">
+    <link rel="icon" type="image/png" href="src/img/icon.png">
 </head>
 <body>
     <main id="login-page">
@@ -31,11 +31,11 @@ if (session_status() === PHP_SESSION_ACTIVE) {
         <div id="login-conteudo">
             <header>
                 <h1>Login</h1>
-                <img src="../src/img/icon.png" alt="logoMokele">
+                <img src="src/img/icon.png" alt="logoMokele">
             </header>
 
 
-            <form action="../model/validarLogin.php" method="POST">
+            <form action="model/validarLogin.php" method="POST">
                 <div class="input-container">
                     <input type="email" class="form-control" placeholder="E-mail" name="email" required>
                 </div>
@@ -75,7 +75,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
             <i class="material-icons md-close" onclick="document.getElementById('popupEsqueceuSenha').close()"></i>
         </div>
         <div class="h-100 w-100 overflow-y-auto">
-            <form action="../controller/recuperarSenha/controllerRecuperarSenha.php" method="POST" class="d-flex flex-column justify-content-center align-items-center">
+            <form action="controller/recuperarSenha/controllerRecuperarSenha.php" method="POST" class="d-flex flex-column justify-content-center align-items-center">
                 <label for="Email">Digite o seu E-mail para receber o codigo:</label>
                 <input type="email" name="email" class="form-control" required>
                 <button class="btn btn-outline-warning">Enviar Codigo</button> 
