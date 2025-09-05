@@ -64,8 +64,14 @@ if (!isset($_SESSION["metodos_pagamento"])) {
             <!-- Formulário para adicionar itens ao carrinho -->
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
+                    <!-- Campo de texto para digitar o NOME do produto -->
+                    <!-- O value já vem preenchido com $_SESSION['editar']['nome'] caso o usuário esteja editando -->
                     <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control" required>
+                    <!-- Campo numérico para informar a QUANTIDADE -->
+                    <!-- O value também pode vir de $_SESSION['editar']['quantidade'], se estiver editando -->
                     <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control" required>
+                    <!-- Botão que envia o formulário -->
+                    <!-- Ao clicar, os dados (nome e quantidade) vão pro adicionar.php -->
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
                 </div>
             </form>
@@ -124,9 +130,9 @@ if (!isset($_SESSION["metodos_pagamento"])) {
 
             <div class="infoCaixa">
                 <h4 id="dataHoraP"></h4>
-                <img src="../src/img/icon.png" class="logo" alt="Mokele">
+                <img src="../src/img/icon.png" class="imgLogo" alt="Mokele">
             </div>
-
+            
             <!-- Exibe o valor total da venda -->
             <div class="infoFinal">
                 <p id="valorTotal">
@@ -136,6 +142,23 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                     </span>
                 </p>
             </div>
+            <div class="resumoVenda">
+                <p><strong>Itens no carrinho:</strong> 
+                    <?php echo isset($_SESSION['itens']) ? count($_SESSION['itens']) : 0; ?>
+                </p>
+            </div>
+            <div class="statusVenda">
+                <p class="status">
+                    <?php
+                        if (isset($_SESSION['itens']) && count($_SESSION['itens']) > 0) {
+                            echo 'Venda em andamento<span class="dots"></span>';
+                        } else {
+                            echo 'Aguardando itens<span class="dots"></span>';
+                        }
+                    ?>
+                </p>
+            </div>
+
 
             <!-- Botões para cancelar ou finalizar a venda -->
             <div id="finalizarVenda">
