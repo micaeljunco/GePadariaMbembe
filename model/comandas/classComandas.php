@@ -5,6 +5,8 @@ class Comanda{
     private int $id_comanda;
     private int $id_usuario;
     private float $valor_total;
+
+    private bool $aberta;
     public function __construct(int $id_comanda, int $id_usuario, float $valor_total){
         
         $this->id_comanda = $id_comanda;
