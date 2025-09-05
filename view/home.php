@@ -1,8 +1,16 @@
 <?php
 session_start();
 
-require_once __DIR__ ."/../controller/permissions/permission.php";
+require_once __DIR__ . "/../controller/permissions/permission.php";
 verificar_logado();
+require_once "../controller/principal/controllerHome.php";
+// Chamadas às funções
+$estoqueBaixo = aviso_estoque_critico();
+$maisVendidos = mais_vendidos();
+$faturDia = faturamento_dia();
+$faturMes = faturamento_mes();
+$ticketMedio = ticket_medio();
+$horaPico = horario_pico();
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -17,7 +25,7 @@ verificar_logado();
 </head>
 
 <body>
-<?= include "./partials/sidebar.php" ?>
+    <?= include "./partials/sidebar.php" ?>
 
     <main id="mainHome">
         <header id="headerHome">
@@ -28,43 +36,82 @@ verificar_logado();
             </h1>
         </header>
 
-        <!--<section id="sysStatus">
-            <h2>Status do Sistema</h2>
-            <div id="ctnrStatus">
+        <section id="sysStatus">
+    <h2>Status do Sistema</h2>
+    <div id="ctnrStatus">
 
-                <div id="statusPDV">
-                    <h3>PDVs</h3>
-                    <p>
-                        <span class="idPDV">0-0001</span>:
-                        <span class="statusAtivo">Ativo</span> (Última atividade:
-                        <span class="atvPDV">17:05</span>)
-                    </p>
-                </div>
+        <div id="statusFinanceiro">
+            <h3>Faturamento do dia</h3>
+            <p>
+                <?php if (is_array($faturDia)): ?>
+                    R$ <?= number_format($faturDia[0]["faturamento"] ?? 0, 2, ',', '.') ?>
+                <?php else: ?>
+                    <?= $faturDia ?>
+                <?php endif; ?>
+            </p>
+        </div>
 
-                <div id="statusComandas">
-                    <h3>Comandas</h3>
-                    <p>
-                        Comandas abertas: <span id="aberComandas">3</span> <br>
-                        Comandas encerradas hoje: <span id="enceComandas">54</span>
-                    </p>
-                </div>
+        <div id="statusHoraPico">
+            <h3>Horário de Pico</h3>
+            <?php if (is_array($horaPico)): ?>
+                <p><?= $horaPico[0]["hora"] ?>h (<?= $horaPico[0]["qtd_vendas"] ?> vendas)</p>
+            <?php else: ?>
+                <p><?= $horaPico ?></p>
+            <?php endif; ?>
+        </div>
 
-                <div id="statusEstoque">
-                    <h3>Alerta de Estoque</h3>
-                    <p>
-                        <span id="itemBaixo">Farinha</span> com estoque baixo
-                    </p>
-                    <p>
-                        <span id="itemBaixo">Ovos</span> com estoque baixo
-                    </p>
-                    <p>
-                        <span id="itemBaixo">Fermento</span> com estoque baixo
-                    </p>
-                </div>
+        <div id="statusTicket">
+            <h3>Ticket Médio</h3>
+            <p>
+                <?php if (is_array($ticketMedio)): ?>
+                    R$ <?= number_format($ticketMedio[0]["ticket_medio"] ?? 0, 2, ',', '.') ?>
+                <?php else: ?>
+                    <?= $ticketMedio ?>
+                <?php endif; ?>
+            </p>
+        </div>
 
-            </div>
+        <div id="statusEstoque">
+            <h3>Alerta de Estoque</h3>
+            <?php if (gettype($estoqueBaixo) != "string"): ?>
+                <?php foreach ($estoqueBaixo as $key => $value): ?>
+                    <p> <span class="itemBaixo"><?= htmlspecialchars($value["nome_item"]) ?></span> está com estoque baixo </p>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Nenhuma informação sobre o estoque pôde ser obtida.</p>
+            <?php endif; ?>
+        </div>
 
-            </section>-->
+        <div id="topProdutos">
+            <h3>Produtos Mais Vendidos do Mês</h3>
+            <?php if (is_array($maisVendidos)): ?>
+                <ol id="listTopProdutos">
+                    <?php foreach ($maisVendidos as $produto): ?>
+                        <li>
+                            <span class="itemVendido"><?= htmlspecialchars($produto["nome_item"]) ?></span> -
+                            <span class="uniItemVend"><?= $produto["total_vendido"] ?></span> unidades
+                        </li>
+                    <?php endforeach; ?>
+                </ol>
+            <?php else: ?>
+                <p><?= $maisVendidos ?></p>
+            <?php endif; ?>
+        </div>
+
+        <div id="statusFinanceiroMes">
+            <h3>Faturamento do mês</h3>
+            <p>
+                <?php if (is_array($faturMes)): ?>
+                    R$ <?= number_format($faturMes[0]["faturamento"] ?? 0, 2, ',', '.') ?>
+                <?php else: ?>
+                    <?= $faturMes ?>
+                <?php endif; ?>
+            </p>
+        </div>
+
+    </div>
+</section>
+
 
         <section id="acsRapido">
             <h2>Acesso Rápido</h2>
@@ -77,15 +124,6 @@ verificar_logado();
                         Sistema completo para realizar vendas e integrado a comandas
                     </p>
                 </div>
-
-                <!--<div class="itemMenu" id="itemMenuMoni">
-                    <i class="material-icons md-monitoring">
-                    </i>
-                    <h3 class="tituloItemMenu">Monitoramento</h3>
-                    <p class="descItemMenu">
-                        Tenha uma visão sobre a padaria em forma de gráficos
-                    </p>
-                </div>-->
 
                 <div class="itemMenu" id="itemMenuHist">
                     <i class="material-icons md-receipt">
@@ -120,101 +158,38 @@ verificar_logado();
                     </p>
                 </div>
 
-                <!-- <div class="itemMenu" id="itemMenuComa">
+                <div class="itemMenu" id="itemMenuComa">
                     <i class="material-icons md-confirmation_number">
                     </i>
                     <h3 class="tituloItemMenu">Comandas</h3>
                     <p class="descItemMenu">
                         Sistema de emissão de comandas
                     </p>
-                </div> -->
+                </div>
 
             </div>
         </section>
 
-        <!-- <section id="diaInfo">
-
-            <h2>Dia de Hoje</h2>
-
-            <div id="ctnrDiaInfo">
-                <div id="vendHoje">
-                    <h3>Itens Vendidos Hoje</h3>
-                    <canvas id="grafVendasHora"></canvas>
-                    <p>
-                        Total: <span id="totalVendasHoje">320</i
-                    </p>
-                </div>
-
-                <div id="topProdutos">
-                    <h3>Produtos Mais Vendidos Hoje</h3>
-                    <ol id="listTopProdutos">
-                        <li>
-                            <span id="itemVendido">Pão Francês
-                            </span> - <span id="uniItemVend"> 104
-                            </span> unidades
-                        </li>
-
-                        <li>
-                            <span id="itemVendido">Croissant
-                            </span> - <span id="uniItemVend"> 42
-                            </span> unidades
-                        </li>
-
-                        <li>
-                            <span id="itemVendido">Cuca
-                            </span> - <span id="uniItemVend"> 26
-                            </span> unidades
-                        </li>
-
-                        <li>
-                            <span id="itemVendido">Café
-                            </span> - <span id="uniItemVend"> 22
-                            </span> unidades
-                        </li>
-
-                        <li>
-                            <span id="itemVendido">Sonho
-                            </span> - <span id="uniItemVend"> 16
-                            </span> unidades
-                        </li>
-
-                    </ol>
-                </div>
-
-                <div id="movFaixaHora">
-                    <h3>Movimentação por Faixa de Horário</h3>
-
-                    <canvas id="grafMovFaixaHora"></canvas>
-
-                    <p>
-                        Pico: <span id="horaPico">12h-14h</span>
-                    </p>
-                </div>
-
-            </div>
-
-        </section>-->
-
     </main>
     <?= include "./partials/footer.html" ?>
     <script>
-    const divs = [...document.querySelectorAll('#acsRapido .itemMenu')]
+        const divs = [...document.querySelectorAll('#acsRapido .itemMenu')]
 
-    // Coloque os links na mesma ordem das divs
-    const links = [
-      "./pdv.php",          // Ponto de Venda
-      "./historicoVendas.php",  // Histórico de Vendas
-      "./itens.php",        // Inventário
-      "./fornecedores.php", // Fornecedores
-      "./usuarios.php",    // Gestão de Usuários
-      "./comandas.php"      // Comandas
-    ]
+        // Coloque os links na mesma ordem das divs
+        const links = [
+            "./pdv.php",          // Ponto de Venda
+            "./historicoVendas.php",  // Histórico de Vendas
+            "./itens.php",        // Inventário
+            "./fornecedores.php", // Fornecedores
+            "./usuarios.php",    // Gestão de Usuários
+            "./comandas.php"      // Comandas
+        ]
 
-    divs.forEach((div, index) => {
-      div.addEventListener('click', () => {
-        window.location.href = links[index]
-      })
-    })
+        divs.forEach((div, index) => {
+            div.addEventListener('click', () => {
+                window.location.href = links[index]
+            })
+        })
     </script>
 
 </body>
