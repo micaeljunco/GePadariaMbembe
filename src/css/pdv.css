@@ -83,7 +83,6 @@ th {
 .contabilizarVendas {
     flex: 3;
     height: 100%;
-    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,13 +109,13 @@ th {
 
 .infoCaixa {
     background-color: #eeee;
+    border-radius: 8%;
     margin-left: 10px; 
     margin-right: 10px;
 }
 
 .infoCaixa h4 {
     background-color: #eeee;
-    font-family: "Roboto Mono", monospace;
     text-align: center;
 }
 
@@ -157,7 +156,7 @@ th {
 .infoFinal #total {
     font-size: 2em;
 }
-.logo{
+.imgLogo{
     display: block;
     margin: 0 auto;
 }
@@ -259,4 +258,15 @@ th {
 #finalizarVenda {
     margin-top: auto;
     margin-bottom: 10px;
+}
+.dots::after {
+    content: "...";
+    animation: dots 1.5s steps(3, end) infinite;
+}
+
+@keyframes dots {
+    0%   { content: ""; }
+    33%  { content: "."; }
+    66%  { content: ".."; }
+    100% { content: "..."; }
 }
