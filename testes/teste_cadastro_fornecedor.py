@@ -24,7 +24,7 @@ driver.maximize_window()
 try:
     # === LOGIN ===
     time.sleep(2)  # Pausa de 2 segundos
-    driver.get("http://localhost:8080/GePadariaMbembe/view/index.php")  # Abre a página de login
+    driver.get("http://localhost:8080/GePadariaMbembe/")  # Abre a página de login
     time.sleep(2)  # Pausa de 2 segundos
 
     time.sleep(2)  # Pausa de 2 segundos
