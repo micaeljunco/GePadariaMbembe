@@ -14,10 +14,10 @@ if (session_status() == PHP_SESSION_NONE) {
 // Recalcula o total da venda ao carregar o controlador
 recalcular_total();
 
-// Funções principais do PDV (adicionar, remover e editar itens)
-// adicionar_item(); // ← ESSENCIAL (descomentando, ativa a função de adicionar item)
 removerItem();
 editarItem();
+// Funções principais do PDV (adicionar, remover e editar itens)
+// adicionar_item(); // ← ESSENCIAL (descomentando, ativa a função de adicionar item)
 
 /**
  * Adiciona um item ao carrinho (sessão)
