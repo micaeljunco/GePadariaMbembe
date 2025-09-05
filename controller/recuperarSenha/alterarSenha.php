@@ -4,7 +4,7 @@ require_once __DIR__ ."/../../conexao.php";
 require_once __DIR__ ."/../../model/usuario/senha.php";
 
 if($_SERVER["REQUEST_METHOD"] !== "POST") {
-    header("Location: ../../view/index.php");
+    header("Location: ../../");
 }
 
 $novaSenha = $_POST["novaSenha"];

@@ -83,7 +83,7 @@ if (session_status() === PHP_SESSION_ACTIVE) {
                 <input type="email" name="email" class="form-control" required>
                 <button class="btn btn-outline-warning">Enviar Codigo</button> 
             </form>
-            <form action="">
+            <form action="view/alterarSenha.php">
                 <label for="codigo">Digite o Codigo:</label>
                 <input type="text" class="form-control">
                 <button class="btn btn-outline-warning">Confirmar Codigo</button>
