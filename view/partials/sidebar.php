@@ -1,7 +1,9 @@
 <?php
+// se a sessao nao estiver iniciada, inicia a sessão
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+//inclue permissões
 require_once __DIR__ ."/../../controller/permissions/permission.php";
 
 $idCargo = $_SESSION["id_cargo"];
@@ -25,7 +27,8 @@ $idCargo = $_SESSION["id_cargo"];
                 <span>Home</span>
             </a>
         </li>
-
+        
+        <!-- Verifica se o ID do cargo possui a permissão da pagina tal -->
         <?php if (verificar_permissao($idCargo, "pdv.php")): ?>
         <li class="item-menu">
             <a href="./pdv.php">

@@ -1,18 +1,23 @@
 <?php
 session_start();
 
-require_once __DIR__ . "/../controller/permissions/permission.php";
-verificar_logado();
-verificar_acesso($_SESSION["id_cargo"]);
+//Verifica o acesso do usuario atraves das funções
+require_once __DIR__ . "/../controller/permissions/permission.php"; //Chamada de arquivo com as funções
+verificar_logado(); //Verifica se o usuario logou
+verificar_acesso($_SESSION["id_cargo"]); //Verifica o nivel de acesso para liberar as paginas corretas
 
+//Inclue os controllers de fornecedores e de itens
 require_once __DIR__ . "/../controller/itens/controllerItens.php";
 require_once __DIR__ . "/../controller/fornecedores/controllerFornecedores.php";
 
+//Declara $itens com a função consulta_itens
 $itens = consulta_itens();
 
+//Se o metodo do servidor for GET e busca existir e nao ser nula declara $itens com a função busca_item(busca apenas 1 item especifico)
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
     $itens = busca_item($_GET["busca"]);
 }
+//Declara os fornecedores
 $fornecedores = consulta_fornecedores();
 ?>
 
@@ -51,6 +56,7 @@ $fornecedores = consulta_fornecedores();
             </form>
         </div>
 
+        <!-- Popup de Cadastro de itens -->
         <dialog id="cadastroItens" class="popupContainer">
             <div class="nomePopup">
                 <h2>Cadastrar Item</h2>
@@ -97,6 +103,7 @@ $fornecedores = consulta_fornecedores();
                 <label class="form-label" for="idFornecedor">Fornecedor:</label>
                 <select id="idFornecedor" class="form-select" name="idFornecedor">
                     <option value="NULL" selected>Nenhum</option>
+                    <!-- Para cada fornecedor em $fornecedores exibir o nome do fornecedor-->
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"
@@ -127,6 +134,7 @@ $fornecedores = consulta_fornecedores();
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Se $itens nao estiver vazio e o tipo for array, exibe todos os itens -->
                     <?php if (!empty($itens) && gettype($itens) == "array"): ?>
                         <?php foreach ($itens as $item): ?>
                             <tr>
@@ -187,8 +195,10 @@ $fornecedores = consulta_fornecedores();
                     <?php else: ?>
                         <tr>
                             <td colspan="9">
+                                <!-- se $itens for string exibe $itens -->
                                 <?php if (is_string($itens)) {
                                     echo $itens;
+                                    // Caso contrario exibe essa mensagem
                                 } else {
                                     echo "Nenhum item encontrado.";
                                 } ?>
@@ -199,6 +209,7 @@ $fornecedores = consulta_fornecedores();
             </table>
         </div>
 
+        <!-- Popup de editar item -->
         <dialog id="editarItem" class="popupContainer">
             <div class="nomePopup">
                 <h2>Editar Item</h2>
@@ -246,6 +257,7 @@ $fornecedores = consulta_fornecedores();
                 <label for="idFornecedorEd" class="form-label">Fornecedor:</label>
                 <select id="idFornecedorEd" class="form-select" name="idFornecedor">
                     <option value="NULL" selected>Nenhum</option>
+                    <!-- Para cada fornecedor em $fornecedores exibir o nome do fornecedor-->
                     <?php foreach ($fornecedores as $fornecedor): ?>
                         <option value="<?= $fornecedor[
                             "id_fornecedor"
