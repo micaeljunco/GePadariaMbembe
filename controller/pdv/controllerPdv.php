@@ -24,17 +24,35 @@ editarItem();
  */
 function adicionar_item()
 {
-    // Verifica se o formulário foi enviado via POST e se o campo 'item' está presente
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["item"])) {
         $valor = trim($_POST["item"]);
         $idItem = null;
         $novoItem = null;
 
-        // Se o valor for numérico, trata como ID, senão como nome
+        // Verifica se começa com C/c + números
+        if (preg_match('/^[cC](\d+)$/', $valor, $matches)) {
+            $codigo_comanda = $matches[1]; // Pega só os números
+            // Procura uma comanda com o ID
+            adicionar_comanda($codigo_comanda);
+
+            // Já sai da função, pra não rodar o resto
+            return;
+        }
+
+        // Se for apenas número puro -> ID
         if (is_numeric($valor)) {
-            $idItem = $valor; // se for número -> ID
+            $idItem = $valor;
         } else {
-            $novoItem = $valor; // se for texto -> Nome
+            $novoItem = $valor; // Senão, trata como nome
+        }
+
+        if ($_POST["quantidade"] === "") {
+            echo "
+            <script>
+                alert('Para adicionar um item, é necessário informar sua quantidade.');
+                window.location.href='../../view/pdv.php';
+            </script>";
+            exit();
         }
 
         // Pega a quantidade informada (padrão 1)
@@ -232,6 +250,11 @@ function finalizar_compra(): void
         // Cadastra métodos de pagamento utilizados
         insert_metodo_pag($id_venda);
 
+        // Fechar qualquer comanda aberta
+        if (!empty($_SESSION["comanda"])) {
+            fechar_comanda($_SESSION["comanda"]);
+        }
+
         // Confirma a transação
         $con->commit();
 
@@ -329,8 +352,9 @@ function cadastrar_venda(): int
     $id_usuario = $_SESSION["id_usuario"];
     $data_hora = new DateTime("now", new DateTimeZone("America/Sao_Paulo"));
     $valor_total = $_SESSION["total"];
+    $id_comanda = !empty($_SESSION["comanda"]) ? $_SESSION["comanda"] : null;
 
-    $venda = new Vendas(0, $id_usuario, null, $data_hora, $valor_total);
+    $venda = new Vendas(0, $id_usuario, $id_comanda, $data_hora, $valor_total);
 
     $sql = "INSERT INTO `vendas`(`id_usuario`, `id_comanda`, `valor_total`, `data_hora`)
             VALUES (:id_usuario, :id_comanda, :valor_total, :data_hora)";
@@ -490,8 +514,114 @@ function limpar_venda($redirecionar)
     unset($_SESSION["subtotal"]);
     unset($_SESSION["troco"]);
     unset($_SESSION["metodos_pagamento"]);
+    unset($_SESSION["comanda"]);
     if ($redirecionar) {
         header("Location: ../../view/pdv.php");
     }
     exit();
+}
+
+function adicionar_comanda($codigo_comanda)
+{
+    $comanda = verificar_comanda($codigo_comanda);
+    if (!$comanda) {
+        echo "
+        <script>
+            alert('Comanda não encontrada ou fechada.');
+            window.location.href='../../view/pdv.php';
+        </script>";
+        exit();
+    }
+
+    if (!empty($_SESSION["comanda"])) {
+        echo "
+        <script>
+            alert('Uma comanda já foi incluída. Caso queira adicionar outra comanda, é necessário cancelar a venda.');
+            window.location.href='../../view/pdv.php';
+        </script>";
+        exit();
+    }
+
+    $itens = buscar_itens_comanda($codigo_comanda);
+    if ($itens) {
+        foreach ($itens as $item) {
+            $_SESSION["itens"][] = $item;
+        }
+    }
+
+    $_SESSION["comanda"] = $codigo_comanda;
+
+    header("Location: ../../view/pdv.php");
+    exit();
+}
+function verificar_comanda($id_comanda)
+{
+    global $con;
+
+    $sql =
+        "SELECT * FROM comandas WHERE id_comanda = :id_comanda AND aberta = '1'";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id_comanda", $id_comanda, PDO::PARAM_INT);
+
+    try {
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC); // pega uma linha
+
+        if ($resultado) {
+            // Achou a comanda
+            return $resultado;
+        } else {
+            // Não achou nada
+            return false;
+        }
+    } catch (PDOException $e) {
+        // Tratar o erro
+        echo "
+        <script>
+            alert('Erro ao buscar comanda: {$e->getMessage()}');
+        </script>";
+        return false;
+    }
+}
+
+function buscar_itens_comanda($id_comanda)
+{
+    global $con;
+
+    $sql =
+        "SELECT id_item, quantidade FROM comanda_itens WHERE id_comanda = :id_comanda";
+    $stmt = $con->prepare($sql);
+    $stmt->bindParam(":id_comanda", $id_comanda, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    if (!$resultado) {
+        return [];
+    }
+
+    $itens = [];
+    foreach ($resultado as $res) {
+        $item = procurarItem($res["id_item"], null);
+        if ($item) {
+            $item["quantidade"] = $res["quantidade"];
+            $itens[] = $item;
+        }
+    }
+    return $itens;
+}
+
+function fechar_comanda($id)
+{
+    global $con;
+
+    $sql = "UPDATE comandas SET aberta = 0 WHERE id_comanda = :id_comanda";
+
+    $stmt = $con->prepare($sql);
+    $stmt->bindValue(":id_comanda", $id, PDO::PARAM_INT);
+
+    if ($stmt->execute()):
+        return;
+    else:
+        throw new Exception("Não foi possível fechar a comanda de ID: $id.");
+    endif;
 }
