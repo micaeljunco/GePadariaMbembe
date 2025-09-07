@@ -1,5 +1,5 @@
 <?php
-require_once "../tinyint.php";
+require_once __DIR__ . "/../tinyint.php";
 
 class Comanda
 {

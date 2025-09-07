@@ -417,7 +417,13 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT de tabela `comandas`
 --
 ALTER TABLE `comandas`
-  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+    MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `comandas`
+--
+ALTER TABLE `comanda_itens`
+    MODIFY `id_comanda_itens` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `fornecedores`
