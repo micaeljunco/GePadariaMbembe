@@ -84,18 +84,19 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                             <td>
                                 <i class="material-icons md-open_in_full"
                                     onclick="window.location.href='historicoVendas.php?exibir=<?= htmlspecialchars(
-                                        $venda["id_venda"]
+                                        $venda["id_venda"],
                                     ) ?>'"></i>
                             </td>
                         </tr>
                         <?php endforeach; ?>
                         <!-- se nao existir o array $vendas mas existir um valor em $vendas, exibira $vendas -->
-                    <?php else: ?>
+                    <?php
+                        // se nao existir nenhum valor em $vendas retorna essa mensagem
+                        else: ?>
                         <tr>
                             <td colspan="9">
                                 <?php if (is_string($vendas)) {
                                     echo $vendas;
-                                    // se nao existir nenhum valor em $vendas retorna essa mensagem
                                 } else {
                                     echo "Nenhuma venda encontrada.";
                                 } ?>
@@ -106,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
             </table>
         </div>
     </main>
-    
+
     <!-- Se busca existir na url e nao for vazio vai declarar as variaveis abaixo -->
     <?php if (isset($_GET["exibir"])):
 
@@ -142,7 +143,14 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                     <?php foreach ($venda_detalhes as $det): ?>
                         <tr>
                             <td><?= htmlspecialchars($det["nome_item"]) ?></td>
-                            <td><?= htmlspecialchars($det["quantidade"]) ?></td>
+                            <td><?= $det["unidade_medida"] === "UN"
+                                ? intval($det["quantidade"])
+                                : number_format(
+                                    $det["quantidade"],
+                                    2,
+                                    ",",
+                                    ".",
+                                ) ?></td>
                             <td><?= htmlspecialchars(
                                 $det["unidade_medida"],
                             ) ?></td>
