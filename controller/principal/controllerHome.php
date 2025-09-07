@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ ."/../../conexao.php";
+require_once __DIR__ . "/../../conexao.php";
 
 function aviso_estoque_critico(): array|string
 {
@@ -32,7 +32,7 @@ function mais_vendidos(): array|string
     global $con;
 
     $sql = "
-        SELECT i.nome_item, SUM(vi.quantidade) AS total_vendido
+        SELECT i.nome_item, i.unidade_medida, SUM(vi.quantidade) AS total_vendido
         FROM vendas_itens vi
         INNER JOIN itens i ON vi.id_item = i.id_item
         INNER JOIN vendas v ON vi.id_venda = v.id_venda

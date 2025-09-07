@@ -44,7 +44,12 @@ $horaPico = horario_pico();
                     <h3>Faturamento do dia</h3>
                     <p>
                         <?php if (is_array($faturDia)): ?>
-                            R$ <?= number_format($faturDia[0]["faturamento"] ?? 0, 2, ',', '.') ?>
+                            R$ <?= number_format(
+                                $faturDia[0]["faturamento"] ?? 0,
+                                2,
+                                ",",
+                                ".",
+                            ) ?>
                         <?php else: ?>
                             <?= $faturDia ?>
                         <?php endif; ?>
@@ -54,7 +59,9 @@ $horaPico = horario_pico();
                 <div id="statusHoraPico">
                     <h3>Horário de Pico</h3>
                     <?php if (is_array($horaPico)): ?>
-                        <p><?= $horaPico[0]["hora"] ?>h (<?= $horaPico[0]["qtd_vendas"] ?> vendas)</p>
+                        <p><?= $horaPico[0]["hora"] ?>h (<?= $horaPico[0][
+    "qtd_vendas"
+] ?> vendas)</p>
                     <?php else: ?>
                         <p><?= $horaPico ?></p>
                     <?php endif; ?>
@@ -64,7 +71,12 @@ $horaPico = horario_pico();
                     <h3>Ticket Médio</h3>
                     <p>
                         <?php if (is_array($ticketMedio)): ?>
-                            R$ <?= number_format($ticketMedio[0]["ticket_medio"] ?? 0, 2, ',', '.') ?>
+                            R$ <?= number_format(
+                                $ticketMedio[0]["ticket_medio"] ?? 0,
+                                2,
+                                ",",
+                                ".",
+                            ) ?>
                         <?php else: ?>
                             <?= $ticketMedio ?>
                         <?php endif; ?>
@@ -75,7 +87,9 @@ $horaPico = horario_pico();
                     <h3>Alerta de Estoque</h3>
                     <?php if (gettype($estoqueBaixo) != "string"): ?>
                         <?php foreach ($estoqueBaixo as $key => $value): ?>
-                            <p> <span class="itemBaixo"><?= htmlspecialchars($value["nome_item"]) ?></span> está com estoque
+                            <p> <span class="itemBaixo"><?= htmlspecialchars(
+                                $value["nome_item"],
+                            ) ?></span> está com estoque
                                 baixo </p>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -89,21 +103,41 @@ $horaPico = horario_pico();
                         <ol id="listTopProdutos">
                             <?php foreach ($maisVendidos as $produto): ?>
                                 <li>
-                                    <span class="itemVendido"><?= htmlspecialchars($produto["nome_item"]) ?></span> -
-                                    <span class="uniItemVend"><?= $produto["total_vendido"] ?></span> unidades
+                                    <span class="itemVendido"><?= htmlspecialchars(
+                                        $produto["nome_item"],
+                                    ) ?></span> -
+                                    <span class="uniItemVend">
+                                        <?= $produto["unidade_medida"] === "UN"
+                                            ? intval($produto["total_vendido"])
+                                            : number_format(
+                                                $produto["total_vendido"],
+                                                2,
+                                                ",",
+                                                ".",
+                                            ) ?>
+                                    </span>
+                                    <?= htmlspecialchars(
+                                        $produto["unidade_medida"],
+                                    ) ?>
                                 </li>
                             <?php endforeach; ?>
                         </ol>
                     <?php else: ?>
-                        <p><?= $maisVendidos ?></p>
+                        <p><?= htmlspecialchars($maisVendidos) ?></p>
                     <?php endif; ?>
                 </div>
+
 
                 <div id="statusFinanceiroMes">
                     <h3>Faturamento do mês</h3>
                     <p>
                         <?php if (is_array($faturMes)): ?>
-                            R$ <?= number_format($faturMes[0]["faturamento"] ?? 0, 2, ',', '.') ?>
+                            R$ <?= number_format(
+                                $faturMes[0]["faturamento"] ?? 0,
+                                2,
+                                ",",
+                                ".",
+                            ) ?>
                         <?php else: ?>
                             <?= $faturMes ?>
                         <?php endif; ?>
