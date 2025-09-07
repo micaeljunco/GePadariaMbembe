@@ -66,10 +66,16 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <div class="pesquisarItens">
                     <!-- Campo de texto para digitar o NOME do produto -->
                     <!-- O value já vem preenchido com $_SESSION['editar']['nome'] caso o usuário esteja editando -->
-                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" placeholder="Nome do produto" class="form-control" required>
+                    <input type="text" name="item" id="item" value="<?php echo $_SESSION[
+                        "editar"
+                    ]["nome"] ??
+                        ""; ?>" placeholder="Nome do produto" class="form-control" required>
                     <!-- Campo numérico para informar a QUANTIDADE -->
                     <!-- O value também pode vir de $_SESSION['editar']['quantidade'], se estiver editando -->
-                    <input type="number" name="quantidade" id="quantidade" min="1" value="<?php echo $_SESSION['editar']['quantidade'] ?? ''; ?>" placeholder="Quantidade" class="form-control" required>
+                    <input type="number" name="quantidade" id="quantidade" min="0.001" step="0.001" value="<?php echo $_SESSION[
+                        "editar"
+                    ]["quantidade"] ??
+                        ""; ?>" placeholder="Quantidade" class="form-control" required>
                     <!-- Botão que envia o formulário -->
                     <!-- Ao clicar, os dados (nome e quantidade) vão pro adicionar.php -->
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>
@@ -95,11 +101,26 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                             as $index => $item
                         ): ?>
                             <tr>
-                                <td><?= htmlspecialchars($item["nome_item"]) ?></td>
-                                <td><?= htmlspecialchars($item["quantidade"]) ?></td>
-                                <td>R$<span class="subtotal"> <?= number_format($item["val_unitario"], 2, ",", ".") ?></span></td>
+                                <td><?= htmlspecialchars(
+                                    $item["nome_item"],
+                                ) ?></td>
+                                <td><?= htmlspecialchars(
+                                    $item["quantidade"],
+                                ) ?></td>
+                                <td>R$<span class="subtotal"> <?= number_format(
+                                    $item["val_unitario"],
+                                    2,
+                                    ",",
+                                    ".",
+                                ) ?></span></td>
                                 <td>R$<span class="subtotal">
-                                        <?= number_format($item["val_unitario"] * $item["quantidade"], 2, ",", ".") ?></span>
+                                        <?= number_format(
+                                            $item["val_unitario"] *
+                                                $item["quantidade"],
+                                            2,
+                                            ",",
+                                            ".",
+                                        ) ?></span>
                                 </td>
                                 <td>
                                     <div class="acoes">
@@ -132,7 +153,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <h4 id="dataHoraP"></h4>
                 <img src="../src/img/icon.png" class="imgLogo" alt="Mokele">
             </div>
-            
+
             <!-- Exibe o valor total da venda -->
             <div class="infoFinal">
                 <p id="valorTotal">
@@ -143,19 +164,22 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 </p>
             </div>
             <div class="resumoVenda">
-                <p><strong>Itens no carrinho:</strong> 
-                    <?php echo isset($_SESSION['itens']) ? count($_SESSION['itens']) : 0; ?>
+                <p><strong>Itens no carrinho:</strong>
+                    <?php echo isset($_SESSION["itens"])
+                        ? count($_SESSION["itens"])
+                        : 0; ?>
                 </p>
             </div>
             <div class="statusVenda">
                 <p class="status">
-                    <?php
-                        if (isset($_SESSION['itens']) && count($_SESSION['itens']) > 0) {
-                            echo 'Venda em andamento<span class="dots"></span>';
-                        } else {
-                            echo 'Aguardando itens<span class="dots"></span>';
-                        }
-                    ?>
+                    <?php if (
+                        isset($_SESSION["itens"]) &&
+                        count($_SESSION["itens"]) > 0
+                    ) {
+                        echo 'Venda em andamento<span class="dots"></span>';
+                    } else {
+                        echo 'Aguardando itens<span class="dots"></span>';
+                    } ?>
                 </p>
             </div>
 
@@ -171,8 +195,8 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <!-- Formulário para finalizar a venda -->
                 <form action="./pdv.php">
                     <input type="hidden" name="finalizar" value="1">
-                    <button class="btn btn-outline-success" type="submit" 
-                    <?php if($_SESSION["total"] == 0): ?>
+                    <button class="btn btn-outline-success" type="submit"
+                    <?php if ($_SESSION["total"] == 0): ?>
                         disabled
                     <?php endif; ?>
                     >Finalizar</button>
@@ -185,167 +209,151 @@ if (!isset($_SESSION["metodos_pagamento"])) {
     <dialog id="finalizarCompra" class="popupContainer">
         <div class="nomePopup">
             <h2>Finalizar Venda</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('finalizarCompra').close()"></i>
+            <!--<i class="material-icons md-close" onclick="document.getElementById('finalizarCompra').close()"></i>-->
         </div>
+        <h4 class="subtitulo-modal">Selecione um método: </h4>
         <div id="metodosPag">
-            <h4>Selecione um método: </h4>
-            <!-- Opção Dinheiro -->
-            <div class="metodos"
-                onclick="document.getElementById('metodoDinheiro').showModal(); document.getElementById('finalizarCompra').close()">
-                <img src="../src/img/dinheiro.png" alt="" width="50px">
-                <span>Dinheiro</span>
+            <div class="payment-card" onclick="selectMetodo('Dinheiro')">
+                <img src="../src/img/dinheiro.png"/>
+                <div>Dinheiro</div>
             </div>
-            <!-- Opção Cartão de Crédito -->
-            <div class="metodos"
-                onclick="document.getElementById('metodoCartCred').showModal(); document.getElementById('finalizarCompra').close()">
-                <img src="../src/img/cartao.png" alt="" width="50px">
-                <span>Cartão de Crétido</span>
+            <div class="payment-card" onclick="selectMetodo('Crédito')">
+                <img src="../src/img/cartao.png"/>
+                <div>Crédito</div>
             </div>
-            <!-- Opção Cartão de Débito -->
-            <div class="metodos"
-                onclick="document.getElementById('metodoCartDeb').showModal(); document.getElementById('finalizarCompra').close()">
-                <img src="../src/img/cartao.png" alt="" width="50px">
-                <span>Cartão de Débito</span>
+            <div class="payment-card" onclick="selectMetodo('Débito')">
+                <img src="../src/img/cartao.png"/>
+                <div>Débito</div>
             </div>
         </div>
-        <div class="infoFinal">
-            <p id="valorTotal">
-                <span class="currency">A pagar:</span>
-                <span id="subtotal">R$
-                    <?= number_format($_SESSION["subtotal"], 2, ",", ".") ?>
-                </span>
-                <span class="currency">Troco:</span>
-                <span id="troco">R$
-                    <?= number_format($_SESSION["troco"], 2, ",", ".") ?>
-                </span>
-            </p>
-        </div>
-        <h4>Métodos de Pagamento Selecionados:</h4>
-        <div id="metodosSelecionados">
-            <?php if (!empty($_SESSION["metodos_pagamento"])): ?>
-                <ul>
-                    <?php foreach ($_SESSION["metodos_pagamento"] as $p): ?>
-                        <li>
-                            <?= htmlspecialchars($p["metodo"]) ?> - Valor: R$
-                            <?= number_format($p["valor"], 2, ",", ".") ?>
-                            <?php if (!empty($p["cartao"])): ?>
-                                - Cartão: <?= htmlspecialchars($p["cartao"]) ?>
-                            <?php endif; ?>
-                        </li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p>Nenhum método de pagamento usado até então.</p>
-            <?php endif; ?>
+            <div id="methodForm" style="display: none;">
+            <!-- pagamento em dinheiro -->
+            <div id="metodoDinheiro" class="metodos">
+                <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+                    <input type="hidden" name="metodo" value="dinheiro">
+                    <div class="campo-modal">
+                        <label for="campo-dinheiro">Valor a pagar: </label>
+                        <input type="number" name="dinheiro" class="form-control" id="campo-dinheiro" required step="0.01">
+                    </div>
+                    <div class="botoes-compra">
+                        <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Continuar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- pagamento com cartão de débito -->
+            <div id="metodoCartDeb" class="metodos">
+                <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+                    <input type="hidden" name="metodo" value="cartao-debito">
+                    <div class="campo-modal">
+                        <label for="campo-cartao">Valor a pagar:</label>
+                        <input type="number" name="cartao" class="form-control" id="campo-cartao" required step="0.01">
+                    </div>
+                    <div class="campo-modal">
+                        <label for="cartao_debito">Escolha o cartão de débito:</label>
+                        <select name="cartao_debito" id="cartao_debito" class="form-select" required>
+                            <option value="" selected disabled>Selecione</option>
+                            <option value="visa_debito">Visa</option>
+                            <option value="mastercard_debito">Mastercard</option>
+                            <option value="elo_debito">Elo</option>
+                            <option value="maestro_debito">Maestro</option>
+                            <option value="banricompras_debito">Banricompras</option>
+                        </select>
+                    </div>
+                    <div class="botoes-compra">
+                        <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Continuar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- pagamento com cartão de crédito -->
+            <div id="metodoCartCred" class="metodos">
+                <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
+                    <input type="hidden" name="metodo" value="cartao-credito">
+                    <div class="campo-modal">
+                        <label for="campo-credito">Valor a pagar:</label>
+                        <input type="number" name="cartao" class="form-control" id="campo-credito" required step="0.01">
+                    </div>
+                    <div class="campo-modal">
+                        <label for="cartao_debito">Escolha o cartão de crédito</label>
+                        <select name="cartao_credito" id="cartao_credito" class="form-select" required>
+                            <option value="" selected disabled>Selecione</option>
+                            <option value="visa_credito">Visa</option>
+                            <option value="mastercard_credito">Mastercard</option>
+                            <option value="elo_credito">Elo</option>
+                            <option value="amex_credito">American Express</option>
+                            <option value="hipercard_credito">Hipercard</option>
+                        </select>
+                    </div>
+                    <div class="botoes-compra">
+                        <button type="reset" class="btn btn-outline-danger">Cancelar</button>
+                        <button type="submit" class="btn btn-outline-primary">Continuar</button>
+                    </div>
+                </form>
+            </div>
         </div>
 
-        <!-- Botão para finalizar a venda definitivamente -->
-        <div class="infoFinal">
+        <div class="modal-footer">
+            <div class="summary">
+                Total: <span id="total">R$
+                    <?= number_format($_SESSION["total"], 2, ",", ".") ?>
+                </span><br />
+                A pagar: <span id="subtotal">R$
+                    <?= number_format($_SESSION["subtotal"], 2, ",", ".") ?>
+                </span><br />
+                Troco: <span id="troco">R$
+                    <?= number_format($_SESSION["troco"], 2, ",", ".") ?>
+                </span>
+            </div>
             <form action="../controller/pdv/finalizarVenda.php" method="post" id="finalizarEmDefinitivo">
                 <button type="submit" class="btn btn-success"
-                <?php if($_SESSION["subtotal"]>0): ?>
+                <?php if ($_SESSION["subtotal"] >= $_SESSION["total"]): ?>
                     disabled
                 <?php endif; ?>
                 >Finalizar</button>
+                <button type="button" class="btn btn-danger" onclick="window.location.href='../controller/pdv/cancelarVenda.php'">Cancelar</button>
             </form>
         </div>
     </dialog>
 
-    <!-- Modal para pagamento em dinheiro -->
-    <dialog id="metodoDinheiro" class="popupContainer">
-        <div class="nomePopup">
-            <h2>Método: Dinheiro</h2>
-        </div>
-        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
-            <input type="hidden" name="metodo" value="dinheiro">
-            <h2>Valor a pagar</h2>
-            <div class="campo-modal">
-                <label for="campo-dinheiro">R$: </label>
-                <input type="number" name="dinheiro" class="form-control" id="campo-dinheiro" required step="0.01">
-            </div>
-            <div class="botoes-compra">
-                <button type="button" class="btn btn-outline-danger"
-                    onclick="document.getElementById('metodoDinheiro').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
-                <button type="submit" class="btn btn-outline-success">Continuar</button>
-            </div>
-        </form>
-    </dialog>
+    <script>
+        function selectMetodo(method) {
+            // Mostra a área geral do formulário
+            document.getElementById("methodForm").style.display = "block";
 
-    <!-- Modal para pagamento com cartão de débito -->
-    <dialog id="metodoCartDeb" class="popupContainer metodo-cartao">
-        <div class="nomePopup">
-            <h2>Método: Cartão de Débito</h2>
-        </div>
-        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
-            <input type="hidden" name="metodo" value="cartao-debito">
-            <h4>Valor a pagar</h4>
-            <div class="campo-modal">
-                <label for="campo-dinheiro">R$: </label>
-                <input type="number" name="cartao" class="form-control" id="campo-dinheiro" required step="0.01">
-            </div>
-            <hr>
-            <h4>Escolha o cartão de débito</h4>
-            <div class="campo-modal">
-                <label for="cartao_debito">Cartão:</label>
-                <select name="cartao_debito" id="cartao_debito" class="form-select" required>
-                    <option value="" selected disabled>Selecione</option>
-                    <option value="visa_debito">Visa</option>
-                    <option value="mastercard_debito">Mastercard</option>
-                    <option value="elo_debito">Elo</option>
-                    <option value="maestro_debito">Maestro</option>
-                    <option value="banricompras_debito">Banricompras</option>
-                </select>
-            </div>
-            <div class="botoes-compra">
-                <button type="button" class="btn btn-outline-danger"
-                    onclick="document.getElementById('metodoCartDeb').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
-                <button type="submit" class="btn btn-outline-success">Continuar</button>
-            </div>
-        </form>
-    </dialog>
+            // Esconde todos os métodos
+            document.getElementById("metodoDinheiro").style.display = "none";
+            document.getElementById("metodoCartCred").style.display = "none";
+            document.getElementById("metodoCartDeb").style.display = "none";
 
-    <!-- Modal para pagamento com cartão de crédito -->
-    <dialog id="metodoCartCred" class="popupContainer metodo-cartao">
-        <div class="nomePopup">
-            <h2>Método: Cartão de Crédito</h2>
-        </div>
-        <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
-            <input type="hidden" name="metodo" value="cartao-credito">
-            <h4>Valor a pagar</h4>
-            <div class="campo-modal">
-                <label for="campo-dinheiro">R$: </label>
-                <input type="number" name="cartao" class="form-control" id="campo-dinheiro" required step="0.01">
-            </div>
-            <hr>
-            <h4>Escolha o cartão de crédito</h4>
-            <div class="campo-modal">
-                <label for="cartao_debito">Cartão:</label>
-                <select name="cartao_credito" id="cartao_credito" class="form-select" required>
-                    <option value="" selected disabled>Selecione</option>
-                    <option value="visa_credito">Visa</option>
-                    <option value="mastercard_credito">Mastercard</option>
-                    <option value="elo_credito">Elo</option>
-                    <option value="amex_credito">American Express</option>
-                    <option value="hipercard_credito">Hipercard</option>
-                </select>
-            </div>
-            <div class="botoes-compra">
-                <button type="button" class="btn btn-outline-danger"
-                    onclick="document.getElementById('metodoCartCred').close(); document.getElementById('finalizarCompra').showModal()">Cancelar</button>
-                <button type="submit" class="btn btn-outline-success">Continuar</button>
-            </div>
-        </form>
-    </dialog>
+            // Remove .active de todos os cards
+            document.querySelectorAll(".payment-card").forEach(card => {
+                card.classList.remove("active");
+            });
+
+            // Exibe apenas o selecionado + adiciona destaque
+            if (method === "Crédito") {
+                document.getElementById("metodoCartCred").style.display = "block";
+                document.querySelector(".payment-card:nth-child(2)").classList.add("active");
+            } else if (method === "Débito") {
+                document.getElementById("metodoCartDeb").style.display = "block";
+                document.querySelector(".payment-card:nth-child(3)").classList.add("active");
+            } else {
+                document.getElementById("metodoDinheiro").style.display = "block";
+                document.querySelector(".payment-card:nth-child(1)").classList.add("active");
+            }
+        }
+
+        // Abre o modal automaticamente se estiver finalizando
+        <?php if (isset($_GET["finalizar"])): ?>
+            document.getElementById('finalizarCompra').showModal();
+        <?php endif; ?>
+    </script>
 
     <!-- Inclui o rodapé -->
     <?= include "./partials/footer.html" ?>
-
-    <!-- Script para abrir o modal de finalização de compra caso esteja finalizando -->
-    <?php if (isset($_GET["finalizar"])): ?>
-        <script>
-            document.getElementById('finalizarCompra').showModal();
-        </script>
-    <?php endif; ?>
 
 </body>
 </html>
