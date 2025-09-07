@@ -2,43 +2,50 @@
 
 .main-pdv {
     display: flex;
-    background-color: transparent;
     width: 90%;
     gap: 20px;
+    background-color: transparent;
     border: none;
     box-shadow: none;
     padding: 0;
 }
 
-/* Div adicionar itens(parte esquerda da pagina) */
+/* Div adicionar itens (lado esquerdo) */
 .adicionarItens {
     flex: 7;
     height: 100%;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
     gap: 20px;
-
     background-color: white;
     border-radius: var(--radius);
     box-shadow: var(--sombra);
 }
 
-.topoPag {
-    background-color: var(--cor-primaria);
+.topoPag,
+.topoPag-conta {
     width: 100%;
     text-align: center;
-    color: white;
-    padding: 10px;
     border-radius: var(--radius) var(--radius) 0 0;
+    color: white;
+}
+
+.topoPag {
+    background-color: var(--cor-primaria);
+    padding: 10px;
+}
+
+.topoPag-conta {
+    background-color: var(--cor-primaria);
+    padding: 18px;
+    color: #eeeeee;
 }
 
 .pesquisarItens {
     flex: 1;
     width: 100%;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -55,170 +62,13 @@
 }
 
 /* TABELA */
-
-#tabela-itens {
-    width: 100%;
-}
-
-#tabela-itens td,
-th {
-    text-align: center;
-}
-
-#container-table {
-    padding: 20px;
-    width: 100%;
-    flex: 1;
-    height: 100%;
-    overflow-y: auto;
-}
-.acoes {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Div contabilizarVendas(parte direira da pagina) */
-
-.contabilizarVendas {
-    flex: 3;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    
-    box-shadow: var(--sombra);
-    border-radius: var(--radius);
-    background-color: white;
-}
-
-.topoPag-conta {
-    background-color: var(--cor-primaria);
-    color: #eeeeee;
-    width: 100%;
-    text-align: center;
-    padding: 18px;
-    border-radius: var(--radius) var(--radius) 0 0;
-}
-
-.contabilizarVendas img {
-    width: 80%;
-    margin: 0 auto;
-}
-
-.infoCaixa {
-    background-color: #eeee;
-    border-radius: 8%;
-    margin-left: 10px; 
-    margin-right: 10px;
-}
-
-.infoCaixa h4 {
-    background-color: #eeee;
-    text-align: center;
-}
-
-#finalizarVenda {
-    width: 100%;
-    display: flex;
-    gap: 20px;
-    padding: 0 20px;
-}
-
-#finalizarVenda form {
-    padding: 0;
-}
-
-#finalizarVenda * {
-    flex: 1;
-}
-
-#finalizarVenda form button {
-    margin: 0;
-}
-
-.infoFinal {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.infoFinal {
-    font-weight: bold;
-}
-
-.infoFinal .currency {
-    font-size: 1em;
-}
-
-.infoFinal #total {
-    font-size: 2em;
-}
-.imgLogo{
-    display: block;
-    margin: 0 auto;
-}
-
-.form-finalizarPag {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column; /* importante */
-    gap: 20px;
-}
-
-.botoes-compra {
-    width: 100%;
-    padding: 10px;
-    gap: 20px;
-    display: flex;
-    align-items: center;
-    margin-top: auto;
-}
-
-.botoes-compra button {
-    flex: 1;
-}
-
-.campo-modal {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 20px;
-}
-
-.campo-modal input, select {
-    flex: 9;
-}
-
-.campo-modal label {
-    flex: 1;
-}
-
-.popupContainer button{
-    margin: 0;
-}
-
-#finalizarCompra {
-    overflow-y: auto;
-    height: 80vh;
-}
-
-.metodo-cartao {
-    height: 70vh;
-}
-
-#finalizarEmDefinitivo {
-    padding: 0;
-    padding-bottom: 20px;
-}
+#tabela-itens,
 .tabela {
     width: 100%;
     border-collapse: collapse;
 }
 
+#tabela-itens td,
 .tabela td,
 th {
     text-align: center;
@@ -248,25 +98,273 @@ th {
 .tabela thead th:last-child {
     border-top-right-radius: var(--radius);
 }
-.remover{
-    color:#c20404;
+
+.remover {
+    color: #c20404;
 }
-.editar{
-    color: #000000
+
+.editar {
+    color: #000000;
+}
+
+/* Containers */
+#container-table {
+    padding: 20px;
+    width: 100%;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.acoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Div contabilizar vendas (lado direito) */
+.contabilizarVendas {
+    flex: 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    border-radius: var(--radius);
+    box-shadow: var(--sombra);
+}
+
+.contabilizarVendas img {
+    width: 80%;
+    margin: 0 auto;
+}
+
+.infoCaixa {
+    background-color: #eeee;
+    border-radius: 8%;
+    margin: 0 10px;
+    text-align: center;
 }
 
 #finalizarVenda {
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    padding: 0 20px;
     margin-top: auto;
     margin-bottom: 10px;
 }
+
+#finalizarVenda form,
+#finalizarVenda * {
+    flex: 1;
+    padding: 0;
+    margin: 0;
+}
+
+.infoFinal {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-weight: bold;
+}
+
+.infoFinal .currency {
+    font-size: 1em;
+}
+
+.infoFinal #total {
+    font-size: 2em;
+}
+
+.imgLogo {
+    display: block;
+    margin: 0 auto;
+}
+
+.form-finalizarPag {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.botoes-compra {
+    width: 100%;
+    padding: 10px;
+    gap: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.botoes-compra button {
+    flex: 1;
+}
+
+.campo-modal {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    margin: 16px 0;
+}
+
+.campo-modal input,
+select {
+    flex: 9;
+}
+
+.campo-modal label {
+    flex: 1;
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.popupContainer button {
+    margin: 0;
+}
+
+#finalizarCompra {
+    max-width: 600px;
+    width: 90%;
+    max-height: 90vh;
+    height: 87vh;
+    border-radius: var(--radius);
+    overflow-y: auto;
+    background: #fff;
+}
+
+#finalizarCompra > * {
+    width: 100%;
+}
+
+.nomePopup {
+    margin-bottom: auto;
+}
+
+.subtitulo-modal {
+    text-align: center;
+}
+
+#metodosPag {
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    align-items: start;
+    height: 50%;
+}
+
+.payment-card {
+    flex: 1;
+    min-width: 120px;
+    background: white;
+    border: 2px solid transparent;
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.payment-card:hover {
+    border-color: var(--cor-primaria);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.payment-card img {
+    width: 50px;
+    margin-bottom: 10px;
+}
+
+.payment-card.active {
+    border-color: var(--cor-primaria);
+    background: #f0f8ff;
+}
+
+.metodos,
+#methodForm {
+    height: 100%;
+}
+
+#methodForm {
+    overflow-y: auto;
+}
+
+.form-finalizarPag:active {
+    border: none;
+}
+
+.modal-footer {
+    background: #fafafa;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #eee;
+}
+
+.modal-footer > * {
+    flex: 5;
+    height: 100%;
+}
+
+.modal-footer span {
+    font-weight: bold;
+}
+
+.modal-footer form {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.modal-footer form > * {
+    flex: 5;
+    margin: 5px;
+}
+
+.summary {
+    font-size: 1em;
+}
+
+#metodoDinheiro,
+#metodoCartCred,
+#metodoCartDeb {
+    display: none;
+}
+
 .dots::after {
     content: "...";
     animation: dots 1.5s steps(3, end) infinite;
 }
 
 @keyframes dots {
-    0%   { content: ""; }
-    33%  { content: "."; }
-    66%  { content: ".."; }
-    100% { content: "..."; }
+    0% {
+        content: "";
+    }
+    33% {
+        content: ".";
+    }
+    66% {
+        content: "..";
+    }
+    100% {
+        content: "...";
+    }
+}
+
+.metodos:hover {
+    outline: none;
+}
+
+.metodos:active {
+    background-color: initial;
+    color: initial;
 }
