@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 //inclue permissões
-require_once __DIR__ ."/../../controller/permissions/permission.php";
+require_once __DIR__ . "/../../controller/permissions/permission.php";
 
 $idCargo = $_SESSION["id_cargo"];
 ?>
@@ -27,7 +27,7 @@ $idCargo = $_SESSION["id_cargo"];
                 <span>Home</span>
             </a>
         </li>
-        
+
         <!-- Verifica se o ID do cargo possui a permissão da pagina tal -->
         <?php if (verificar_permissao($idCargo, "pdv.php")): ?>
         <li class="item-menu">
@@ -75,12 +75,12 @@ $idCargo = $_SESSION["id_cargo"];
         <?php endif; ?>
 
         <?php if (verificar_permissao($idCargo, "comandas.php")): ?>
-        <!-- <li class="item-menu">
+         <li class="item-menu">
             <a href="./comandas.php">
                 <i class="material-icons md-confirmation_number item-menu-icon"></i>
                 <span>Comandas</span>
             </a>
-        </li> -->
+        </li>
         <?php endif; ?>
 
         <!-- Logout sempre aparece -->
