@@ -1,12 +1,13 @@
 <?php
-require_once __DIR__ ."/../../model/usuario/classUsuario.php";
-require_once __DIR__ ."/../../conexao.php";
+require_once __DIR__ . "/../../model/usuario/classUsuario.php";
+require_once __DIR__ . "/../../conexao.php";
 
 // Função que busca todos os usuários no banco, ordenados pelo id_usuario
-function buscar_usuario(): array {
+function buscar_usuario(): array
+{
     global $con; // Usa a conexão global com o banco
 
-    $sql = "SELECT * FROM usuarios ORDER BY id_usuario";
+    $sql = "SELECT * FROM usuarios ORDER BY id_usuario DESC";
     $stmt = $con->prepare($sql); // Prepara a query para execução segura
     $stmt->execute();
 
@@ -15,7 +16,8 @@ function buscar_usuario(): array {
 }
 
 // Função que busca todos os cargos no banco, ordenados pelo nome_cargo
-function buscar_cargos(): array {
+function buscar_cargos(): array
+{
     global $con;
 
     $sql_cargo = "SELECT * FROM cargos ORDER BY nome_cargo";
@@ -26,13 +28,14 @@ function buscar_cargos(): array {
 }
 
 // Função para cadastrar um novo usuário no banco
-function cadastrar_usuario(): void{
+function cadastrar_usuario(): void
+{
     global $con;
 
-    try{
+    try {
         // Instancia objetos de valor para validação dos dados enviados via POST
         $nome = new Nome($_POST["nome"]); // Classe Nome valida formato e conteúdo do nome
-        $cpf = new Cpf($_POST["cpf"]);    // Classe Cpf valida o CPF
+        $cpf = new Cpf($_POST["cpf"]); // Classe Cpf valida o CPF
         $email = new Email($_POST["email"]); // Classe Email valida o email
         $senha = new Senha($_POST["senha"]); // Classe Senha valida a senha
         $cargo = (int) $_POST["cargo"]; // Converte para inteiro o id do cargo
@@ -44,7 +47,8 @@ function cadastrar_usuario(): void{
         $usuario = new Usuario($nome, $cpf, $email, $senhaHash, $cargo, 0);
 
         // Query para inserir um novo usuário, usando prepared statements para evitar SQL Injection
-        $sql = "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo) VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo)";
+        $sql =
+            "INSERT INTO usuarios(nome_usuario, CPF, email, senha, id_cargo) VALUES (:nome_usuario, :CPF, :email, :senha, :id_cargo)";
         $stmt = $con->prepare($sql);
         // Liga os parâmetros com seus respectivos valores
         $stmt->bindValue(":nome_usuario", $usuario->getNome(), PDO::PARAM_STR);
@@ -54,7 +58,7 @@ function cadastrar_usuario(): void{
         $stmt->bindValue(":id_cargo", $usuario->getIdCargo(), PDO::PARAM_INT);
 
         // Executa a query e verifica sucesso
-        if(!$stmt->execute()){
+        if (!$stmt->execute()) {
             // Em caso de falha, exibe mensagem e redireciona
             echo "<script>alert('Não foi possivel cadastrar o usuario, Tente novamente!');window.location.href='../view/usuarios.php'</script>";
             exit();
@@ -62,19 +66,21 @@ function cadastrar_usuario(): void{
         // Em caso de sucesso, exibe mensagem e redireciona
         echo "<script>alert('Usuario cadastrado com sucesso!');window.location.href='../../view/usuarios.php'</script>";
         exit();
-
-    }catch(InvalidArgumentException $e){
+    } catch (InvalidArgumentException $e) {
         // Captura exceções de validação das classes (ex: Nome, Cpf) e exibe mensagem ao usuário
-        echo "<script>alert('". addslashes($e->getMessage()). "');window.location.href='../../view/usuarios.php'</script>";
+        echo "<script>alert('" .
+            addslashes($e->getMessage()) .
+            "');window.location.href='../../view/usuarios.php'</script>";
         exit();
     }
 }
 
 // Função para editar dados de um usuário existente
-function editar_usuario(): void{
+function editar_usuario(): void
+{
     global $con;
 
-    try{
+    try {
         $id_usuario = (int) $_POST["id_usuario"];
 
         // Busca informações atuais do usuário para preservar dados que não serão alterados
@@ -93,29 +99,43 @@ function editar_usuario(): void{
         $senhaHash = $infoUsuario["senha"];
 
         // Cria objeto Usuario com os dados atualizados e os antigos preservados
-        $usuario = new Usuario($nome_novo, $cpf , $email_novo, $senhaHash, $cargo_novo, $id_usuario);
+        $usuario = new Usuario(
+            $nome_novo,
+            $cpf,
+            $email_novo,
+            $senhaHash,
+            $cargo_novo,
+            $id_usuario,
+        );
 
         // Atualiza os dados do usuário no banco
-        $sql = "UPDATE usuarios SET nome_usuario = :nome_novo, email = :email_novo, id_cargo = :cargo_novo WHERE id_usuario = :id_usuario";
+        $sql =
+            "UPDATE usuarios SET nome_usuario = :nome_novo, email = :email_novo, id_cargo = :cargo_novo WHERE id_usuario = :id_usuario";
         $stmt = $con->prepare($sql);
         $stmt->bindValue(":nome_novo", $usuario->getNome(), PDO::PARAM_STR);
         $stmt->bindValue(":email_novo", $usuario->getEmail(), PDO::PARAM_STR);
         $stmt->bindValue(":cargo_novo", $usuario->getIdCargo(), PDO::PARAM_INT);
-        $stmt->bindValue(":id_usuario", $usuario->getIdUsuario(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":id_usuario",
+            $usuario->getIdUsuario(),
+            PDO::PARAM_INT,
+        );
 
-        if($stmt->execute()){
+        if ($stmt->execute()) {
             echo "<script>alert('Usuario atualizado com Sucesso!');window.location.href='../../view/usuarios.php'</script>";
             exit();
         }
-
-    }catch(InvalidArgumentException $e){
+    } catch (InvalidArgumentException $e) {
         // Captura erros de validação e exibe mensagem ao usuário
-        echo "<script>alert('". addslashes($e->getMessage())."');window.location.href='../../view/usuarios.php'</script>";
+        echo "<script>alert('" .
+            addslashes($e->getMessage()) .
+            "');window.location.href='../../view/usuarios.php'</script>";
     }
 }
 
 // Função para excluir um usuário dado o id
-function excluir_usuario($id_usuario): void{
+function excluir_usuario($id_usuario): void
+{
     global $con;
 
     // Prepara e executa query DELETE para remover usuário
@@ -123,7 +143,7 @@ function excluir_usuario($id_usuario): void{
     $stmt = $con->prepare($sql);
     $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
 
-    if(!$stmt->execute()){
+    if (!$stmt->execute()) {
         echo "<script>alert('Ocorreu um erro ao excluir o usuario!');window.location.href='../../view/usuarios.php'</script>";
         exit();
     }
@@ -133,7 +153,8 @@ function excluir_usuario($id_usuario): void{
 }
 
 // Função que realiza pesquisa de usuários por id ou nome
-function pesquisar_usuario(): array {
+function pesquisar_usuario(): array
+{
     global $con;
 
     // Se o campo de busca está vazio, retorna todos os usuários

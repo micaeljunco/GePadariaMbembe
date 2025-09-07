@@ -10,7 +10,7 @@ function consulta_itens(): array|string
 {
     global $con; // usa a conexão global PDO
 
-    $sql = "SELECT * FROM itens"; // SQL para buscar todos os itens
+    $sql = "SELECT * FROM itens ORDER BY id_item DESC"; // SQL para buscar todos os itens
     $stmt = $con->prepare($sql);
 
     try {
@@ -23,7 +23,7 @@ function consulta_itens(): array|string
         // Em caso de erro, retorna a mensagem do erro
         return $e->getMessage();
     }
-    // Caso não execute, retorna essa mensagem padrão
+    // Caso não execute, retorna essa mensagem padrão (necessario pro PHP não reclamar que não há retorno em todos os casos)
     return "Não foi possível realizar a consulta.";
 }
 
@@ -50,7 +50,8 @@ function busca_item($busca): array|string
         $stmt->bindParam(":id_item", $busca, PDO::PARAM_INT);
     } else {
         // Busca pelo nome do item que começa com $busca
-        $sql = "SELECT * FROM itens WHERE nome_item LIKE :nome_item";
+        $sql =
+            "SELECT * FROM itens WHERE nome_item LIKE :nome_item ORDER BY nome_item ASC";
         $stmt = $con->prepare($sql);
         $stmt->bindValue(":nome_item", "$busca%", PDO::PARAM_STR);
     }

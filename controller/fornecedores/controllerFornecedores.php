@@ -16,7 +16,7 @@ function consulta_fornecedores(): array|string
     $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
             FROM fornecedores
             LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
-            ORDER BY fornecedores.nome_fornecedor ASC";
+            ORDER BY fornecedores.id_fornecedor DESC";
     $stmt = $con->prepare($sql);
 
     try {
@@ -24,7 +24,7 @@ function consulta_fornecedores(): array|string
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
     } catch (PDOException $e) {
-        return $e->getMessage();  // Retorna mensagem de erro caso falhe
+        return $e->getMessage(); // Retorna mensagem de erro caso falhe
     }
     return "Não foi possível realizar a consulta.";
 }
@@ -46,7 +46,7 @@ function busca_fornecedores()
                     FROM fornecedores
                     LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
                     WHERE id_fornecedor = :busca
-                    ORDER BY nome_fornecedor ASC";
+                    ORDER BY id_fornecedor DESC";
             $stmt = $con->prepare($sql);
             $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
         } else {
@@ -60,12 +60,7 @@ function busca_fornecedores()
             $stmt->bindValue(":busca", "$busca%", PDO::PARAM_STR);
         }
     } else {
-        // Retorna todos os fornecedores caso não haja busca
-        $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                FROM fornecedores
-                LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
-                ORDER BY fornecedores.nome_fornecedor ASC";
-        $stmt = $con->prepare($sql);
+        return consulta_fornecedores();
     }
 
     $stmt->execute();
@@ -84,9 +79,14 @@ function fornecedor_item(?int $item_id_fornecedor): string
 
     global $con;
 
-    $sql = "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
+    $sql =
+        "SELECT nome_fornecedor FROM fornecedores WHERE id_fornecedor = :item_id_fornecedor";
     $stmt = $con->prepare($sql);
-    $stmt->bindValue(":item_id_fornecedor", $item_id_fornecedor, PDO::PARAM_INT);
+    $stmt->bindValue(
+        ":item_id_fornecedor",
+        $item_id_fornecedor,
+        PDO::PARAM_INT,
+    );
 
     try {
         $stmt->execute();
@@ -116,12 +116,14 @@ function alterar_fornecedor()
 
             if (is_numeric($busca)) {
                 // Busca por ID
-                $sql = "SELECT * FROM fornecedores WHERE id_fornecedor = :busca";
+                $sql =
+                    "SELECT * FROM fornecedores WHERE id_fornecedor = :busca";
                 $stmt = $con->prepare($sql);
                 $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
             } else {
                 // Busca por nome com início igual ao termo buscado
-                $sql = "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome";
+                $sql =
+                    "SELECT * FROM fornecedores WHERE nome_fornecedor LIKE :busca_nome";
                 $stmt = $con->prepare($sql);
                 $stmt->bindValue(":busca_nome", "$busca%", PDO::PARAM_STR);
             }
@@ -201,10 +203,22 @@ function cadastrar_fornecedor(): void
         $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao, id_telefone)
             VALUES (:nome_fornecedor, :cnpj, :descricao, :id_telefone)";
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(":nome_fornecedor", $fornecedor->getNome(), PDO::PARAM_STR);
+        $stmt->bindValue(
+            ":nome_fornecedor",
+            $fornecedor->getNome(),
+            PDO::PARAM_STR,
+        );
         $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
-        $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
-        $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":descricao",
+            $fornecedor->getDescricao(),
+            PDO::PARAM_STR,
+        );
+        $stmt->bindValue(
+            ":id_telefone",
+            $fornecedor->getIdTelefone(),
+            PDO::PARAM_INT,
+        );
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel cadastrar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
@@ -229,7 +243,8 @@ function obterIdTelefoneFornecedor($id_fornecedor): int
 {
     global $con;
 
-    $sql = "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
+    $sql =
+        "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
     $stmt = $con->prepare($sql);
     $stmt->bindValue(":id_fornecedor", $id_fornecedor, PDO::PARAM_INT);
     $stmt->execute();
@@ -286,11 +301,27 @@ function editar_fornecedor(): void
                 WHERE id_fornecedor = :id_fornecedor";
 
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(":id_fornecedor", $fornecedor->getIdFornecedor(), PDO::PARAM_INT);
-        $stmt->bindValue(":nome_fornecedor", $fornecedor->getNome(), PDO::PARAM_STR);
+        $stmt->bindValue(
+            ":id_fornecedor",
+            $fornecedor->getIdFornecedor(),
+            PDO::PARAM_INT,
+        );
+        $stmt->bindValue(
+            ":nome_fornecedor",
+            $fornecedor->getNome(),
+            PDO::PARAM_STR,
+        );
         $stmt->bindValue(":cnpj", $fornecedor->getCNPJ(), PDO::PARAM_STR);
-        $stmt->bindValue(":descricao", $fornecedor->getDescricao(), PDO::PARAM_STR);
-        $stmt->bindValue(":id_telefone", $fornecedor->getIdTelefone(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":descricao",
+            $fornecedor->getDescricao(),
+            PDO::PARAM_STR,
+        );
+        $stmt->bindValue(
+            ":id_telefone",
+            $fornecedor->getIdTelefone(),
+            PDO::PARAM_INT,
+        );
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel editar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
