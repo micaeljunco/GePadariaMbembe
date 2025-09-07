@@ -4,12 +4,17 @@ class Vendas
 {
     private int $id_venda;
     private int $id_usuario;
-    private ?int $id_comanda;       // nulo
+    private ?int $id_comanda; // nulo
     private float $valor_total;
-    private DateTime $data_hora;    // momento exato em que a venda foi realizada
+    private DateTime $data_hora; // momento exato em que a venda foi realizada
 
-    public function __construct($id_venda, $id_usuario, $id_comanda, $data_hora, $valor_total)
-    {
+    public function __construct(
+        int $id_venda,
+        int $id_usuario,
+        ?int $id_comanda,
+        DateTime $data_hora,
+        float $valor_total,
+    ) {
         $this->id_venda = $id_venda;
         $this->id_usuario = $id_usuario;
         $this->id_comanda = $id_comanda;

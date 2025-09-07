@@ -68,10 +68,10 @@ $fornecedores = consulta_fornecedores();
                     required>
 
                 <label for="cnpjItem" class="form-label">* Qtde. Mínima (para alertas):</label>
-                <input type="number" id="quantMin" class="form-control" name="quantMin" step="1" min="0" required>
+                <input type="number" id="quantMin" class="form-control" name="quantMin" step="0.001" min="0.001" required>
 
                 <label for="quant" class="form-label">* Qtde. para o Inventário:</label>
-                <input type="number" name="quant" id="quant" class="form-control" step="1" min="0" required>
+                <input type="number" name="quant" id="quant" class="form-control" step="0.001" min="0.001" required>
 
                 <label for="categoria" class="form-label">* Categoria:</label>
                 <select id="categoria" class="form-control" name="categoria" required>
@@ -192,13 +192,15 @@ $fornecedores = consulta_fornecedores();
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php else: ?>
+                    <?php
+                        // Caso contrario exibe essa mensagem
+                        // Caso contrario exibe essa mensagem
+                        else: ?>
                         <tr>
                             <td colspan="9">
                                 <!-- se $itens for string exibe $itens -->
                                 <?php if (is_string($itens)) {
                                     echo $itens;
-                                    // Caso contrario exibe essa mensagem
                                 } else {
                                     echo "Nenhum item encontrado.";
                                 } ?>
@@ -223,10 +225,10 @@ $fornecedores = consulta_fornecedores();
                     required>
 
                 <label for="cnpjItem" class="form-label">* Qtde. Mínima (para alertas):</label>
-                <input type="number" id="quantMinEd" class="form-control" name="quantMin" step="1" min="0" required>
+                <input type="number" id="quantMinEd" class="form-control" name="quantMin" step="0.001" min="0.001" required>
 
                 <label for="quant" class="form-label">* Qtde. em estoque:</label>
-                <input type="number" name="quant" id="quantEd" class="form-control" step="1" min="0" required>
+                <input type="number" name="quant" id="quantEd" class="form-control" step="0.001" min="0.001" required>
 
                 <label for="categoriaEd" class="form-label">* Categoria:</label>
                 <select id="categoriaEd" class="form-select" name="categoria" required>

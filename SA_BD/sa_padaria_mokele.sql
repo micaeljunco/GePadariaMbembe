@@ -51,8 +51,9 @@ INSERT INTO `cargos` (`id_cargo`, `nome_cargo`) VALUES
 
 CREATE TABLE `comandas` (
   `id_comanda` int(11) NOT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `valor_total` decimal(7,2) DEFAULT 0.00
+  `id_usuario` int(11) NULL,
+  `aberta` tinyint(1) NOT NULL DEFAULT '1'
+  -- `valor_total` decimal(7,2) DEFAULT 0.00        -- Necessário?
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -62,9 +63,10 @@ CREATE TABLE `comandas` (
 --
 
 CREATE TABLE `comanda_itens` (
+  `id_comanda_itens` int(11) NOT NULL,
   `id_comanda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
-  `quantidade` int(11) NOT NULL
+  `quantidade` DECIMAL(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -106,8 +108,8 @@ INSERT INTO `fornecedores` (`id_fornecedor`, `nome_fornecedor`, `cnpj`, `descric
 CREATE TABLE `itens` (
   `id_item` int(11) NOT NULL,
   `nome_item` varchar(255) NOT NULL,
-  `quant_min` int(11) NOT NULL,
-  `quant` int(11) NOT NULL,
+  `quant_min` DECIMAL(10,2) NOT NULL,
+  `quant` DECIMAL(10,2) NOT NULL,
   `categoria` enum('produto','insumo') NOT NULL,
   `validade` date NOT NULL,
   `id_fornecedor` int(11) DEFAULT NULL,
@@ -295,7 +297,7 @@ CREATE TABLE `vendas_itens` (
   `id_venda_item` int(11) NOT NULL,
   `id_venda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
-  `quantidade` int(11) NOT NULL
+  `quantidade` DECIMAL(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -345,7 +347,8 @@ ALTER TABLE `comandas`
 -- Índices de tabela `comanda_itens`
 --
 ALTER TABLE `comanda_itens`
-  ADD PRIMARY KEY (`id_comanda`,`id_item`),
+  ADD PRIMARY KEY (`id_comanda_itens`),
+  ADD KEY `id_comanda` (`id_comanda`),
   ADD KEY `id_item` (`id_item`);
 
 --

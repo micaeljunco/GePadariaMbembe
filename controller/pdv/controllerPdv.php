@@ -25,36 +25,36 @@ editarItem();
 function adicionar_item()
 {
     // Verifica se o formulário foi enviado via POST e se o campo 'item' está presente
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['item'])) {
-        $valor = trim($_POST['item']);
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["item"])) {
+        $valor = trim($_POST["item"]);
         $idItem = null;
         $novoItem = null;
 
         // Se o valor for numérico, trata como ID, senão como nome
         if (is_numeric($valor)) {
-            $idItem = $valor;   // se for número -> ID
+            $idItem = $valor; // se for número -> ID
         } else {
             $novoItem = $valor; // se for texto -> Nome
         }
 
         // Pega a quantidade informada (padrão 1)
-        $quantidade = intval($_POST['quantidade'] ?? 1);
+        $quantidade = floatval($_POST["quantidade"] ?? 1);
 
         // Procura o item no banco e adiciona ao carrinho se encontrado
-        if ($novoItem !== '' || $idItem !== null) {
+        if ($novoItem !== "" || $idItem !== null) {
             $item = procurarItem($idItem, $novoItem);
             if ($item) {
-                $item['quantidade'] = $quantidade;
-                $_SESSION['itens'][] = $item;
+                $item["quantidade"] = $quantidade;
+                $_SESSION["itens"][] = $item;
             }
         }
 
         // Atualiza o total da venda
-        $ultimoItem = end($_SESSION['itens']);
-        atualizar_total($ultimoItem['val_unitario'], $_POST['quantidade']);
+        $ultimoItem = end($_SESSION["itens"]);
+        atualizar_total($ultimoItem["val_unitario"], $quantidade);
 
         // Limpa dados de edição e redireciona para a tela do PDV
-        unset($_SESSION['editar']);
+        unset($_SESSION["editar"]);
         header("Location: ../../view/pdv.php");
     }
 }
@@ -66,18 +66,18 @@ function procurarItem($id = null, $nome_item = null)
 {
     global $con;
     $sql = "SELECT * FROM itens WHERE 1=1";
-    if ($id !== null && $id !== '') {
+    if ($id !== null && $id !== "") {
         $sql .= " AND id_item = :id_item";
     }
-    if ($nome_item !== null && $nome_item !== '') {
+    if ($nome_item !== null && $nome_item !== "") {
         $sql .= " AND nome_item = :nome_item";
     }
     $stmt = $con->prepare($sql);
-    if ($id !== null && $id !== '') {
-        $stmt->bindParam(':id_item', $id, PDO::PARAM_INT);
+    if ($id !== null && $id !== "") {
+        $stmt->bindParam(":id_item", $id, PDO::PARAM_INT);
     }
-    if ($nome_item !== null && $nome_item !== '') {
-        $stmt->bindParam(':nome_item', $nome_item, PDO::PARAM_STR);
+    if ($nome_item !== null && $nome_item !== "") {
+        $stmt->bindParam(":nome_item", $nome_item, PDO::PARAM_STR);
     }
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
@@ -88,14 +88,14 @@ function procurarItem($id = null, $nome_item = null)
  */
 function removerItem()
 {
-    if (isset($_GET['remover'])) {
-        $index = intval($_GET['remover']);
-        if (isset($_SESSION['itens'][$index])) {
-            unset($_SESSION['itens'][$index]); // remove do array
-            $_SESSION['itens'] = array_values(array: $_SESSION['itens']); // reorganiza os índices
+    if (isset($_GET["remover"])) {
+        $index = intval($_GET["remover"]);
+        if (isset($_SESSION["itens"][$index])) {
+            unset($_SESSION["itens"][$index]); // remove do array
+            $_SESSION["itens"] = array_values(array: $_SESSION["itens"]); // reorganiza os índices
         }
         header("Location: ../../view/pdv.php");
-        exit;
+        exit();
     }
 }
 
@@ -104,25 +104,25 @@ function removerItem()
  */
 function editarItem()
 {
-    if (isset($_GET['editar'])) {
-        $index = intval($_GET['editar']);
+    if (isset($_GET["editar"])) {
+        $index = intval($_GET["editar"]);
 
-        if (isset($_SESSION['itens'][$index])) {
+        if (isset($_SESSION["itens"][$index])) {
             // pega o item selecionado
-            $itemSelecionado = $_SESSION['itens'][$index];
+            $itemSelecionado = $_SESSION["itens"][$index];
 
             // remove da lista
-            unset($_SESSION['itens'][$index]);
-            $_SESSION['itens'] = array_values($_SESSION['itens']);
+            unset($_SESSION["itens"][$index]);
+            $_SESSION["itens"] = array_values($_SESSION["itens"]);
 
             // guarda info para reaproveitar no formulário
-            $_SESSION['editar'] = [
-                'nome' => $itemSelecionado['nome_item'],
-                'quantidade' => $itemSelecionado['quantidade']
+            $_SESSION["editar"] = [
+                "nome" => $itemSelecionado["nome_item"],
+                "quantidade" => $itemSelecionado["quantidade"],
             ];
         }
         header("Location: ../../view/pdv.php");
-        exit;
+        exit();
     }
 }
 
@@ -132,12 +132,12 @@ function editarItem()
 function recalcular_total()
 {
     $total = 0.0;
-    if (isset($_SESSION['itens'])) {
-        foreach ($_SESSION['itens'] as $item) {
-            $total += $item['val_unitario'] * $item['quantidade'];
+    if (isset($_SESSION["itens"])) {
+        foreach ($_SESSION["itens"] as $item) {
+            $total += $item["val_unitario"] * $item["quantidade"];
         }
     }
-    $_SESSION['total'] = $total;
+    $_SESSION["total"] = $total;
 }
 
 /**
@@ -145,10 +145,10 @@ function recalcular_total()
  */
 function atualizar_total($val_uni, $quant): void
 {
-    $total = (float) $_SESSION['total'];
+    $total = (float) $_SESSION["total"];
     $subtotal = $val_uni * $quant;
     $total += $subtotal;
-    $_SESSION['total'] = $total;
+    $_SESSION["total"] = $total;
 }
 
 /**
@@ -157,31 +157,31 @@ function atualizar_total($val_uni, $quant): void
 function processa_metodos(): void
 {
     // Detecta o método de pagamento enviado pelo formulário
-    $metodo = $_POST['metodo'] ?? null;
+    $metodo = $_POST["metodo"] ?? null;
 
     if ($metodo) {
-        $pagamento = ['metodo' => $metodo];
+        $pagamento = ["metodo" => $metodo];
 
         // Dependendo do método, pega valor e dados específicos
-        if ($metodo === 'dinheiro') {
-            $pagamento['valor'] = floatval($_POST['dinheiro'] ?? 0);
-        } elseif ($metodo === 'cartao-debito') {
-            $pagamento['valor'] = floatval($_POST['cartao'] ?? 0);
-            $pagamento['cartao'] = $_POST['cartao_debito'] ?? '';
-        } elseif ($metodo === 'cartao-credito') {
-            $pagamento['valor'] = floatval($_POST['cartao'] ?? 0);
-            $pagamento['cartao'] = $_POST['cartao_credito'] ?? '';
+        if ($metodo === "dinheiro") {
+            $pagamento["valor"] = floatval($_POST["dinheiro"] ?? 0);
+        } elseif ($metodo === "cartao-debito") {
+            $pagamento["valor"] = floatval($_POST["cartao"] ?? 0);
+            $pagamento["cartao"] = $_POST["cartao_debito"] ?? "";
+        } elseif ($metodo === "cartao-credito") {
+            $pagamento["valor"] = floatval($_POST["cartao"] ?? 0);
+            $pagamento["cartao"] = $_POST["cartao_credito"] ?? "";
         }
 
         // Adiciona o método de pagamento na sessão
-        $_SESSION['metodos_pagamento'][] = $pagamento;
+        $_SESSION["metodos_pagamento"][] = $pagamento;
 
         // Atualiza o subtotal (valor restante a pagar)
-        atualizar_subtotal($pagamento['valor']);
+        atualizar_subtotal($pagamento["valor"]);
 
         // Redireciona para evitar reenvio do formulário
         header("Location: ../../view/pdv.php?finalizar=1");
-        exit;
+        exit();
     }
 }
 
@@ -190,19 +190,20 @@ function processa_metodos(): void
  */
 function atualizar_subtotal($valor)
 {
-    $subtotal = (float) ($_SESSION['subtotal'] ?? $_SESSION['total']);
+    $subtotal = (float) ($_SESSION["subtotal"] ?? $_SESSION["total"]);
     $subtotal -= $valor;
 
-    $_SESSION['subtotal'] = max($subtotal, 0); // Evita subtotal negativo
+    $_SESSION["subtotal"] = max($subtotal, 0); // Evita subtotal negativo
 
     // Se pagou mais que o total, calcula troco
     $totalPago = 0.0;
-    foreach ($_SESSION['metodos_pagamento'] as $p) {
-        $totalPago += $p['valor'];
+    foreach ($_SESSION["metodos_pagamento"] as $p) {
+        $totalPago += $p["valor"];
     }
 
-    $totalCompra = $_SESSION['total'];
-    $_SESSION['troco'] = $totalPago > $totalCompra ? $totalPago - $totalCompra : 0.0;
+    $totalCompra = $_SESSION["total"];
+    $_SESSION["troco"] =
+        $totalPago > $totalCompra ? $totalPago - $totalCompra : 0.0;
 }
 
 /**
@@ -241,7 +242,6 @@ function finalizar_compra(): void
         window.location.href = '../../view/pdv.php';
         </script>";
         limpar_venda(false);
-
     } catch (Exception $e) {
         // Desfaz a transação caso algo falhe
         if ($con->inTransaction()) {
@@ -251,7 +251,9 @@ function finalizar_compra(): void
         // Exibe mensagem de erro e limpa a venda
         echo "
         <script>
-        alert('Erro ao registrar venda. Detalhes: " . addslashes($e->getMessage()) . "');
+        alert('Erro ao registrar venda. Detalhes: " .
+            addslashes($e->getMessage()) .
+            "');
         window.location.href = '../../view/pdv.php';
         </script>";
         limpar_venda(false);
@@ -271,7 +273,9 @@ function verificar_estoque_itens(): void
         $id_item = $item["id_item"];
         $quantidade_vendida = $item["quantidade"];
 
-        $stmt_check = $con->prepare("SELECT quant FROM itens WHERE id_item = :id_item");
+        $stmt_check = $con->prepare(
+            "SELECT quant FROM itens WHERE id_item = :id_item",
+        );
         $stmt_check->bindValue(":id_item", $id_item, PDO::PARAM_INT);
         $stmt_check->execute();
         $estoque_atual = $stmt_check->fetchColumn();
@@ -281,7 +285,9 @@ function verificar_estoque_itens(): void
         }
 
         if ($estoque_atual < $quantidade_vendida) {
-            throw new Exception("Estoque insuficiente para o item ID: $id_item. Estoque atual: $estoque_atual, quantidade solicitada: $quantidade_vendida.");
+            throw new Exception(
+                "Estoque insuficiente para o item ID: $id_item. Estoque atual: $estoque_atual, quantidade solicitada: $quantidade_vendida.",
+            );
         }
     }
 }
@@ -307,7 +313,9 @@ function verificar_metodo_pagamento(): void
     }
 
     if ($valor_total_pago <= 0) {
-        throw new Exception("Nenhum valor válido foi informado para os métodos de pagamento.");
+        throw new Exception(
+            "Nenhum valor válido foi informado para os métodos de pagamento.",
+        );
     }
 }
 
@@ -319,18 +327,12 @@ function cadastrar_venda(): int
     global $con;
 
     $id_usuario = $_SESSION["id_usuario"];
-    $data_hora = new DateTime('now', new DateTimeZone('America/Sao_Paulo'));
+    $data_hora = new DateTime("now", new DateTimeZone("America/Sao_Paulo"));
     $valor_total = $_SESSION["total"];
 
-    $venda = new Vendas(
-        0,
-        $id_usuario,
-        NULL,
-        $data_hora,
-        $valor_total
-    );
+    $venda = new Vendas(0, $id_usuario, null, $data_hora, $valor_total);
 
-    $sql = "INSERT INTO `vendas`(`id_usuario`, `id_comanda`, `valor_total`, `data_hora`) 
+    $sql = "INSERT INTO `vendas`(`id_usuario`, `id_comanda`, `valor_total`, `data_hora`)
             VALUES (:id_usuario, :id_comanda, :valor_total, :data_hora)";
     $stmt = $con->prepare($sql);
 
@@ -343,8 +345,12 @@ function cadastrar_venda(): int
         $stmt->bindValue(":id_comanda", $id_comanda, PDO::PARAM_INT);
     }
 
-    $stmt->bindValue(":valor_total", $venda->getValorTotal(), PDO::PARAM_INT);
-    $stmt->bindValue(":data_hora", $venda->getDataHora()->format('Y-m-d H:i:s'), PDO::PARAM_STR);
+    $stmt->bindValue(":valor_total", $venda->getValorTotal(), PDO::PARAM_STR);
+    $stmt->bindValue(
+        ":data_hora",
+        $venda->getDataHora()->format("Y-m-d H:i:s"),
+        PDO::PARAM_STR,
+    );
 
     if (!$stmt->execute()) {
         throw new Exception("Falha ao inserir venda.");
@@ -375,33 +381,51 @@ function venda_itens(int $id_venda): void
             0,
             $id_venda,
             $id_item,
-            $quantidade_vendida
+            $quantidade_vendida,
         );
 
         // Insere o item na tabela vendas_itens
-        $sql = "INSERT INTO `vendas_itens`(`id_venda`, `id_item`, `quantidade`) 
+        $sql = "INSERT INTO `vendas_itens`(`id_venda`, `id_item`, `quantidade`)
                 VALUES (:id_venda, :id_item, :quantidade)";
 
         $stmt = $con->prepare($sql);
-        $stmt->bindValue(":id_venda", $venda_itens->getIdVenda(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":id_venda",
+            $venda_itens->getIdVenda(),
+            PDO::PARAM_INT,
+        );
         $stmt->bindValue(":id_item", $venda_itens->getIdItem(), PDO::PARAM_INT);
-        $stmt->bindValue(":quantidade", $venda_itens->getQuantidade(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":quantidade",
+            $venda_itens->getQuantidade(),
+            PDO::PARAM_STR,
+        );
 
         if (!$stmt->execute()) {
             throw new Exception("Falha ao inserir item da venda.");
         }
 
         // Atualiza o estoque do item
-        $sql_update = "UPDATE `itens` 
-                       SET `quant` = `quant` - :quantidade 
+        $sql_update = "UPDATE `itens`
+                       SET `quant` = `quant` - :quantidade
                        WHERE `id_item` = :id_item";
 
         $stmt_update = $con->prepare($sql_update);
-        $stmt_update->bindValue(":quantidade", $venda_itens->getQuantidade(), PDO::PARAM_INT);
-        $stmt_update->bindValue(":id_item", $venda_itens->getIdItem(), PDO::PARAM_INT);
+        $stmt_update->bindValue(
+            ":quantidade",
+            $venda_itens->getQuantidade(),
+            PDO::PARAM_STR,
+        );
+        $stmt_update->bindValue(
+            ":id_item",
+            $venda_itens->getIdItem(),
+            PDO::PARAM_INT,
+        );
 
         if (!$stmt_update->execute()) {
-            throw new Exception("Falha ao atualizar o estoque do item ID: {$venda_itens->getIdItem()}");
+            throw new Exception(
+                "Falha ao atualizar o estoque do item ID: {$venda_itens->getIdItem()}",
+            );
         }
     }
 }
@@ -409,7 +433,8 @@ function venda_itens(int $id_venda): void
 /**
  * Cadastra os métodos de pagamento utilizados na venda
  */
-function insert_metodo_pag(int $id_venda) {
+function insert_metodo_pag(int $id_venda)
+{
     global $con;
 
     $metodos_pagamento = $_SESSION["metodos_pagamento"] ?? [];
@@ -427,20 +452,30 @@ function insert_metodo_pag(int $id_venda) {
             0,
             $id_venda,
             $metodo["metodo"],
-            $metodo["valor"]
+            $metodo["valor"],
         );
 
-        $sql = "INSERT INTO `metodos_pag`(`id_venda`, `metodo`, `valor_pago`) 
+        $sql = "INSERT INTO `metodos_pag`(`id_venda`, `metodo`, `valor_pago`)
                 VALUES (:id_venda, :metodo, :valor_pago)";
 
         $stmt = $con->prepare($sql);
 
-        $stmt->bindValue(":id_venda", $class_metPag->getIdVenda(), PDO::PARAM_INT);
+        $stmt->bindValue(
+            ":id_venda",
+            $class_metPag->getIdVenda(),
+            PDO::PARAM_INT,
+        );
         $stmt->bindValue(":metodo", $class_metPag->getMetodo(), PDO::PARAM_STR);
-        $stmt->bindValue(":valor_pago", $class_metPag->getValorPago(), PDO::PARAM_STR);
+        $stmt->bindValue(
+            ":valor_pago",
+            $class_metPag->getValorPago(),
+            PDO::PARAM_STR,
+        );
 
         if (!$stmt->execute()) {
-            throw new Exception("Falha ao inserir método de pagamento da venda.");
+            throw new Exception(
+                "Falha ao inserir método de pagamento da venda.",
+            );
         }
     }
 }
@@ -458,5 +493,5 @@ function limpar_venda($redirecionar)
     if ($redirecionar) {
         header("Location: ../../view/pdv.php");
     }
-    exit;
+    exit();
 }

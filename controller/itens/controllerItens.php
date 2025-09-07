@@ -14,7 +14,8 @@ function consulta_itens(): array|string
     $stmt = $con->prepare($sql);
 
     try {
-        if ($stmt->execute()) { // executa a query
+        if ($stmt->execute()) {
+            // executa a query
             // retorna todos os registros como array associativo
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
@@ -78,8 +79,8 @@ function cadastrar_item(): void
 
         // Captura e prepara os dados recebidos do formulário
         $nome_item = new Nome($_POST["nomeItem"]);
-        $quant_min = (int) $_POST["quantMin"];
-        $quant = (int) $_POST["quant"];
+        $quant = (float) $_POST["quant"];
+        $quant_min = (float) $_POST["quantMin"];
         $categoria = (string) $_POST["categoria"];
         $unidade_medida = (string) $_POST["unidade_medida"];
         $validade = (string) $_POST["validade"];
@@ -110,8 +111,8 @@ function cadastrar_item(): void
         $stmt = $con->prepare($sql);
         // Liga os valores dos parâmetros usando os getters do objeto Item
         $stmt->bindValue(":nome_item", $item->getNomeItem(), PDO::PARAM_STR);
-        $stmt->bindValue(":quant_min", $item->getQuantMin(), PDO::PARAM_INT);
-        $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_INT);
+        $stmt->bindValue(":quant_min", $item->getQuantMin(), PDO::PARAM_STR);
+        $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_STR);
         $stmt->bindValue(":categoria", $item->getCategoria(), PDO::PARAM_STR);
         $stmt->bindValue(":validade", $item->getValidade(), PDO::PARAM_STR);
 
@@ -119,7 +120,11 @@ function cadastrar_item(): void
         if ($item->getIdFornecedor() === null) {
             $stmt->bindValue(":id_fornecedor", null, PDO::PARAM_NULL);
         } else {
-            $stmt->bindValue(":id_fornecedor", $item->getIdFornecedor(), PDO::PARAM_INT);
+            $stmt->bindValue(
+                ":id_fornecedor",
+                $item->getIdFornecedor(),
+                PDO::PARAM_INT,
+            );
         }
 
         $stmt->bindValue(":val_unitario", $item->getValUni(), PDO::PARAM_STR);
@@ -134,7 +139,6 @@ function cadastrar_item(): void
         // Sucesso no cadastro, alerta e redireciona
         echo "<script>alert('Item cadastrado com sucesso!');window.location.href='../../view/itens.php'</script>";
         exit();
-
     } catch (InvalidArgumentException $e) {
         // Captura erro de argumento inválido (ex: Nome inválido)
         echo "<script>alert('" .
@@ -166,7 +170,10 @@ function deletar_item(int $id_item): void
         }
     } catch (PDOException $e) {
         // Caso erro de integridade referencial (item ligado a venda)
-        if ($e->getCode() === '23000' && str_contains($e->getMessage(), '1451')) {
+        if (
+            $e->getCode() === "23000" &&
+            str_contains($e->getMessage(), "1451")
+        ) {
             echo "<script>
                     alert('Este item está associado a uma ou mais vendas e não pode ser deletado.');
                     window.location.href = '../../view/itens.php';
@@ -174,7 +181,9 @@ function deletar_item(int $id_item): void
         } else {
             // Qualquer outro erro de banco
             echo "<script>
-                    alert('Erro ao deletar o item. Detalhes: " . addslashes($e->getMessage()) . "');
+                    alert('Erro ao deletar o item. Detalhes: " .
+                addslashes($e->getMessage()) .
+                "');
                     window.location.href = '../../view/itens.php';
                   </script>";
         }
@@ -204,8 +213,8 @@ function editar_item(): void
 
         // Captura os dados do formulário
         $nome_item = new Nome($_POST["nomeItem"]);
-        $quant_min = (int) $_POST["quantMin"];
-        $quant = (int) $_POST["quant"];
+        $quant_min = (float) $_POST["quantMin"];
+        $quant = (float) $_POST["quant"];
         $categoria = (string) $_POST["categoria"];
         $validade = (string) $_POST["validade"];
         $id_fornecedor = (int) $_POST["idFornecedor"];
@@ -238,15 +247,19 @@ function editar_item(): void
         $stmt = $con->prepare($sql);
         // Liga os parâmetros usando getters do objeto Item
         $stmt->bindValue(":nome_item", $item->getNomeItem(), PDO::PARAM_STR);
-        $stmt->bindValue(":quant_min", $item->getQuantMin(), PDO::PARAM_INT);
-        $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_INT);
+        $stmt->bindValue(":quant_min", $item->getQuantMin(), PDO::PARAM_STR);
+        $stmt->bindValue(":quant", $item->getQuant(), PDO::PARAM_STR);
         $stmt->bindValue(":categoria", $item->getCategoria(), PDO::PARAM_STR);
         $stmt->bindValue(":validade", $item->getValidade(), PDO::PARAM_STR);
 
         if ($item->getIdFornecedor() === null) {
             $stmt->bindValue(":id_fornecedor", null, PDO::PARAM_NULL);
         } else {
-            $stmt->bindValue(":id_fornecedor", $item->getIdFornecedor(), PDO::PARAM_INT);
+            $stmt->bindValue(
+                ":id_fornecedor",
+                $item->getIdFornecedor(),
+                PDO::PARAM_INT,
+            );
         }
 
         $stmt->bindValue(":val_unitario", $item->getValUni(), PDO::PARAM_STR);
@@ -261,7 +274,6 @@ function editar_item(): void
 
         echo "<script>alert('Item atualizado com sucesso!');window.location.href='../../view/itens.php'</script>";
         exit();
-
     } catch (InvalidArgumentException $e) {
         // Captura erros de argumentos inválidos (ex: Nome inválido)
         echo "<script>alert('" .

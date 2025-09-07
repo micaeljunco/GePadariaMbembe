@@ -6,8 +6,8 @@ class Item
 {
     private int $id_item;
     private Nome $nome_itens;
-    private int $quant_min;
-    private int $quant;
+    private float $quant_min;
+    private float $quant;
     private string $categoria;
     private string $validade;
     private ?int $id_fornecedor; //aceita nulo
@@ -17,8 +17,8 @@ class Item
     public function __construct(
         int $id_item,
         Nome $nome_itens,
-        int $quant_min,
-        int $quant,
+        float $quant_min,
+        float $quant,
         string $categoria,
         string $validade,
         ?int $id_fornecedor,
@@ -41,12 +41,12 @@ class Item
         return (string) $this->nome_itens;
     }
 
-    public function getQuantMin(): int
+    public function getQuantMin(): float
     {
         return $this->quant_min;
     }
 
-    public function getQuant(): int
+    public function getQuant(): float
     {
         return $this->quant;
     }
