@@ -62,6 +62,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
             </div>
 
             <!-- Formulário para adicionar itens ao carrinho -->
+            <p id="dica">Use o prefixo "C" antes do ID de uma comanda no campo de busca para usá-la.</p>
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
                     <!-- Campo de texto para digitar o NOME do produto -->
@@ -69,13 +70,13 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                     <input type="text" name="item" id="item" value="<?php echo $_SESSION[
                         "editar"
                     ]["nome"] ??
-                        ""; ?>" placeholder="Nome do produto" class="form-control" required>
+                        ""; ?>" placeholder="Nome, ID ou comanda" class="form-control" required>
                     <!-- Campo numérico para informar a QUANTIDADE -->
                     <!-- O value também pode vir de $_SESSION['editar']['quantidade'], se estiver editando -->
                     <input type="number" name="quantidade" id="quantidade" min="0.001" step="0.001" value="<?php echo $_SESSION[
                         "editar"
                     ]["quantidade"] ??
-                        ""; ?>" placeholder="Quantidade" class="form-control" required>
+                        ""; ?>" placeholder="Quantidade" class="form-control">
                     <!-- Botão que envia o formulário -->
                     <!-- Ao clicar, os dados (nome e quantidade) vão pro adicionar.php -->
                     <button type="submit" class="btn btn-outline-warning">Adicionar</button>

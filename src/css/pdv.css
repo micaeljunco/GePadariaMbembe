@@ -18,7 +18,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: start;
-    gap: 20px;
+    /*gap: 20px;*/
     background-color: white;
     border-radius: var(--radius);
     box-shadow: var(--sombra);
@@ -162,7 +162,10 @@ th {
     padding: 0;
     margin: 0;
 }
-
+.adicionarItens form {
+    padding-top: 0;
+    padding-bottom: 0;
+}
 .infoFinal {
     width: 100%;
     display: flex;
@@ -367,4 +370,12 @@ select {
 .metodos:active {
     background-color: initial;
     color: initial;
+}
+
+#dica {
+    margin: 10px;
+    font-size: 0.9em;
+    padding-left: 15px;
+    margin-right: auto;
+    color: #555555;
 }
