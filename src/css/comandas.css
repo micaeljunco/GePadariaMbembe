@@ -1,27 +1,38 @@
 @import "variaveis.css";
-main form{
+#main-comandas {
+    padding: 0;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+    width: 90%;
+}
+#cadastro_relatorio {
+    justify-content: space-between;
+}
+main form {
     align-items: center;
     justify-content: center;
 }
-.form-control{
+.form-control {
     width: 50%;
     margin: 0;
 }
-.form-control + .form-control, .form-control + .btn{
+.form-control + .form-control,
+.form-control + .btn {
     margin-left: 10px;
 }
-.interacao{
+.interacao {
     width: 100%;
     justify-content: space-between;
 }
-#form-emitir{
+#form-emitir {
     width: 50%;
 }
-#form-emitir .btn{
+#form-emitir .btn {
     width: 200px;
 }
 .tabela {
-    width: 95%;
+    width: 100%;
     border-collapse: collapse;
     margin: 0 auto;
 }
@@ -55,12 +66,55 @@ th {
 .tabela thead th:last-child {
     border-top-right-radius: var(--radius);
 }
-.remover{
-    color:#c20404;
+.remover {
+    color: #c20404;
 }
-.editar{
-    color: #000000
+.editar {
+    color: #000000;
 }
-.totalComanda{
+#totalComanda {
     margin-right: 10px;
+}
+
+#container-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    flex-direction: row;
+}
+
+#form-busca-itens {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+}
+
+#form-busca-itens input[type="text"] {
+    flex: 2;
+}
+
+#form-busca-itens input[type="number"] {
+    flex: 1;
+}
+
+#form-busca-itens button {
+    flex: 1;
+    min-width: 100px;
+}
+
+#comandaFinalizar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#comandaFinalizar > * {
+    flex: 1;
+}
+#comandaFinalizar form {
+    padding: 0;
+}
+#comandaFinalizar #totalComanda {
+    flex: 2;
 }
