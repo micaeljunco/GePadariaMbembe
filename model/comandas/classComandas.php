@@ -1,30 +1,32 @@
 <?php
+require_once "../tinyint.php";
 
-class Comanda{
-
+class Comanda
+{
     private int $id_comanda;
     private int $id_usuario;
-    private float $valor_total;
+    private Tinyint $aberta; // O status padrão da comanda é aberta (1)
 
-    private bool $aberta;
-    public function __construct(int $id_comanda, int $id_usuario, float $valor_total){
-        
+    public function __construct(
+        int $id_comanda,
+        int $id_usuario,
+        Tinyint $aberta,
+    ) {
         $this->id_comanda = $id_comanda;
         $this->id_usuario = $id_usuario;
-        $this->valor_total = $valor_total;
-
+        $this->aberta = $aberta;
     }
 
-    public function getIdComanda(): int{
+    public function getIdComanda(): int
+    {
         return $this->id_comanda;
-    }   
-    public function getIdUsuario(): int{
+    }
+    public function getIdUsuario(): int
+    {
         return $this->id_usuario;
     }
-    public function getValorTotal(): float{
-        return $this->valor_total;
+    public function getAberta(): Tinyint
+    {
+        return $this->aberta;
     }
 }
-
-
-?>
