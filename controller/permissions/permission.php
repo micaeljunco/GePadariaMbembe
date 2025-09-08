@@ -50,7 +50,7 @@ function verificar_logado(): void
         // Se alguma dessas variáveis não estiver definida, significa que o usuário não está logado.
         // Redireciona para a página inicial (login) e encerra a execução.
         // Usar redirecionamento PHP é mais seguro do que usar JavaScript, pois o JS pode ser desativado no navegador.
-        header("Location: ./");
+        header("Location: ../");
         exit();
     }
 }
