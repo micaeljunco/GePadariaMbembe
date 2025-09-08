@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 04/09/2025 às 20:42
+-- Tempo de geração: 08/09/2025 às 18:53
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -20,9 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `sa_padaria_mokele`
 --
-create database sa_padaria_mokele;
-use sa_padaria_mokele;
-
+CREATE DATABASE sa_padaria_mokele;
+USE sa_padaria_mokele;
 -- --------------------------------------------------------
 
 --
@@ -51,8 +50,8 @@ INSERT INTO `cargos` (`id_cargo`, `nome_cargo`) VALUES
 
 CREATE TABLE `comandas` (
   `id_comanda` int(11) NOT NULL,
-  `id_usuario` int(11) NULL,
-  `aberta` tinyint(1) NOT NULL DEFAULT '1'
+  `id_usuario` int(11) DEFAULT NULL,
+  `aberta` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -65,7 +64,7 @@ CREATE TABLE `comanda_itens` (
   `id_comanda_itens` int(11) NOT NULL,
   `id_comanda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
-  `quantidade` DECIMAL(10,3) NOT NULL
+  `quantidade` decimal(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -107,8 +106,8 @@ INSERT INTO `fornecedores` (`id_fornecedor`, `nome_fornecedor`, `cnpj`, `descric
 CREATE TABLE `itens` (
   `id_item` int(11) NOT NULL,
   `nome_item` varchar(255) NOT NULL,
-  `quant_min` DECIMAL(10,2) NOT NULL,
-  `quant` DECIMAL(10,2) NOT NULL,
+  `quant_min` decimal(10,2) NOT NULL,
+  `quant` decimal(10,2) NOT NULL,
   `categoria` enum('produto','insumo') NOT NULL,
   `validade` date NOT NULL,
   `id_fornecedor` int(11) DEFAULT NULL,
@@ -121,56 +120,56 @@ CREATE TABLE `itens` (
 --
 
 INSERT INTO `itens` (`id_item`, `nome_item`, `quant_min`, `quant`, `categoria`, `validade`, `id_fornecedor`, `val_unitario`, `unidade_medida`) VALUES
-(1, 'Farinha de trigo', 20, 100, 'insumo', '2026-05-01', 1, 4.50, 'Kg'),
-(2, 'Açúcar refinado', 15, 80, 'insumo', '2026-07-20', 3, 3.20, 'Kg'),
-(3, 'Fermento biológico', 10, 50, 'insumo', '2025-11-15', 4, 2.80, 'Kg'),
-(4, 'Leite integral', 30, 200, 'insumo', '2025-09-10', 2, 3.90, 'L'),
-(5, 'Óleo vegetal', 10, 60, 'insumo', '2026-02-28', 5, 7.10, 'L'),
-(6, 'Manteiga', 8, 40, 'insumo', '2025-12-15', 5, 15.00, 'Kg'),
-(7, 'Chocolate meio amargo', 5, 30, 'insumo', '2026-04-05', 6, 25.00, 'Kg'),
-(8, 'Embalagem para pão', 50, 300, 'insumo', '2027-01-01', 7, 0.20, 'UN'),
-(9, 'Mel natural', 7, 20, 'insumo', '2026-06-10', 9, 18.50, 'Kg'),
-(10, 'Sal refinado', 10, 70, 'insumo', '2027-03-20', 10, 1.50, 'Kg'),
-(11, 'Pão francês', 40, 150, 'produto', '2025-09-04', NULL, 0.50, 'UN'),
-(12, 'Pão integral', 30, 120, 'produto', '2025-09-05', NULL, 0.70, 'UN'),
-(13, 'Bolo de chocolate', 10, 25, 'produto', '2025-09-06', NULL, 15.00, 'UN'),
-(14, 'Croissant', 20, 40, 'produto', '2025-09-05', NULL, 3.50, 'UN'),
-(15, 'Rosca doce', 15, 30, 'produto', '2025-09-07', NULL, 8.00, 'UN'),
-(16, 'Cookies de aveia', 20, 50, 'produto', '2025-09-10', NULL, 1.20, 'UN'),
-(17, 'Pão de queijo', 30, 100, 'produto', '2025-09-04', NULL, 0.80, 'UN'),
-(18, 'Torta de maçã', 10, 20, 'produto', '2025-09-08', NULL, 20.00, 'UN'),
-(19, 'Muffin de blueberry', 15, 35, 'produto', '2025-09-06', NULL, 5.50, 'UN'),
-(20, 'Pão de mel', 20, 45, 'produto', '2025-09-09', NULL, 4.00, 'UN'),
-(21, 'Farinha integral', 15, 70, 'insumo', '2026-08-01', 1, 5.00, 'Kg'),
-(22, 'Açúcar mascavo', 10, 40, 'insumo', '2026-10-15', 3, 4.00, 'Kg'),
-(23, 'Fermento químico', 8, 25, 'insumo', '2026-01-20', 4, 3.50, 'Kg'),
-(24, 'Leite condensado', 10, 30, 'insumo', '2025-12-30', 2, 6.00, 'Kg'),
-(25, 'Óleo de coco', 5, 20, 'insumo', '2026-04-25', 5, 18.00, 'L'),
-(26, 'Margarina', 10, 40, 'insumo', '2026-02-10', 5, 9.00, 'Kg'),
-(27, 'Chocolate ao leite', 10, 25, 'insumo', '2026-03-15', 6, 22.00, 'Kg'),
-(28, 'Saco para embalar', 100, 500, 'insumo', '2027-05-01', 7, 0.10, 'UN'),
-(29, 'Frutas secas', 7, 35, 'insumo', '2026-07-10', 8, 40.00, 'Kg'),
-(30, 'Melado', 5, 15, 'insumo', '2026-09-30', 9, 10.00, 'Kg'),
-(31, 'Pão australiano', 25, 80, 'produto', '2025-09-04', NULL, 1.00, 'UN'),
-(32, 'Baguete', 30, 90, 'produto', '2025-09-04', NULL, 1.50, 'UN'),
-(33, 'Bolo de cenoura', 10, 22, 'produto', '2025-09-06', NULL, 13.00, 'UN'),
-(34, 'Donuts', 25, 55, 'produto', '2025-09-05', NULL, 2.00, 'UN'),
-(35, 'Empada de frango', 20, 40, 'produto', '2025-09-05', NULL, 6.00, 'UN'),
-(36, 'Biscoito amanteigado', 20, 60, 'produto', '2025-09-07', NULL, 1.10, 'UN'),
-(37, 'Pão de cebola', 30, 70, 'produto', '2025-09-04', NULL, 0.90, 'UN'),
-(38, 'Torta de limão', 10, 18, 'produto', '2025-09-08', NULL, 19.00, 'UN'),
-(39, 'Muffin de chocolate', 15, 40, 'produto', '2025-09-06', NULL, 5.80, 'UN'),
-(40, 'Pão doce', 20, 60, 'produto', '2025-09-09', NULL, 3.00, 'UN'),
-(41, 'Farinha de milho', 20, 55, 'insumo', '2026-07-01', 1, 3.50, 'Kg'),
-(42, 'Açúcar cristal', 15, 45, 'insumo', '2026-09-01', 3, 3.30, 'Kg'),
-(43, 'Fermento natural', 8, 22, 'insumo', '2025-12-01', 4, 5.50, 'Kg'),
-(44, 'Leite em pó', 10, 30, 'insumo', '2026-05-01', 2, 12.00, 'Kg'),
-(45, 'Óleo de soja', 10, 60, 'insumo', '2026-03-15', 5, 6.50, 'L'),
-(46, 'Gordura vegetal', 8, 25, 'insumo', '2026-01-10', 5, 8.00, 'Kg'),
-(47, 'Chocolate branco', 10, 20, 'insumo', '2026-06-15', 6, 24.00, 'Kg'),
-(48, 'Sacos para doces', 80, 450, 'insumo', '2027-04-01', 7, 0.15, 'UN'),
-(49, 'Frutas frescas', 15, 30, 'insumo', '2025-10-01', 8, 10.00, 'Kg'),
-(50, 'Tempero para pães', 5, 15, 'insumo', '2027-01-01', 10, 7.00, 'Kg');
+(1, 'Farinha de trigo', 20.00, 100.00, 'insumo', '2026-05-01', 1, 4.50, 'Kg'),
+(2, 'Açúcar refinado', 15.00, 80.00, 'insumo', '2026-07-20', 3, 3.20, 'Kg'),
+(3, 'Fermento biológico', 10.00, 50.00, 'insumo', '2025-11-15', 4, 2.80, 'Kg'),
+(4, 'Leite integral', 30.00, 200.00, 'insumo', '2025-09-10', 2, 3.90, 'L'),
+(5, 'Óleo vegetal', 10.00, 60.00, 'insumo', '2026-02-28', 5, 7.10, 'L'),
+(6, 'Manteiga', 8.00, 40.00, 'insumo', '2025-12-15', 5, 15.00, 'Kg'),
+(7, 'Chocolate meio amargo', 5.00, 30.00, 'insumo', '2026-04-05', 6, 25.00, 'Kg'),
+(8, 'Embalagem para pão', 50.00, 300.00, 'insumo', '2027-01-01', 7, 0.20, 'UN'),
+(9, 'Mel natural', 7.00, 20.00, 'insumo', '2026-06-10', 9, 18.50, 'Kg'),
+(10, 'Sal refinado', 10.00, 70.00, 'insumo', '2027-03-20', 10, 1.50, 'Kg'),
+(11, 'Pão francês', 40.00, 150.00, 'produto', '2025-09-04', NULL, 0.50, 'UN'),
+(12, 'Pão integral', 30.00, 120.00, 'produto', '2025-09-05', NULL, 0.70, 'UN'),
+(13, 'Bolo de chocolate', 10.00, 25.00, 'produto', '2025-09-06', NULL, 15.00, 'UN'),
+(14, 'Croissant', 20.00, 40.00, 'produto', '2025-09-05', NULL, 3.50, 'UN'),
+(15, 'Rosca doce', 15.00, 30.00, 'produto', '2025-09-07', NULL, 8.00, 'UN'),
+(16, 'Cookies de aveia', 20.00, 50.00, 'produto', '2025-09-10', NULL, 1.20, 'UN'),
+(17, 'Pão de queijo', 30.00, 100.00, 'produto', '2025-09-04', NULL, 0.80, 'UN'),
+(18, 'Torta de maçã', 10.00, 20.00, 'produto', '2025-09-08', NULL, 20.00, 'UN'),
+(19, 'Muffin de blueberry', 15.00, 35.00, 'produto', '2025-09-06', NULL, 5.50, 'UN'),
+(20, 'Pão de mel', 20.00, 45.00, 'produto', '2025-09-09', NULL, 4.00, 'UN'),
+(21, 'Farinha integral', 15.00, 70.00, 'insumo', '2026-08-01', 1, 5.00, 'Kg'),
+(22, 'Açúcar mascavo', 10.00, 40.00, 'insumo', '2026-10-15', 3, 4.00, 'Kg'),
+(23, 'Fermento químico', 8.00, 25.00, 'insumo', '2026-01-20', 4, 3.50, 'Kg'),
+(24, 'Leite condensado', 10.00, 30.00, 'insumo', '2025-12-30', 2, 6.00, 'Kg'),
+(25, 'Óleo de coco', 5.00, 20.00, 'insumo', '2026-04-25', 5, 18.00, 'L'),
+(26, 'Margarina', 10.00, 40.00, 'insumo', '2026-02-10', 5, 9.00, 'Kg'),
+(27, 'Chocolate ao leite', 10.00, 25.00, 'insumo', '2026-03-15', 6, 22.00, 'Kg'),
+(28, 'Saco para embalar', 100.00, 500.00, 'insumo', '2027-05-01', 7, 0.10, 'UN'),
+(29, 'Frutas secas', 7.00, 35.00, 'insumo', '2026-07-10', 8, 40.00, 'Kg'),
+(30, 'Melado', 5.00, 15.00, 'insumo', '2026-09-30', 9, 10.00, 'Kg'),
+(31, 'Pão australiano', 25.00, 80.00, 'produto', '2025-09-04', NULL, 1.00, 'UN'),
+(32, 'Baguete', 30.00, 90.00, 'produto', '2025-09-04', NULL, 1.50, 'UN'),
+(33, 'Bolo de cenoura', 10.00, 22.00, 'produto', '2025-09-06', NULL, 13.00, 'UN'),
+(34, 'Donuts', 25.00, 55.00, 'produto', '2025-09-05', NULL, 2.00, 'UN'),
+(35, 'Empada de frango', 20.00, 40.00, 'produto', '2025-09-05', NULL, 6.00, 'UN'),
+(36, 'Biscoito amanteigado', 20.00, 60.00, 'produto', '2025-09-07', NULL, 1.10, 'UN'),
+(37, 'Pão de cebola', 30.00, 70.00, 'produto', '2025-09-04', NULL, 0.90, 'UN'),
+(38, 'Torta de limão', 10.00, 18.00, 'produto', '2025-09-08', NULL, 19.00, 'UN'),
+(39, 'Muffin de chocolate', 15.00, 40.00, 'produto', '2025-09-06', NULL, 5.80, 'UN'),
+(40, 'Pão doce', 20.00, 60.00, 'produto', '2025-09-09', NULL, 3.00, 'UN'),
+(41, 'Farinha de milho', 20.00, 55.00, 'insumo', '2026-07-01', 1, 3.50, 'Kg'),
+(42, 'Açúcar cristal', 15.00, 45.00, 'insumo', '2026-09-01', 3, 3.30, 'Kg'),
+(43, 'Fermento natural', 8.00, 22.00, 'insumo', '2025-12-01', 4, 5.50, 'Kg'),
+(44, 'Leite em pó', 10.00, 30.00, 'insumo', '2026-05-01', 2, 12.00, 'Kg'),
+(45, 'Óleo de soja', 10.00, 60.00, 'insumo', '2026-03-15', 5, 6.50, 'L'),
+(46, 'Gordura vegetal', 8.00, 25.00, 'insumo', '2026-01-10', 5, 8.00, 'Kg'),
+(47, 'Chocolate branco', 10.00, 20.00, 'insumo', '2026-06-15', 6, 24.00, 'Kg'),
+(48, 'Sacos para doces', 80.00, 450.00, 'insumo', '2027-04-01', 7, 0.15, 'UN'),
+(49, 'Frutas frescas', 15.00, 30.00, 'insumo', '2025-10-01', 8, 10.00, 'Kg'),
+(50, 'Tempero para pães', 5.00, 15.00, 'insumo', '2027-01-01', 10, 7.00, 'Kg');
 
 -- --------------------------------------------------------
 
@@ -250,11 +249,11 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `CPF`, `email`, `senha`, `id_cargo`, `senha_temporaria`) VALUES
-(5, 'Admin', '12345678901', 'admin@gmail.com', '$2y$10$PD0XrvGCz4YXa6/YWEsau.qCRzXLJGhTsKsQj2LAqrCFWIM0vSTlC', 1, 1),
 (6, 'Helena Lópes', '12345678900', 'helena.legau@helena.legau', '$2y$10$gwKWzAbjKe3ei1sz0S5ok.EbG67N7piQccORTmcZULTtizfQXOreS', 2, 0),
 (9, 'Yan Carlos', '12345678911', 'yan@yan.carlos', '$2y$10$A5whywY4whG3BQNd1tD/sOZaPG91JtdAp87P39i89AhJxUAcGok6.', 3, 0),
 (10, 'Micael Junco', '12345678922', 'micael@jef.j', '$2y$10$XVPGnOixpNVyjvr.fkcQ2eZDDx/gezVGSFiiAu7wsPd6mk/4MnZXe', 1, 0),
-(12, 'Lucas', '09876543211', 'lucas.m@gmail.com', '$2y$10$Y6/j.uKQ8CO1Sy/TchNEfecLiQD7cXJGEb1JOmyvzt2omDiA3Q1Au', 2, 0);
+(12, 'Lucas', '09876543211', 'lucas.m@gmail.com', '$2y$10$Y6/j.uKQ8CO1Sy/TchNEfecLiQD7cXJGEb1JOmyvzt2omDiA3Q1Au', 2, 0),
+(13, 'Admin', '12790191130', 'admin@gmail.com', '$2y$10$vPJEwnL7KdWjk5dBw/nq.Ow0z6fruAXQsP2SJAyiyuO1xlWLbHQzq', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -296,7 +295,7 @@ CREATE TABLE `vendas_itens` (
   `id_venda_item` int(11) NOT NULL,
   `id_venda` int(11) NOT NULL,
   `id_item` int(11) NOT NULL,
-  `quantidade` DECIMAL(10,3) NOT NULL
+  `quantidade` decimal(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -304,26 +303,26 @@ CREATE TABLE `vendas_itens` (
 --
 
 INSERT INTO `vendas_itens` (`id_venda_item`, `id_venda`, `id_item`, `quantidade`) VALUES
-(1, 1, 11, 4),
-(2, 1, 16, 3),
-(3, 2, 12, 5),
-(4, 2, 20, 1),
-(5, 3, 17, 6),
-(6, 3, 8, 6),
-(7, 4, 18, 1),
-(8, 5, 13, 1),
-(9, 5, 10, 3),
-(10, 6, 14, 2),
-(11, 6, 36, 3),
-(12, 7, 19, 1),
-(13, 7, 31, 2),
-(14, 8, 15, 1),
-(15, 8, 32, 2),
-(16, 9, 21, 2),
-(17, 9, 22, 1),
-(18, 10, 40, 2),
-(19, 10, 11, 1),
-(20, 10, 16, 1);
+(1, 1, 11, 4.000),
+(2, 1, 16, 3.000),
+(3, 2, 12, 5.000),
+(4, 2, 20, 1.000),
+(5, 3, 17, 6.000),
+(6, 3, 8, 6.000),
+(7, 4, 18, 1.000),
+(8, 5, 13, 1.000),
+(9, 5, 10, 3.000),
+(10, 6, 14, 2.000),
+(11, 6, 36, 3.000),
+(12, 7, 19, 1.000),
+(13, 7, 31, 2.000),
+(14, 8, 15, 1.000),
+(15, 8, 32, 2.000),
+(16, 9, 21, 2.000),
+(17, 9, 22, 1.000),
+(18, 10, 40, 2.000),
+(19, 10, 11, 1.000),
+(20, 10, 16, 1.000);
 
 --
 -- Índices para tabelas despejadas
@@ -416,13 +415,13 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT de tabela `comandas`
 --
 ALTER TABLE `comandas`
-    MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de tabela `comandas`
+-- AUTO_INCREMENT de tabela `comanda_itens`
 --
 ALTER TABLE `comanda_itens`
-    MODIFY `id_comanda_itens` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comanda_itens` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `fornecedores`
@@ -452,7 +451,7 @@ ALTER TABLE `telefone`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
