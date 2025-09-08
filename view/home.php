@@ -11,6 +11,7 @@ $faturDia = faturamento_dia();
 $faturMes = faturamento_mes();
 $ticketMedio = ticket_medio();
 $horaPico = horario_pico();
+$idCargo = $_SESSION["id_cargo"] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -151,81 +152,66 @@ $horaPico = horario_pico();
         <section id="acsRapido">
             <h2>Acesso Rápido</h2>
             <div id="ctnrAcsRap">
-                <div class="itemMenu" id="itemMenuPDV">
-                    <i class="material-icons md-storefront">
-                    </i>
-                    <h3 class="tituloItemMenu">Ponto de Venda</h3>
-                    <p class="descItemMenu">
-                        Sistema completo para realizar vendas e integrado a comandas
-                    </p>
-                </div>
 
-                <div class="itemMenu" id="itemMenuHist">
-                    <i class="material-icons md-receipt">
-                    </i>
-                    <h3 class="tituloItemMenu">Histórico de Vendas</h3>
-                    <p class="descItemMenu">
-                        Acompanhe as últimas vendas da padaria
-                    </p>
-                </div>
+                <?php if ($idCargo == 1 || $idCargo == 2): ?>
+                    <div class="itemMenu" id="itemMenuPDV" data-link="./pdv.php">
+                        <i class="material-icons md-storefront"></i>
+                        <h3 class="tituloItemMenu">Ponto de Venda</h3>
+                        <p class="descItemMenu">Sistema completo para realizar vendas e integrado a comandas</p>
+                    </div>
 
-                <div class="itemMenu" id="itemMenuEsto">
-                    <i class="material-icons md-inventory_2"></i>
-                    <h3 class="tituloItemMenu">Inventário</h3>
-                    <p class="descItemMenu">
-                        Gerencie o estoque de produtos e insumos da panificadora
-                    </p>
-                </div>
+                    <div class="itemMenu" id="itemMenuComa" data-link="./comandas.php">
+                        <i class="material-icons md-confirmation_number"></i>
+                        <h3 class="tituloItemMenu">Comandas</h3>
+                        <p class="descItemMenu">Sistema de emissão de comandas</p>
+                    </div>
+                <?php endif; ?>
 
-                <div class="itemMenu" id="itemMenuGEusu">
-                    <i class="material-icons md-local_shipping"></i>
-                    <h3 class="tituloItemMenu">Fornecedores</h3>
-                    <p class="descItemMenu">
-                        Adicione, edite ou delete usuários do sistema
-                    </p>
-                </div>
+                <?php if ($idCargo == 1): ?>
+                    <div class="itemMenu" id="itemMenuHist" data-link="./historicoVendas.php">
+                        <i class="material-icons md-receipt"></i>
+                        <h3 class="tituloItemMenu">Histórico de Vendas</h3>
+                        <p class="descItemMenu">Acompanhe as últimas vendas da padaria</p>
+                    </div>
 
-                <div class="itemMenu" id="itemMenuForn">
-                    <i class="material-icons md-groups"></i>
-                    <h3 class="tituloItemMenu">Gestão de Usuários</h3>
-                    <p class="descItemMenu">
-                        Adicione, edite ou delete fornecedores
-                    </p>
-                </div>
+                    <div class="itemMenu" id="itemMenuGEusu" data-link="./usuarios.php">
+                        <i class="material-icons md-groups"></i>
+                        <h3 class="tituloItemMenu">Gestão de Usuários</h3>
+                        <p class="descItemMenu">Adicione, edite ou delete usuários do sistema</p>
+                    </div>
+                <?php endif; ?>
 
-                <div class="itemMenu" id="itemMenuComa">
-                    <i class="material-icons md-confirmation_number">
-                    </i>
-                    <h3 class="tituloItemMenu">Comandas</h3>
-                    <p class="descItemMenu">
-                        Sistema de emissão de comandas
-                    </p>
-                </div>
+                <?php if ($idCargo == 1 || $idCargo == 3): ?>
+                    <div class="itemMenu" id="itemMenuEsto" data-link="./itens.php">
+                        <i class="material-icons md-inventory_2"></i>
+                        <h3 class="tituloItemMenu">Inventário</h3>
+                        <p class="descItemMenu">Gerencie o estoque de produtos e insumos da panificadora</p>
+                    </div>
+
+                    <div class="itemMenu" id="itemMenuForn" data-link="./fornecedores.php">
+                        <i class="material-icons md-local_shipping"></i>
+                        <h3 class="tituloItemMenu">Fornecedores</h3>
+                        <p class="descItemMenu">Adicione, edite ou delete fornecedores</p>
+                    </div>
+                <?php endif; ?>
 
             </div>
         </section>
 
+
     </main>
     <?= include "./partials/footer.html" ?>
     <script>
-        const divs = [...document.querySelectorAll('#acsRapido .itemMenu')]
-
-        // Coloque os links na mesma ordem das divs
-        const links = [
-            "./pdv.php",          // Ponto de Venda
-            "./historicoVendas.php",  // Histórico de Vendas
-            "./itens.php",        // Inventário
-            "./fornecedores.php", // Fornecedores
-            "./usuarios.php",    // Gestão de Usuários
-            "./comandas.php"      // Comandas
-        ]
-
-        divs.forEach((div, index) => {
+        document.querySelectorAll('#acsRapido .itemMenu').forEach(div => {
             div.addEventListener('click', () => {
-                window.location.href = links[index]
+                const link = div.getAttribute('data-link')
+                if (link) {
+                    window.location.href = link
+                }
             })
         })
     </script>
+
 
 </body>
 
