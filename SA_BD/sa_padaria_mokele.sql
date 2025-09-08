@@ -53,7 +53,6 @@ CREATE TABLE `comandas` (
   `id_comanda` int(11) NOT NULL,
   `id_usuario` int(11) NULL,
   `aberta` tinyint(1) NOT NULL DEFAULT '1'
-  -- `valor_total` decimal(7,2) DEFAULT 0.00        -- Necessário?
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
