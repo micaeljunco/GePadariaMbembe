@@ -28,9 +28,9 @@ driver.get("http://localhost:8080/GePadariaMbembe/")
 
 # Preenche e-mail e senha
 time.sleep(2)  # Pausa de 2 segundos
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "email"))).send_keys("admin@gmail.com")  # Preenche e-mail
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "email"))).send_keys("micael@jef.j")  # Preenche e-mail
 time.sleep(2)  # Pausa de 2 segundos
-WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "senha"))).send_keys("admin123")  # Preenche senha
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "senha"))).send_keys("41334133")  # Preenche senha
 time.sleep(2)  # Pausa de 2 segundos
 
 # Clica no botão "Entrar"

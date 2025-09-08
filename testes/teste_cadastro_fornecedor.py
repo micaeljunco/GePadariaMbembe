@@ -31,14 +31,14 @@ try:
     # Espera até que o campo de email esteja presente e insere o valor
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.NAME, "email"))
-    ).send_keys("admin@gmail.com")
+    ).send_keys("micael@jef.j")
     time.sleep(2)  # Pausa de 2 segundos
 
     time.sleep(2)  # Pausa de 2 segundos
     # Espera até que o campo de senha esteja presente e insere o valor
     WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.NAME, "senha"))
-    ).send_keys("admin123")
+    ).send_keys("41334133")
     time.sleep(2)  # Pausa de 2 segundos
 
     time.sleep(2)  # Pausa de 2 segundos
