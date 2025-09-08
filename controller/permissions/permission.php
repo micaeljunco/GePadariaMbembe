@@ -2,17 +2,18 @@
 // Define um array associativo onde a chave é o ID do cargo
 // e o valor é um array com os nomes dos arquivos/páginas que o usuário pode acessar.
 $permissoes = [
-    2 => ["pdv.php", "comandas.php"],       // Usuário com cargo com ID 2 pode acessar pdv.php e comandas.php
-    3 => ["itens.php", "fornecedores.php"]  // Usuário com cargo com ID 3 pode acessar itens.php e fornecedores.php
+    2 => ["pdv.php", "comandas.php"], // Usuário com cargo com ID 2 pode acessar pdv.php e comandas.php
+    3 => ["itens.php", "fornecedores.php"], // Usuário com cargo com ID 3 pode acessar itens.php e fornecedores.php
 ];
 
 // Função para verificar se o usuário tem acesso permitido para a página atual.
 // Recebe o ID do cargo.
-function verificar_acesso($id): void {
+function verificar_acesso($id): void
+{
     // Se o usuário não tem permissão para acessar a página atual,
     // redireciona para a página home.php e encerra a execução.
     if (!verificar_permissao($id)) {
-        header("Location: /gePadariaMbembe/view/home.php");
+        header("Location: /GePadariaMbembe/view/home.php");
         exit();
     }
 }
@@ -20,7 +21,8 @@ function verificar_acesso($id): void {
 // Função que verifica se o usuário tem permissão para acessar uma página.
 // Recebe o ID do cargo e opcionalmente o nome da página.
 // Retorna true se tem permissão, false caso contrário.
-function verificar_permissao($id, string $pagina = null): bool {
+function verificar_permissao($id, string $pagina = null): bool
+{
     // O usuário com ID 1 é considerado administrador e tem acesso total.
     if ($id == 1) {
         return true;
@@ -38,11 +40,12 @@ function verificar_permissao($id, string $pagina = null): bool {
 
 // Função para verificar se o usuário está logado corretamente.
 // Verifica se as variáveis de sessão essenciais estão definidas.
-function verificar_logado(): void {
+function verificar_logado(): void
+{
     if (
-        !isset($_SESSION["nome"]) ||        // Nome do usuário
-        !isset($_SESSION["id_usuario"]) ||  // ID do usuário
-        !isset($_SESSION["id_cargo"])       // ID do cargo do usuário
+        !isset($_SESSION["nome"]) || // Nome do usuário
+        !isset($_SESSION["id_usuario"]) || // ID do usuário
+        !isset($_SESSION["id_cargo"]) // ID do cargo do usuário
     ) {
         // Se alguma dessas variáveis não estiver definida, significa que o usuário não está logado.
         // Redireciona para a página inicial (login) e encerra a execução.
