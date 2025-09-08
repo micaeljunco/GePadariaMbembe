@@ -173,15 +173,31 @@ if (!isset($_SESSION["comanda_itens"])) {
 
 </main>
 
-<script>
+<?php if (isset($_GET["resumo"]) and !empty($_GET["resumo"])): ?>
+    <dialog class = "popupContainer" id="resumoComanda">
+        <div class="nomePopup">
+            <h2>Sucesso!</h2>
+            <i class="material-icons md-close" onclick="window.location.href='comandas.php'"></i>
+        </div>
+        <div id="infoComanda">
+            <h4>Código da Comanda: C<?= $_GET["resumo"] ?></h4>
+            <p>Utilize este código no Ponto de Venda.</p>
+        </div>
+    </dialog>
+    <script>
+        document.getElementById('resumoComanda').showModal();
+    </script>
+<?php endif; ?>
+<!-- Desnecessário -->
+<!--<script>
     function editarItemComanda(index) {
-        const item = <?= json_encode($itensComanda) ?>[index];
+        const item = ?// json_encode($itensComanda) [index];
         document.getElementById('editarIndexComanda').value = index;
         document.getElementById('nomeItemEdComanda').value = item.nome_item;
         document.getElementById('quantidadeEdComanda').value = item.quantidade;
         document.getElementById('editarItemComandaPopup').showModal();
     }
-</script>
+</script>-->
 
 <?= include "./partials/footer.html" ?>
 </body>

@@ -118,3 +118,15 @@ th {
 #comandaFinalizar #totalComanda {
     flex: 2;
 }
+#resumoComanda .nomePopup {
+    margin-bottom: auto;
+}
+#resumoComanda #infoComanda {
+    margin-bottom: auto;
+}
+#resumoComanda {
+    width: 360px;
+    height: 300px;
+    align-items: ceter;
+    justify-content: center;
+}

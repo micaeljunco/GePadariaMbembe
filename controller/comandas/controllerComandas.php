@@ -98,14 +98,14 @@ function finalizar_comanda()
     }
     try {
         // Cadastra uma comanda
-        $id_venda = cadastra_comanda();
+        $id_comanda = cadastra_comanda();
         // Cadastra comanda_itens
-        cadastra_comanda_itens($id_venda);
+        cadastra_comanda_itens($id_comanda);
 
         echo "
         <script>
-            alert('Comanda realizada com sucesso!');
-            window.location.href='../../view/comandas.php';
+            // alert('Comanda realizada com sucesso!');     Acho que fica redundante com o popup, então tirei
+            window.location.href='../../view/comandas.php?resumo=$id_comanda';
         </script>";
         unset($_SESSION["comanda_total"]);
         unset($_SESSION["comanda_itens"]);
