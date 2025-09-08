@@ -155,9 +155,20 @@ function deletar_fornecedores($id_fornecedor)
             echo "<script>alert('Fornecedor deletado com sucesso.');window.location.href = '../../view/fornecedores.php'</script>";
         }
     } catch (PDOException $e) {
-        echo "<script>alert('Não foi possível realizar a operação. Detalhes: " .
-            $e->getMessage() .
-            "');window.location.href = '../../view/fornecedores.php'</script>";
+        // Caso erro de integridade referencial (item ligado a venda)
+        if (
+            $e->getCode() === "23000" &&
+            str_contains($e->getMessage(), "1451")
+        ) {
+            echo "<script>
+                    alert('Este fornecedor está associado a uma ou mais itens do inventário e portanto não pode ser deletado.');
+                    window.location.href = '../../view/fornecedores.php';
+                  </script>";
+        } else {
+            echo "<script>alert('Não foi possível realizar a operação. Detalhes: " .
+                $e->getMessage() .
+                "');window.location.href = '../../view/fornecedores.php'</script>";
+        }
     }
 }
 
@@ -231,7 +242,7 @@ function cadastrar_fornecedor(): void
         // Captura erros de validação e redireciona com alerta
         echo "<script>alert('" .
             addslashes($e->getMessage()) .
-            "');window.location.href='../view/fornecedores.php'</script>";
+            "');window.location.href='../../view/fornecedores.php'</script>";
         exit();
     }
 }
