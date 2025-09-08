@@ -40,7 +40,7 @@ CREATE TABLE `cargos` (
 
 INSERT INTO `cargos` (`id_cargo`, `nome_cargo`) VALUES
 (1, 'Administrador'),
-(2, 'Caixa'),
+(2, 'Atendente'),
 (3, 'Controlador de Estoque');
 
 -- --------------------------------------------------------
