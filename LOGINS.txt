@@ -1,0 +1,9 @@
+# LOGINS DO SISTEMA:
+
++Nome---------------+Email---------------------------+Senha-----------+
+|Lucas              | lucas.m@gmail.com              | Senha:12345678 |
+|Micael Junco       | micael@jef.j                   | Senha:41334133 |
+|Yan Carlos         | yan@yan.carlos                 | Senha:12345678 |
+|Helena Lópes       | helena.legau@helena.legau      | Senha:12345678 |
+|Admin              | admin@gmail.com                | Senha:admin123 |
++-------------------+--------------------------------+----------------+
