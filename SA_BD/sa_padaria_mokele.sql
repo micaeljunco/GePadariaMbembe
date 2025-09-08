@@ -253,8 +253,8 @@ INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `CPF`, `email`, `senha`, `
 (9, 'Yan Carlos', '12345678911', 'yan@yan.carlos', '$2y$10$A5whywY4whG3BQNd1tD/sOZaPG91JtdAp87P39i89AhJxUAcGok6.', 3, 0),
 (10, 'Micael Junco', '12345678922', 'micael@jef.j', '$2y$10$XVPGnOixpNVyjvr.fkcQ2eZDDx/gezVGSFiiAu7wsPd6mk/4MnZXe', 1, 0),
 (12, 'Lucas', '09876543211', 'lucas.m@gmail.com', '$2y$10$Y6/j.uKQ8CO1Sy/TchNEfecLiQD7cXJGEb1JOmyvzt2omDiA3Q1Au', 2, 0),
-(13, 'Admin', '12790191130', 'admin@gmail.com', '$2y$10$vPJEwnL7KdWjk5dBw/nq.Ow0z6fruAXQsP2SJAyiyuO1xlWLbHQzq', 1, 0);
-
+(13, 'Admin', '12790191130', 'admin@gmail.com', '$2y$10$vPJEwnL7KdWjk5dBw/nq.Ow0z6fruAXQsP2SJAyiyuO1xlWLbHQzq', 1, 0),
+(14,'Luis Freitas', '08007707900', 'freitasluis@gmail.com', '$2y$10$EKnuo7iWAQi3mSYchZgsLOHZQPVnF4o8dfU0ahlIKRvqTeCXT6KzC', 1, 0);
 -- --------------------------------------------------------
 
 --
