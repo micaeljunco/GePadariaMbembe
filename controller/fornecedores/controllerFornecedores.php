@@ -344,7 +344,7 @@ function editar_fornecedor(): void
     } catch (InvalidArgumentException $e) {
         echo "<script>alert('" .
             addslashes($e->getMessage()) .
-            "');window.location.href='../view/fornecedores.php'</script>";
+            "');window.location.href='../../view/fornecedores.php'</script>";
         exit();
     }
 }

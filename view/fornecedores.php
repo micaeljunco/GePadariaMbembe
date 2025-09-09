@@ -112,9 +112,10 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
                                         </button>
                                     </form>
                                     <button type="button" class="botao-acoes"
-                                        onclick="editarFornecedor(this.parentElement.parentElement.parentElement.parentElement)">
+                                    onclick="editarFornecedor(this.closest('tr'))">
                                         <i class="material-icons md-edit editar"></i>
                                     </button>
+
                                 </td>
                             </tr>
                         <?php endforeach; ?>
