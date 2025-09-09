@@ -16,7 +16,7 @@ $cargos = buscar_cargos();
 //Cargos mapa para exibir o cargo do usuario
 $cargosMapa = [
     1 => "Administrador",
-    2 => "Caixa",
+    2 => "Atendente",
     3 => "Controlador de Estoque",
 ];
 ?>
