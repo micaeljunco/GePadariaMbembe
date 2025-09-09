@@ -67,7 +67,7 @@ $cargosMapa = [
             <input type="text" name="nome" placeholder="Nome" class="form-control" required>
             <input type="text" name="senha" placeholder="Senha" class="form-control" required>
             <input type="email" name="email" placeholder="Email" class="form-control" required>
-            <input type="text" name="cpf" placeholder="CPF" class="form-control" required>
+            <input type="text" name="cpf" placeholder="CPF" class="form-control" required maxlength="11">
 
             <select name="cargo" id="cargo" class="form-select" required>
                 <!-- para cada cargo em $cargos exibe o nome do cargo -->
