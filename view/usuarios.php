@@ -116,7 +116,7 @@ $cargosMapa = [
                                         <h2>Editar Usuário</h2>
                                         <i class="material-icons md-close" onclick="document.getElementById('editarPopup<?= $usuario['id_usuario'] ?>').close()"></i>
                                     </div>
-                                    <form action="../controller/usuarios/editarUsuario.php" method="POST" class="w-100">
+                                    <form action="../controller/usuarios/editarUsuario.php" method="POST" class="w-100" style="padding:20px;">
                                         <input type="hidden" name="id_usuario" id="id_usuario" value="<?= htmlspecialchars($usuario['id_usuario']) ?>">
 
                                         <input type="text" name="nome" placeholder="Nome" class="form-control" value="<?= htmlspecialchars($usuario['nome_usuario']) ?>" required>

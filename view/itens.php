@@ -194,7 +194,6 @@ $fornecedores = consulta_fornecedores();
                         <?php endforeach; ?>
                     <?php
                         // Caso contrario exibe essa mensagem
-                        // Caso contrario exibe essa mensagem
                         else: ?>
                         <tr>
                             <td colspan="9">
@@ -215,7 +214,7 @@ $fornecedores = consulta_fornecedores();
         <dialog id="editarItem" class="popupContainer">
             <div class="nomePopup">
                 <h2>Editar Item</h2>
-                <i class="material-icons md-close" onclick="document.getElementById('cadastroItens').close()"></i>
+                <i class="material-icons md-close" onclick="document.getElementById('editarItem').close()"></i>
             </div>
             <form action="../controller/itens/editarItens.php" method="POST">
                 <input type="hidden" id="id_itemCampoEditar" name="id_item">
