@@ -117,7 +117,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                                 <td>R$<span class="subtotal">
                                         <?= number_format(
                                             $item["val_unitario"] *
-                                                $item["quantidade"],
+                                            $item["quantidade"],
                                             2,
                                             ",",
                                             ".",
@@ -126,12 +126,14 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                                 <td>
                                     <div class="acoes">
                                         <!-- Botão para editar o item -->
-                                        <a href="../controller/pdv/controllerPdv.php?editar=<?php echo $index; ?>" class="editar">
+                                        <a href="../controller/pdv/controllerPdv.php?editar=<?php echo $index; ?>"
+                                            class="editar">
                                             <i class="material-icons md-edit"></i>
                                         </a>
                                         <!-- Botão para remover o item -->
                                         <div class="remover">
-                                            <a href="../controller/pdv/controllerPdv.php?remover=<?php echo $index; ?>" class="remover">
+                                            <a href="../controller/pdv/controllerPdv.php?remover=<?php echo $index; ?>"
+                                                class="remover">
                                                 <i class="material-icons md-delete"></i>
                                             </a>
                                 </td>
@@ -196,11 +198,8 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <!-- Formulário para finalizar a venda -->
                 <form action="./pdv.php">
                     <input type="hidden" name="finalizar" value="1">
-                    <button class="btn btn-outline-success" type="submit"
-                    <?php if ($_SESSION["total"] == 0): ?>
-                        disabled
-                    <?php endif; ?>
-                    >Finalizar</button>
+                    <button class="btn btn-outline-success" type="submit" <?php if ($_SESSION["total"] == 0): ?> disabled
+                        <?php endif; ?>>Finalizar</button>
                 </form>
             </div>
         </div>
@@ -215,26 +214,27 @@ if (!isset($_SESSION["metodos_pagamento"])) {
         <h4 class="subtitulo-modal">Selecione um método: </h4>
         <div id="metodosPag">
             <div class="payment-card" onclick="selectMetodo('Dinheiro')">
-                <img src="../src/img/dinheiro.png"/>
+                <img src="../src/img/dinheiro.png" />
                 <div>Dinheiro</div>
             </div>
             <div class="payment-card" onclick="selectMetodo('Crédito')">
-                <img src="../src/img/cartao.png"/>
+                <img src="../src/img/cartao.png" />
                 <div>Crédito</div>
             </div>
             <div class="payment-card" onclick="selectMetodo('Débito')">
-                <img src="../src/img/cartao.png"/>
+                <img src="../src/img/cartao.png" />
                 <div>Débito</div>
             </div>
         </div>
-            <div id="methodForm" style="display: none;">
+        <div id="methodForm" style="display: none;">
             <!-- pagamento em dinheiro -->
             <div id="metodoDinheiro" class="metodos">
                 <form class="form-finalizarPag" method="POST" action="../controller/pdv/metodosPag.php">
                     <input type="hidden" name="metodo" value="dinheiro">
                     <div class="campo-modal">
                         <label for="campo-dinheiro">Valor a pagar: </label>
-                        <input type="number" name="dinheiro" class="form-control" id="campo-dinheiro" required step="0.01">
+                        <input type="number" name="dinheiro" class="form-control" id="campo-dinheiro" required
+                            step="0.01">
                     </div>
                     <div class="botoes-compra">
                         <button type="reset" class="btn btn-outline-danger">Cancelar</button>
@@ -309,12 +309,9 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 </span>
             </div>
             <form action="../controller/pdv/finalizarVenda.php" method="post" id="finalizarEmDefinitivo">
-                <button type="submit" class="btn btn-success"
-                <?php if ($_SESSION["subtotal"] >= $_SESSION["total"]): ?>
-                    disabled
-                <?php endif; ?>
-                >Finalizar</button>
-                <button type="button" class="btn btn-danger" onclick="window.location.href='../controller/pdv/cancelarVenda.php'">Cancelar</button>
+                <button type="submit" class="btn btn-success" <?php if ($_SESSION["subtotal"] > 0): ?> disabled <?php endif; ?>>Finalizar</button>
+                <button type="button" class="btn btn-danger"
+                    onclick="window.location.href='../controller/pdv/cancelarVenda.php'">Cancelar</button>
             </form>
         </div>
     </dialog>
@@ -357,4 +354,5 @@ if (!isset($_SESSION["metodos_pagamento"])) {
     <?= include "./partials/footer.html" ?>
 
 </body>
+
 </html>
