@@ -138,18 +138,34 @@ function excluir_usuario($id_usuario): void
 {
     global $con;
 
-    // Prepara e executa query DELETE para remover usuário
     $sql = "DELETE FROM usuarios WHERE id_usuario = :id_usuario";
     $stmt = $con->prepare($sql);
     $stmt->bindParam(":id_usuario", $id_usuario, PDO::PARAM_INT);
 
-    if (!$stmt->execute()) {
-        echo "<script>alert('Ocorreu um erro ao excluir o usuario!');window.location.href='../../view/usuarios.php'</script>";
-        exit();
-    }
+    try {
+        $stmt->execute();
 
-    echo "<script>alert('usuario excluido com sucesso!');window.location.href='../../view/usuarios.php'</script>";
-    exit();
+        echo "<script>
+                alert('Usuário excluído com sucesso!');
+                window.location.href='../../view/usuarios.php';
+              </script>";
+        exit();
+    } catch (PDOException $e) {
+        // Código do erro 1451 → violação de chave estrangeira (não pode deletar porque tem dependências)
+        if ($e->getCode() == "23000") {
+            echo "<script>
+                    alert('Não é possível excluir este usuário pois ele está associado a vendas realizadas.');
+                    window.location.href='../../view/usuarios.php';
+                  </script>";
+            exit();
+        } else {
+            echo "<script>
+                    alert('Erro inesperado ao excluir o usuário: " . addslashes($e->getMessage()) . "');
+                    window.location.href='../../view/usuarios.php';
+                  </script>";
+            exit();
+        }
+    }
 }
 
 // Função que realiza pesquisa de usuários por id ou nome
