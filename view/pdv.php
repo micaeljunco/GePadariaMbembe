@@ -58,7 +58,7 @@ if (!isset($_SESSION["metodos_pagamento"])) {
 
         <div class="adicionarItens">
             <div class="topoPag">
-                <h1>Adicionar Produtos</h1>
+                <h1>Adicionar Produtos ao caixa</h1>
             </div>
 
             <!-- Formulário para adicionar itens ao carrinho -->
