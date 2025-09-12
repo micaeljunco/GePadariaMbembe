@@ -75,7 +75,7 @@ function faturamento_dia(): array|string
         if (!empty($resultados)) {
             return $resultados;
         } else {
-            return "Nenhuma informação pôde ser oobtida.";
+            return "Nenhuma informação pôde ser obtida.";
         }
     } catch (PDOException $e) {
         return "Erro: " . $e->getMessage();
