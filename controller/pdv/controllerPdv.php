@@ -32,11 +32,8 @@ function adicionar_item()
         // Verifica se começa com C/c + números
         if (preg_match('/^[cC](\d+)$/', $valor, $matches)) {
             $codigo_comanda = $matches[1]; // Pega só os números
-            // Procura uma comanda com o ID
             adicionar_comanda($codigo_comanda);
-
-            // Já sai da função, pra não rodar o resto
-            return;
+            return; // Sai da função
         }
 
         // Se for apenas número puro -> ID
@@ -46,6 +43,7 @@ function adicionar_item()
             $novoItem = $valor; // Senão, trata como nome
         }
 
+        // Valida quantidade informada
         if ($_POST["quantidade"] === "") {
             echo "
             <script>
@@ -55,27 +53,39 @@ function adicionar_item()
             exit();
         }
 
-        // Pega a quantidade informada (padrão 1)
+        // Converte a quantidade para float inicialmente
         $quantidade = floatval($_POST["quantidade"] ?? 1);
 
         // Procura o item no banco e adiciona ao carrinho se encontrado
         if ($novoItem !== "" || $idItem !== null) {
             $item = procurarItem($idItem, $novoItem);
             if ($item) {
+                // Ajusta a quantidade de acordo com a unidade
+                $unidade = strtolower(trim($item["unidade_medida"]));
+                if ($unidade === "un") {
+                    $quantidade = intval($quantidade); // Só inteiros
+                    if ($quantidade < 1) {
+                        $quantidade = 1; // Corrige 0 ou valores quebrados para pelo menos 1
+                    }
+                } else {
+                    $quantidade = round($quantidade, 3); // Decimais (Kg, L, etc)
+                }
+
+
                 $item["quantidade"] = $quantidade;
                 $_SESSION["itens"][] = $item;
+
+                // Atualiza o total da venda
+                atualizar_total($item["val_unitario"], $quantidade);
             }
         }
 
-        // Atualiza o total da venda
-        $ultimoItem = end($_SESSION["itens"]);
-        atualizar_total($ultimoItem["val_unitario"], $quantidade);
-
-        // Limpa dados de edição e redireciona para a tela do PDV
+        // Limpa dados de edição e redireciona para o PDV
         unset($_SESSION["editar"]);
         header("Location: ../../view/pdv.php");
     }
 }
+
 
 /**
  * Procura um item no banco de dados pelo ID ou nome

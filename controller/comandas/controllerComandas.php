@@ -12,6 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
 recalcular_total();
 
 // 🔹 Função para adicionar item na comanda
+// 🔹 Função para adicionar item na comanda
 function adicionar_item()
 {
     if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["item"])) {
@@ -25,11 +26,23 @@ function adicionar_item()
             $nomeItem = $valor;
         }
 
+        // Converte a quantidade informada
         $quantidade = floatval($_POST["quantidade"] ?? 1);
 
         if ($nomeItem !== "" || $idItem !== null) {
             $item = procurarItem($idItem, $nomeItem);
             if ($item) {
+                // 🔹 Ajusta a quantidade de acordo com a unidade
+                $unidade = strtolower(trim($item["unidade_medida"] ?? ""));
+                if ($unidade === "un") {
+                    $quantidade = intval($quantidade);
+                    if ($quantidade < 1) {
+                        $quantidade = 1; // nunca deixa 0
+                    }
+                } else {
+                    $quantidade = round($quantidade, 3); // Kg, L, etc
+                }
+
                 $item["quantidade"] = $quantidade;
                 $_SESSION["comanda_itens"][] = $item;
             }
@@ -39,6 +52,7 @@ function adicionar_item()
         exit();
     }
 }
+
 
 // 🔹 Função para procurar item no banco
 function procurarItem($id = null, $nome_item = null)
