@@ -67,10 +67,13 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <div class="pesquisarItens">
                     <!-- Campo de texto para digitar o NOME do produto -->
                     <!-- O value já vem preenchido com $_SESSION['editar']['nome'] caso o usuário esteja editando -->
-                    <input type="text" name="item" id="item" value="<?php echo $_SESSION[
-                        "editar"
-                    ]["nome"] ??
-                        ""; ?>" placeholder="Nome, ID ou comanda" class="form-control" required>
+                    <input type="text" name="item" id="item" 
+                    value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" 
+                    placeholder="Nome, ID ou comanda" 
+                    class="form-control" autocomplete="off" required>
+
+                    <!-- Aqui vão aparecer as sugestões -->
+                    <div id="sugestoes" class="list-group"></div>
                     <!-- Campo numérico para informar a QUANTIDADE -->
                     <!-- O value também pode vir de $_SESSION['editar']['quantidade'], se estiver editando -->
                     <input type="number" name="quantidade" id="quantidade" min="0.001" step="0.001" value="<?php echo $_SESSION[
@@ -353,6 +356,35 @@ if (!isset($_SESSION["metodos_pagamento"])) {
     <!-- Inclui o rodapé -->
     <?= include "./partials/footer.html" ?>
 
+
+    <script>
+document.getElementById("item").addEventListener("keyup", function() {
+    let termo = this.value;
+
+    if (termo.length < 0) { // só mostra sugestões a partir de 2 letras
+        document.getElementById("sugestoes").innerHTML = "";
+        return;
+    }
+
+    fetch("../controller/pdv/buscarProdutos.php?q=" + termo)
+    .then(res => res.json())
+    .then(data => {
+        let html = "";
+        data.forEach(prod => {
+            html += `<a href="#" class="list-group-item list-group-item-action"
+                      onclick="selecionarProduto('${prod.nome_item}')">
+                        ${prod.nome_item} - R$ ${parseFloat(prod.val_unitario).toFixed(2)} (${prod.unidade_medida})
+                      </a>`;
+        });
+        document.getElementById("sugestoes").innerHTML = html;
+    });
+});
+
+function selecionarProduto(nome) {
+    document.getElementById("item").value = nome;
+    document.getElementById("sugestoes").innerHTML = "";
+}
+</script>
 </body>
 
 </html>
