@@ -42,8 +42,10 @@ if (!isset($_SESSION["comanda_itens"])) {
     <div id="container-top">
         <!-- Form adicionar itens -->
         <form action="../controller/comandas/adicionar.php" method="POST" id="form-busca-itens">
-            <input type="text" name="item" class="form-control" placeholder="Digite o nome ou ID do produto" required autocomplete="off">
+            <input type="text" name="item" id="item" class="form-control" placeholder="Digite o nome ou ID do produto" required autocomplete="off">
+
             <div id="sugestoes" class="list-group"></div>
+            
             <input type="number" name="quantidade" class="form-control" placeholder="Quantidade" min="0.001" step="0.001" required>
             <button type="submit" class="btn btn-outline-warning">Adicionar</button>
         </form>
@@ -206,7 +208,7 @@ if (!isset($_SESSION["comanda_itens"])) {
 document.getElementById("item").addEventListener("keyup", function() {
     let termo = this.value;
 
-    if (termo.length < 0) { // só mostra sugestões a partir de 2 letras
+    if (termo.length < 2) { // só mostra sugestões a partir de 2 letras
         document.getElementById("sugestoes").innerHTML = "";
         return;
     }
