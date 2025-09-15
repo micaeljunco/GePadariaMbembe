@@ -50,7 +50,7 @@ function mais_vendidos(): array|string
         if (!empty($resultados)) {
             return $resultados;
         } else {
-            return "Nenhuma informação pôde ser obtida.";
+            return "Nenhuma informação pode ser obtida.";
         }
     } catch (PDOException $e) {
         return "Erro: " . $e->getMessage();
@@ -75,7 +75,7 @@ function faturamento_dia(): array|string
         if (!empty($resultados)) {
             return $resultados;
         } else {
-            return "Nenhuma informação pôde ser obtida.";
+            return "Nenhuma informação pode ser obtida.";
         }
     } catch (PDOException $e) {
         return "Erro: " . $e->getMessage();
@@ -125,7 +125,7 @@ function ticket_medio(): array|string
         if (!empty($resultados)) {
             return $resultados;
         } else {
-            return "Nenhuma informação pôde ser obtida.";
+            return "Nenhuma informação pode ser obtida.";
         }
     } catch (PDOException $e) {
         return "Erro: " . $e->getMessage();
@@ -152,7 +152,7 @@ function horario_pico(): array|string
         if (!empty($resultados)) {
             return $resultados;
         } else {
-            return "Nenhuma informação pôde ser obtida.";
+            return "Nenhuma informação pode ser obtida.";
         }
     } catch (PDOException $e) {
         return "Erro: " . $e->getMessage();
