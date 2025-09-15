@@ -278,3 +278,22 @@ dialog[open].popupContainer {
 form {
     border: none;
 }
+#sugestoes {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    width: 100%;
+    max-height: 200px; 
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+    width: 300px;
+    font-size: 0.9rem;
+    padding: 0.3rem;
+    padding: 6px 10px;
+    top: 160px;
+}
+#sugestoes:empty {
+    display: none;
+}
