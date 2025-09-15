@@ -15,7 +15,7 @@ function consulta_fornecedores(): array|string
     // Consulta SQL para pegar fornecedores e seus telefones (LEFT JOIN para incluir fornecedores sem telefone)
     $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
             FROM fornecedores
-            LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+            LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
             ORDER BY fornecedores.id_fornecedor DESC";
     $stmt = $con->prepare($sql);
 
@@ -44,7 +44,7 @@ function busca_fornecedores()
             // Busca por ID exato
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
                     FROM fornecedores
-                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+                    LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
                     WHERE id_fornecedor = :busca
                     ORDER BY id_fornecedor DESC";
             $stmt = $con->prepare($sql);
@@ -53,7 +53,7 @@ function busca_fornecedores()
             // Busca por nome que inicia com o valor informado
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
                     FROM fornecedores
-                    LEFT JOIN telefone ON fornecedores.id_telefone = telefone.id_telefone
+                    LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
                     WHERE nome_fornecedor LIKE :busca
                     ORDER BY nome_fornecedor ASC";
             $stmt = $con->prepare($sql);
@@ -198,21 +198,17 @@ function cadastrar_fornecedor(): void
             throw new Exception("Formato de telefone inválido");
         }
 
-        // Cadastra telefone e obtém seu ID
-        $id_telefone = cadastrar_telefone($ddd, $numero);
-
         // Cria o objeto fornecedor com id 0 (novo)
         $fornecedor = new Fornecedor(
             0,
             $nome_fornecedor,
             $cnpj,
             $desc,
-            $id_telefone,
         );
 
         // Insere fornecedor no banco
-        $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao, id_telefone)
-            VALUES (:nome_fornecedor, :cnpj, :descricao, :id_telefone)";
+        $sql = "INSERT INTO fornecedores(nome_fornecedor, cnpj, descricao)
+            VALUES (:nome_fornecedor, :cnpj, :descricao)";
         $stmt = $con->prepare($sql);
         $stmt->bindValue(
             ":nome_fornecedor",
@@ -225,16 +221,16 @@ function cadastrar_fornecedor(): void
             $fornecedor->getDescricao(),
             PDO::PARAM_STR,
         );
-        $stmt->bindValue(
-            ":id_telefone",
-            $fornecedor->getIdTelefone(),
-            PDO::PARAM_INT,
-        );
-
+        
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel cadastrar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
             exit();
         }
+
+        $id_fornecedor = $con->lastInsertId();
+
+        // Cadastra telefone
+       cadastrar_telefone($ddd, $numero, $id_fornecedor);
 
         echo "<script>alert('Fornecedor cadastrado com sucesso!');window.location.href='../../view/fornecedores.php'</script>";
         exit();
@@ -255,7 +251,7 @@ function obterIdTelefoneFornecedor($id_fornecedor): int
     global $con;
 
     $sql =
-        "SELECT id_telefone FROM fornecedores WHERE id_fornecedor = :id_fornecedor";
+        "SELECT id_telefone FROM telefone WHERE id_fornecedor = :id_fornecedor";
     $stmt = $con->prepare($sql);
     $stmt->bindValue(":id_fornecedor", $id_fornecedor, PDO::PARAM_INT);
     $stmt->execute();
@@ -266,7 +262,6 @@ function obterIdTelefoneFornecedor($id_fornecedor): int
 /**
  * Edita um fornecedor existente.
  * Atualiza nome, CNPJ, descrição e telefone.
- * Problema comentado: ao editar telefone, o id_telefone pode ser 0, removendo telefone do fornecedor.
  */
 function editar_fornecedor(): void
 {
@@ -278,9 +273,6 @@ function editar_fornecedor(): void
         $desc = (string) $_POST["descFornecedor"];
         $telefone = (string) $_POST["telefone"];
 
-        // Obtém o ID do telefone atual do fornecedor
-        $id_telefone = obterIdTelefoneFornecedor($id_fornecedor);
-
         // Valida e extrai DDD e número do telefone
         if (
             preg_match('/^\((\d{2})\)\s*(\d{4,5}-\d{4})$/', $telefone, $matches)
@@ -291,24 +283,19 @@ function editar_fornecedor(): void
             throw new Exception("Formato de telefone inválido");
         }
 
-        // Atualiza o telefone no banco
-        editar_telefone($id_telefone, $ddd, $numero);
-
         // Cria objeto fornecedor atualizado
         $fornecedor = new Fornecedor(
             $id_fornecedor,
             $nome_fornecedor,
             $cnpj,
-            $desc,
-            $id_telefone,
+            $desc
         );
 
         // Atualiza dados do fornecedor no banco
         $sql = "UPDATE fornecedores
                 SET nome_fornecedor = :nome_fornecedor,
                     cnpj = :cnpj,
-                    descricao = :descricao,
-                    id_telefone = :id_telefone
+                    descricao = :descricao
                 WHERE id_fornecedor = :id_fornecedor";
 
         $stmt = $con->prepare($sql);
@@ -328,16 +315,14 @@ function editar_fornecedor(): void
             $fornecedor->getDescricao(),
             PDO::PARAM_STR,
         );
-        $stmt->bindValue(
-            ":id_telefone",
-            $fornecedor->getIdTelefone(),
-            PDO::PARAM_INT,
-        );
 
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel editar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
             exit();
         }
+
+        $id_telefone = obterIdTelefoneFornecedor($id_fornecedor);
+        editar_telefone($id_telefone, $ddd, $numero, $id_fornecedor);
 
         echo "<script>alert('Fornecedor editado com sucesso!');window.location.href='../../view/fornecedores.php'</script>";
         exit();
