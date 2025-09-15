@@ -58,11 +58,11 @@ if (!isset($_SESSION["metodos_pagamento"])) {
 
         <div class="adicionarItens">
             <div class="topoPag">
-                <h1>Adicionar Produtos ao caixa</h1>
+                <h1>Adicionar Produtos ao Caixa</h1>
             </div>
 
             <!-- Formulário para adicionar itens ao carrinho -->
-            <p id="dica">Use o prefixo "C" antes do ID de uma comanda no campo de busca para usá-la.</p>
+            <p id="dica">Digite o prefixo 'C' antes do ID de uma comanda no campo de busca para utilizá-la.</p>
             <form action="../controller/pdv/adicionar.php" method="POST" onsubmit="atualizarTotal()">
                 <div class="pesquisarItens">
                     <!-- Campo de texto para digitar o NOME do produto -->
