@@ -94,7 +94,7 @@ $idCargo = $_SESSION["id_cargo"] ?? null;
                                 baixo </p>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <p>Nenhuma informação sobre o estoque pôde ser obtida.</p>
+                        <p>Nenhuma informação sobre o estoque pode ser obtida.</p>
                     <?php endif; ?>
                 </div>
 
@@ -177,7 +177,7 @@ $idCargo = $_SESSION["id_cargo"] ?? null;
                     <div class="itemMenu" id="itemMenuGEusu" data-link="./usuarios.php">
                         <i class="material-icons md-groups"></i>
                         <h3 class="tituloItemMenu">Gestão de Usuários</h3>
-                        <p class="descItemMenu">Adicione, edite ou delete usuários do sistema</p>
+                        <p class="descItemMenu">Adicione, edite ou exclua usuários do sistema</p>
                     </div>
                 <?php endif; ?>
 
@@ -191,7 +191,7 @@ $idCargo = $_SESSION["id_cargo"] ?? null;
                     <div class="itemMenu" id="itemMenuForn" data-link="./fornecedores.php">
                         <i class="material-icons md-local_shipping"></i>
                         <h3 class="tituloItemMenu">Fornecedores</h3>
-                        <p class="descItemMenu">Adicione, edite ou delete fornecedores</p>
+                        <p class="descItemMenu">Adicione, edite ou exclua fornecedores</p>
                     </div>
                 <?php endif; ?>
 
