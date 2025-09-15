@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 08/09/2025 às 18:53
+-- Tempo de geração: 15/09/2025 às 19:42
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -20,8 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `sa_padaria_mokele`
 --
-CREATE DATABASE sa_padaria_mokele;
-USE sa_padaria_mokele;
+
 -- --------------------------------------------------------
 
 --
@@ -54,6 +53,15 @@ CREATE TABLE `comandas` (
   `aberta` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `comandas`
+--
+
+INSERT INTO `comandas` (`id_comanda`, `id_usuario`, `aberta`) VALUES
+(1, NULL, 1),
+(2, NULL, 1),
+(3, NULL, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -67,6 +75,15 @@ CREATE TABLE `comanda_itens` (
   `quantidade` decimal(10,3) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Despejando dados para a tabela `comanda_itens`
+--
+
+INSERT INTO `comanda_itens` (`id_comanda_itens`, `id_comanda`, `id_item`, `quantidade`) VALUES
+(1, 1, 1, 1.000),
+(2, 2, 12, 12.000),
+(3, 3, 32, 18999.000);
+
 -- --------------------------------------------------------
 
 --
@@ -77,25 +94,24 @@ CREATE TABLE `fornecedores` (
   `id_fornecedor` int(11) NOT NULL,
   `nome_fornecedor` varchar(255) NOT NULL,
   `cnpj` varchar(18) NOT NULL,
-  `descricao` text DEFAULT NULL,
-  `id_telefone` int(11) NOT NULL
+  `descricao` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `fornecedores`
 --
 
-INSERT INTO `fornecedores` (`id_fornecedor`, `nome_fornecedor`, `cnpj`, `descricao`, `id_telefone`) VALUES
-(1, 'Farinha Brasil Ltda', '12.345.678/0001-90', 'Fornecedor de farinha de trigo', 1),
-(2, 'Laticínios Silva', '98.765.432/0001-12', 'Fornecimento de leite e derivados', 2),
-(3, 'Açúcar Doce S/A', '23.456.789/0001-45', 'Açúcar refinado e cristal', 3),
-(4, 'Fermento Express', '34.567.890/0001-67', 'Fermentos biológicos e químicos', 4),
-(5, 'Óleo e Gorduras Ltda', '45.678.901/0001-23', 'Óleo vegetal e manteiga', 5),
-(6, 'Chocolate & Cia', '56.789.012/0001-34', 'Chocolate para confeitaria', 6),
-(7, 'Embalagens Plus', '67.890.123/0001-56', 'Embalagens para pães e doces', 7),
-(8, 'Frutas Naturais', '78.901.234/0001-78', 'Frutas frescas e secas', 8),
-(9, 'Mel do Campo', '89.012.345/0001-89', 'Mel e produtos apícolas', 9),
-(10, 'Conservas e Temperos', '90.123.456/0001-90', 'Conservas, sal e temperos', 10);
+INSERT INTO `fornecedores` (`id_fornecedor`, `nome_fornecedor`, `cnpj`, `descricao`) VALUES
+(1, 'Farinha Brasil Ltda', '12.345.678/0001-90', 'Fornecedor de farinha de trigo'),
+(2, 'Laticínios Silva', '98.765.432/0001-12', 'Fornecimento de leite e derivados'),
+(3, 'Açúcar Doce S/A', '23.456.789/0001-45', 'Açúcar refinado e cristal'),
+(4, 'Fermento Express', '34.567.890/0001-67', 'Fermentos biológicos e químicos'),
+(5, 'Óleo e Gorduras Ltda', '45.678.901/0001-23', 'Óleo vegetal e manteiga'),
+(6, 'Chocolate & Cia', '56.789.012/0001-34', 'Chocolate para confeitaria'),
+(7, 'Embalagens Plus', '67.890.123/0001-56', 'Embalagens para pães e doces'),
+(8, 'Frutas Naturais', '78.901.234/0001-78', 'Frutas frescas e secas'),
+(9, 'Mel do Campo 2', '76.522.265/0001-11', 'Mel e produtos apícolas'),
+(10, 'Conservas e Temperos', '90.123.456/0001-90', 'Conservas, sal e temperos');
 
 -- --------------------------------------------------------
 
@@ -120,7 +136,7 @@ CREATE TABLE `itens` (
 --
 
 INSERT INTO `itens` (`id_item`, `nome_item`, `quant_min`, `quant`, `categoria`, `validade`, `id_fornecedor`, `val_unitario`, `unidade_medida`) VALUES
-(1, 'Farinha de trigo', 20.00, 100.00, 'insumo', '2026-05-01', 1, 4.50, 'Kg'),
+(1, 'Farinha de trigo', 20.00, 99.00, 'insumo', '2026-05-01', 1, 4.50, 'Kg'),
 (2, 'Açúcar refinado', 15.00, 80.00, 'insumo', '2026-07-20', 3, 3.20, 'Kg'),
 (3, 'Fermento biológico', 10.00, 50.00, 'insumo', '2025-11-15', 4, 2.80, 'Kg'),
 (4, 'Leite integral', 30.00, 200.00, 'insumo', '2025-09-10', 2, 3.90, 'L'),
@@ -198,7 +214,8 @@ INSERT INTO `metodos_pag` (`id_metodo`, `id_venda`, `metodo`, `valor_pago`) VALU
 (7, 7, 'Dinheiro', 7.50),
 (8, 8, 'Dinheiro', 11.00),
 (9, 9, 'Dinheiro', 14.00),
-(10, 10, 'Dinheiro', 1.70);
+(10, 10, 'Dinheiro', 1.70),
+(11, 11, 'dinheiro', 5.00);
 
 -- --------------------------------------------------------
 
@@ -209,24 +226,25 @@ INSERT INTO `metodos_pag` (`id_metodo`, `id_venda`, `metodo`, `valor_pago`) VALU
 CREATE TABLE `telefone` (
   `id_telefone` int(11) NOT NULL,
   `ddd` varchar(2) NOT NULL,
-  `numero` varchar(20) NOT NULL
+  `numero` varchar(20) NOT NULL,
+  `id_fornecedor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `telefone`
 --
 
-INSERT INTO `telefone` (`id_telefone`, `ddd`, `numero`) VALUES
-(1, '11', '98765-4321'),
-(2, '21', '3456-7890'),
-(3, '31', '91234-5678'),
-(4, '41', '2345-6789'),
-(5, '51', '99876-5432'),
-(6, '61', '4567-8901'),
-(7, '71', '9876-5432'),
-(8, '81', '12345-6789'),
-(9, '91', '8765-4321'),
-(10, '19', '56789-0123');
+INSERT INTO `telefone` (`id_telefone`, `ddd`, `numero`, `id_fornecedor`) VALUES
+(1, '11', '98765-4321', 1),
+(2, '21', '3456-7890', 2),
+(3, '31', '91234-5678', 3),
+(4, '41', '2345-6789', 4),
+(5, '51', '99876-5432', 5),
+(6, '61', '4567-8901', 6),
+(7, '71', '9876-5432', 7),
+(8, '81', '12345-6789', 8),
+(9, '91', '8765-4321', 9),
+(10, '19', '56789-0123', 10);
 
 -- --------------------------------------------------------
 
@@ -253,8 +271,8 @@ INSERT INTO `usuarios` (`id_usuario`, `nome_usuario`, `CPF`, `email`, `senha`, `
 (9, 'Yan Carlos', '12345678911', 'yan@yan.carlos', '$2y$10$A5whywY4whG3BQNd1tD/sOZaPG91JtdAp87P39i89AhJxUAcGok6.', 3, 0),
 (10, 'Micael Junco', '12345678922', 'micael@jef.j', '$2y$10$XVPGnOixpNVyjvr.fkcQ2eZDDx/gezVGSFiiAu7wsPd6mk/4MnZXe', 1, 0),
 (12, 'Lucas', '09876543211', 'lucas.m@gmail.com', '$2y$10$Y6/j.uKQ8CO1Sy/TchNEfecLiQD7cXJGEb1JOmyvzt2omDiA3Q1Au', 2, 0),
-(13, 'Admin', '12790191130', 'admin@gmail.com', '$2y$10$vPJEwnL7KdWjk5dBw/nq.Ow0z6fruAXQsP2SJAyiyuO1xlWLbHQzq', 1, 0),
-(14,'Luis Freitas', '08007707900', 'freitasluis@gmail.com', '$2y$10$EKnuo7iWAQi3mSYchZgsLOHZQPVnF4o8dfU0ahlIKRvqTeCXT6KzC', 1, 0);
+(14, 'Luis Freitas', '08007707900', 'freitasluis@gmail.com', '$2y$10$EKnuo7iWAQi3mSYchZgsLOHZQPVnF4o8dfU0ahlIKRvqTeCXT6KzC', 1, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -283,7 +301,8 @@ INSERT INTO `vendas` (`id_venda`, `id_usuario`, `id_comanda`, `valor_total`, `da
 (7, 6, NULL, 9.60, '2025-09-04 15:50:00'),
 (8, 12, NULL, 7.20, '2025-09-04 16:10:00'),
 (9, 6, NULL, 11.50, '2025-09-04 17:25:00'),
-(10, 12, NULL, 4.80, '2025-09-04 18:00:00');
+(10, 12, NULL, 4.80, '2025-09-04 18:00:00'),
+(11, 10, NULL, 4.50, '2025-09-12 16:09:06');
 
 -- --------------------------------------------------------
 
@@ -322,7 +341,9 @@ INSERT INTO `vendas_itens` (`id_venda_item`, `id_venda`, `id_item`, `quantidade`
 (17, 9, 22, 1.000),
 (18, 10, 40, 2.000),
 (19, 10, 11, 1.000),
-(20, 10, 16, 1.000);
+(20, 10, 16, 1.000),
+(21, 11, 48, 0.000),
+(22, 11, 1, 1.000);
 
 --
 -- Índices para tabelas despejadas
@@ -353,8 +374,7 @@ ALTER TABLE `comanda_itens`
 -- Índices de tabela `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  ADD PRIMARY KEY (`id_fornecedor`),
-  ADD KEY `id_telefone` (`id_telefone`);
+  ADD PRIMARY KEY (`id_fornecedor`);
 
 --
 -- Índices de tabela `itens`
@@ -374,7 +394,8 @@ ALTER TABLE `metodos_pag`
 -- Índices de tabela `telefone`
 --
 ALTER TABLE `telefone`
-  ADD PRIMARY KEY (`id_telefone`);
+  ADD PRIMARY KEY (`id_telefone`),
+  ADD KEY `fk_fornecedor` (`id_fornecedor`);
 
 --
 -- Índices de tabela `usuarios`
@@ -415,13 +436,13 @@ ALTER TABLE `cargos`
 -- AUTO_INCREMENT de tabela `comandas`
 --
 ALTER TABLE `comandas`
-  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comanda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `comanda_itens`
 --
 ALTER TABLE `comanda_itens`
-  MODIFY `id_comanda_itens` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comanda_itens` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `fornecedores`
@@ -439,7 +460,7 @@ ALTER TABLE `itens`
 -- AUTO_INCREMENT de tabela `metodos_pag`
 --
 ALTER TABLE `metodos_pag`
-  MODIFY `id_metodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_metodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `telefone`
@@ -451,19 +472,19 @@ ALTER TABLE `telefone`
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `vendas`
 --
 ALTER TABLE `vendas`
-  MODIFY `id_venda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_venda` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de tabela `vendas_itens`
 --
 ALTER TABLE `vendas_itens`
-  MODIFY `id_venda_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_venda_item` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Restrições para tabelas despejadas
@@ -483,12 +504,6 @@ ALTER TABLE `comanda_itens`
   ADD CONSTRAINT `comanda_itens_ibfk_2` FOREIGN KEY (`id_item`) REFERENCES `itens` (`id_item`);
 
 --
--- Restrições para tabelas `fornecedores`
---
-ALTER TABLE `fornecedores`
-  ADD CONSTRAINT `fornecedores_ibfk_1` FOREIGN KEY (`id_telefone`) REFERENCES `telefone` (`id_telefone`);
-
---
 -- Restrições para tabelas `itens`
 --
 ALTER TABLE `itens`
@@ -499,6 +514,12 @@ ALTER TABLE `itens`
 --
 ALTER TABLE `metodos_pag`
   ADD CONSTRAINT `metodos_pag_ibfk_1` FOREIGN KEY (`id_venda`) REFERENCES `vendas` (`id_venda`) ON DELETE CASCADE;
+
+--
+-- Restrições para tabelas `telefone`
+--
+ALTER TABLE `telefone`
+  ADD CONSTRAINT `fk_fornecedor` FOREIGN KEY (`id_fornecedor`) REFERENCES `fornecedores` (`id_fornecedor`);
 
 --
 -- Restrições para tabelas `usuarios`
