@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["busca"])) {
                         <th>ID</th>
                         <th>Vendedor</th>
                         <th>Valor Total</th>
-                        <th>Data-Hora</th>
+                        <th>Data e Hora</th>
                         <th>Detalhes</th>
                     </tr>
                 </thead>
