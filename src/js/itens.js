@@ -16,8 +16,10 @@ function editarItem(linha) {
   // Passa os valores da tabela para o form
   id_itemCampoEditar.value = linha.children[0].textContent.trim();
   campoNome.value = linha.children[1].textContent.trim();
-  campoQuantMin.value = linha.children[2].textContent.trim();
-  campoQuant.value = linha.children[3].textContent.trim();
+
+  // substitui vírgula por ponto
+  campoQuantMin.value = linha.children[2].textContent.trim().replace(",", ".");
+  campoQuant.value = linha.children[3].textContent.trim().replace(",", ".");
 
   // Para o select, converte o texto da tabela em value correspondente
   const categoriaText = linha.children[4].textContent.trim().toLowerCase();
@@ -25,12 +27,11 @@ function editarItem(linha) {
   campoUniMed.value = linha.children[5].textContent.trim();
   campoValidade.value = linha.children[6].textContent.trim();
 
-  // Para fornecedor, você precisa do ID. Se a tabela só mostra o nome, pode usar dataset no <tr> ou <td>
-  // Exemplo simples: armazenar o ID no data-id-fornecedor da linha
+  // fornecedor
   campoIdFornecedor.value = linha.children[7].dataset.idFornecedor || "0";
 
-  // Eu não tenho a minima ideia do porquê isso não funciona :(
-  const valUniText = linha.children[8].children[1].textContent.trim();
+  // valor unitário (também troca vírgula por ponto antes do parseFloat)
+  const valUniText = linha.children[8].children[1].textContent.trim().replace(",", ".");
   campoValUni.value = parseFloat(valUniText);
 
   return;
