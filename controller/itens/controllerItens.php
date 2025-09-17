@@ -86,10 +86,20 @@ function cadastrar_item(): void
         $unidade_medida = (string) $_POST["unidade_medida"];
         $validade = (string) $_POST["validade"];
         $id_fornecedor = (int) $_POST["idFornecedor"];
+        
         // Ajusta fornecedor para null se valor for 0 (sem fornecedor)
         if ($id_fornecedor === 0) {
             $id_fornecedor = null;
         }
+
+        // Validação: unidade "UN" não pode ter decimal
+        if ($unidade_medida === "UN") {
+            if (fmod($quant_min, 1) !== 0.0 || fmod($quant, 1) !== 0.0) {
+                echo "<script>alert('Itens com unidade de medida UN não podem ter valores decimais em Quantidade ou Quantidade Mínima!');window.location.href='../../view/itens.php'</script>";
+                exit();
+            }
+        }
+
         $val_unitario = (float) $_POST["valUni"];
 
         // Cria um objeto Item com os dados
@@ -219,6 +229,7 @@ function editar_item(): void
         $categoria = (string) $_POST["categoria"];
         $validade = (string) $_POST["validade"];
         $id_fornecedor = (int) $_POST["idFornecedor"];
+        
 
         // Ajusta fornecedor para null se 0
         if ($id_fornecedor === 0) {
@@ -227,6 +238,14 @@ function editar_item(): void
 
         $val_unitario = (float) $_POST["valUni"];
         $unidade_medida = (string) $_POST["unidade_medida"];
+
+        // Validação: unidade "UN" não pode ter decimal
+        if ($unidade_medida === "UN") {
+            if (fmod($quant_min, 1) !== 0.0 || fmod($quant, 1) !== 0.0) {
+                echo "<script>alert('Itens com unidade de medida UN não podem ter valores decimais em Quantidade ou Quantidade Mínima!');window.location.href='../../view/itens.php'</script>";
+                exit();
+            }
+        }
 
         // Cria objeto Item com dados atualizados
         $item = new Item(
