@@ -31,168 +31,175 @@ if (!isset($_SESSION["comanda_itens"])) {
 </head>
 
 <body>
-<?= include "./partials/sidebar.php" ?>
+    <?= include "./partials/sidebar.php" ?>
 
-<main id="main-comandas">
+    <main id="main-comandas">
 
-    <div id="topo-pagina">
-        <h1>Emissão de Comandas</h1>
-    </div>
-
-    <div id="container-top">
-        <!-- Form adicionar itens -->
-        <form action="../controller/comandas/adicionar.php" method="POST" id="form-busca-itens">
-            <input type="text" name="item" id="item" class="form-control" placeholder="Digite o nome ou ID do produto" required autocomplete="off">
-
-            <div id="sugestoes" class="list-group"></div>
-            
-            <input type="number" name="quantidade" class="form-control" placeholder="Quantidade" min="0.001" step="0.001" required>
-            <button type="submit" class="btn btn-outline-warning">Adicionar</button>
-        </form>
-
-        <!-- Total + ações -->
-        <script>
-            function cancelar()
-            {
-              if (confirm('Cancelar comanda?'))
-                {
-                  window.location.href='../controller/comandas/cancelar.php';
-                }
-            }
-        </script>
-
-        <div id="comandaFinalizar">
-            <div id="totalComanda">
-                <h5>Total: R$ <?= number_format(
-                    $_SESSION["comanda_total"],
-                    2,
-                    ",",
-                    ".",
-                ) ?></h5>
-            </div>
-            <form action="../controller/comandas/finalizar.php" method="POST" onsubmit="return confirm('Finalizar comanda?')">
-                <button type="submit" class="btn btn-outline-success">Finalizar</button>
-            </form>
-            <button type="button" class="btn btn-outline-danger" onclick="cancelar()">Cancelar</button>
+        <div id="topo-pagina">
+            <h1>Emissão de Comandas</h1>
         </div>
-    </div>
+
+        <div id="container-top">
+            <!-- Form adicionar itens -->
+            <form action="../controller/comandas/adicionar.php" method="POST" id="form-busca-itens">
+                <input type="text" name="item" id="item" class="form-control"
+                    placeholder="Digite o nome ou ID do produto" required autocomplete="off">
+
+                <div id="sugestoes" class="list-group"></div>
+
+                <input type="number" name="quantidade" class="form-control" placeholder="Quantidade" min="0.001"
+                    step="0.001" required>
+                <button type="submit" class="btn btn-outline-warning">Adicionar</button>
+            </form>
+
+            <!-- Total + ações -->
+            <script>
+                function cancelar() {
+                    if (confirm('Cancelar comanda?')) {
+                        window.location.href = '../controller/comandas/cancelar.php';
+                    }
+                }
+            </script>
+
+            <div id="comandaFinalizar">
+                <div id="totalComanda">
+                    <h5>Total: R$ <?= number_format(
+                        $_SESSION["comanda_total"],
+                        2,
+                        ",",
+                        ".",
+                    ) ?></h5>
+                </div>
+                <form action="../controller/comandas/finalizar.php" method="POST"
+                    onsubmit="return confirm('Finalizar comanda?')">
+                    <button type="submit" class="btn btn-outline-success">Finalizar</button>
+                </form>
+                <button type="button" class="btn btn-outline-danger" onclick="cancelar()">Cancelar</button>
+            </div>
+        </div>
 
 
-    <div id="ctnr-tabela">
-        <table class="tabela">
-            <thead>
-                <tr>
-                    <th>Nome Produto</th>
-                    <th>Quantidade</th>
-                    <th>Preço Unit.</th>
-                    <th>Total</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (
-                    !empty($_SESSION["comanda_itens"]) &&
-                    is_array($_SESSION["comanda_itens"])
-                ): ?>
-                    <?php foreach (
-                        $_SESSION["comanda_itens"]
-                        as $index => $item
+        <div id="ctnr-tabela">
+            <table class="tabela">
+                <thead>
+                    <tr>
+                        <th>Nome Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unit.</th>
+                        <th>Total</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (
+                        !empty($_SESSION["comanda_itens"]) &&
+                        is_array($_SESSION["comanda_itens"])
                     ): ?>
-                        <tr>
-                            <td title="<?= htmlspecialchars(
-                                $item["nome_item"],
-                            ) ?>">
-                                <?= mb_strimwidth(
-                                    htmlspecialchars($item["nome_item"]),
-                                    0,
-                                    18,
-                                    "...",
-                                ) ?>
-                            </td>
-                            <td><?= htmlspecialchars(
-                                $item["quantidade"],
-                            ) ?></td>
-                            <td>R$ <?= number_format(
-                                $item["val_unitario"],
-                                2,
-                                ",",
-                                ".",
-                            ) ?></td>
-                            <td>R$ <?= number_format(
-                                $item["val_unitario"] * $item["quantidade"],
-                                2,
-                                ",",
-                                ".",
-                            ) ?></td>
-                            <td class="acoes">
-                                <!--<button type="button" class="botao-acoes" onclick="editarItemComanda(<?= $index ?>)">
+                        <?php foreach (
+                            $_SESSION["comanda_itens"]
+                            as $index => $item
+                        ): ?>
+                            <tr>
+                                <td title="<?= htmlspecialchars(
+                                    $item["nome_item"],
+                                ) ?>">
+                                    <?= mb_strimwidth(
+                                        htmlspecialchars($item["nome_item"]),
+                                        0,
+                                        18,
+                                        "...",
+                                    ) ?>
+                                </td>
+                                <td>
+                                    <?= htmlspecialchars(
+                                        $item["unidade_medida"] === "UN"
+                                        ? (int) $item["quantidade"]
+                                        : number_format($item["quantidade"], 2, ',', '.')
+                                    )?>
+                                    <?=htmlspecialchars($item["unidade_medida"]) ?>
+                                </td>
+                                <td>R$ <?= number_format(
+                                    $item["val_unitario"],
+                                    2,
+                                    ",",
+                                    ".",
+                                ) ?></td>
+                                <td>R$ <?= number_format(
+                                    $item["val_unitario"] * $item["quantidade"],
+                                    2,
+                                    ",",
+                                    ".",
+                                ) ?></td>
+                                <td class="acoes">
+                                    <!--<button type="button" class="botao-acoes" onclick="editarItemComanda(<?= $index ?>)">
                                     <i class="material-icons md-edit editar"></i>
                                 </button>-->
-                                <form action="../controller/comandas/remover.php" method="GET" class="d-inline">
-                                    <input type="hidden" name="remover" value="<?= $index ?>">
-                                    <button type="submit" class="botao-acoes">
-                                        <i class="material-icons md-delete deletar"></i>
-                                    </button>
-                                </form>
-                            </td>
+                                    <form action="../controller/comandas/remover.php" method="GET" class="d-inline">
+                                        <input type="hidden" name="remover" value="<?= $index ?>">
+                                        <button type="submit" class="botao-acoes">
+                                            <i class="material-icons md-delete deletar"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5" class="text-center">Nenhum item na comanda</td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="5" class="text-center">Nenhum item na comanda</td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Popup de edição de item -->
-    <dialog id="editarItemComandaPopup" class="popupContainer">
-        <div class="nomePopup">
-            <h2>Editar Item</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('editarItemComandaPopup').close()"></i>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
-        <form action="../controller/comandas/controllerComandas.php" method="POST">
-            <input type="hidden" name="index" id="editarIndexComanda">
-            <label for="nomeItemEdComanda" class="form-label">Nome do Item:</label>
-            <input type="text" name="nomeItemEd" id="nomeItemEdComanda" class="form-control" required>
-            <label for="quantidadeEdComanda" class="form-label">Quantidade:</label>
-            <input type="number" name="quantidadeEd" id="quantidadeEdComanda" class="form-control" min="1" required>
-            <button type="submit" class="btn btn-outline-warning">Salvar</button>
-        </form>
-    </dialog>
 
-    <!-- Popup emitir comanda -->
-    <dialog id="emitirComanda" class="popupContainer">
-        <div class="nomePopup">
-            <h2>Confirmar Emissão</h2>
-            <i class="material-icons md-close" onclick="document.getElementById('emitirComanda').close()"></i>
-        </div>
-        <form action="../controller/comandas/emitirComandas.php" method="POST">
-            <p>Deseja realmente emitir esta comanda?</p>
-            <button type="submit" class="btn btn-outline-warning">Emitir</button>
-        </form>
-    </dialog>
+        <!-- Popup de edição de item -->
+        <dialog id="editarItemComandaPopup" class="popupContainer">
+            <div class="nomePopup">
+                <h2>Editar Item</h2>
+                <i class="material-icons md-close"
+                    onclick="document.getElementById('editarItemComandaPopup').close()"></i>
+            </div>
+            <form action="../controller/comandas/controllerComandas.php" method="POST">
+                <input type="hidden" name="index" id="editarIndexComanda">
+                <label for="nomeItemEdComanda" class="form-label">Nome do Item:</label>
+                <input type="text" name="nomeItemEd" id="nomeItemEdComanda" class="form-control" required>
+                <label for="quantidadeEdComanda" class="form-label">Quantidade:</label>
+                <input type="number" name="quantidadeEd" id="quantidadeEdComanda" class="form-control" min="1" required>
+                <button type="submit" class="btn btn-outline-warning">Salvar</button>
+            </form>
+        </dialog>
 
-</main>
+        <!-- Popup emitir comanda -->
+        <dialog id="emitirComanda" class="popupContainer">
+            <div class="nomePopup">
+                <h2>Confirmar Emissão</h2>
+                <i class="material-icons md-close" onclick="document.getElementById('emitirComanda').close()"></i>
+            </div>
+            <form action="../controller/comandas/emitirComandas.php" method="POST">
+                <p>Deseja realmente emitir esta comanda?</p>
+                <button type="submit" class="btn btn-outline-warning">Emitir</button>
+            </form>
+        </dialog>
 
-<?php if (isset($_GET["resumo"]) and !empty($_GET["resumo"])): ?>
-    <dialog class = "popupContainer" id="resumoComanda">
-        <div class="nomePopup">
-            <h2>Sucesso!</h2>
-            <i class="material-icons md-close" onclick="window.location.href='comandas.php'"></i>
-        </div>
-        <div id="infoComanda">
-            <h4>Código da Comanda: C<?= $_GET["resumo"] ?></h4>
-            <p>Utilize este código no Ponto de Venda.</p>
-        </div>
-    </dialog>
-    <script>
-        document.getElementById('resumoComanda').showModal();
-    </script>
-<?php endif; ?>
-<!-- Desnecessário -->
-<!--<script>
+    </main>
+
+    <?php if (isset($_GET["resumo"]) and !empty($_GET["resumo"])): ?>
+        <dialog class="popupContainer" id="resumoComanda">
+            <div class="nomePopup">
+                <h2>Sucesso!</h2>
+                <i class="material-icons md-close" onclick="window.location.href='comandas.php'"></i>
+            </div>
+            <div id="infoComanda">
+                <h4>Código da Comanda: C<?= $_GET["resumo"] ?></h4>
+                <p>Utilize este código no Ponto de Venda.</p>
+            </div>
+        </dialog>
+        <script>
+            document.getElementById('resumoComanda').showModal();
+        </script>
+    <?php endif; ?>
+    <!-- Desnecessário -->
+    <!--<script>
     function editarItemComanda(index) {
         const item = ?// json_encode($itensComanda) [index];
         document.getElementById('editarIndexComanda').value = index;
@@ -202,35 +209,36 @@ if (!isset($_SESSION["comanda_itens"])) {
     }
 </script>-->
 
-<?= include "./partials/footer.html" ?>
+    <?= include "./partials/footer.html" ?>
 
-<script>
-document.getElementById("item").addEventListener("keyup", function() {
-    let termo = this.value;
+    <script>
+        document.getElementById("item").addEventListener("keyup", function () {
+            let termo = this.value;
 
-    if (termo.length < 2) { // só mostra sugestões a partir de 2 letras
-        document.getElementById("sugestoes").innerHTML = "";
-        return;
-    }
+            if (termo.length < 2) { // só mostra sugestões a partir de 2 letras
+                document.getElementById("sugestoes").innerHTML = "";
+                return;
+            }
 
-    fetch("../controller/pdv/buscarProdutos.php?q=" + termo)
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
-        data.forEach(prod => {
-            html += `<a href="#" class="list-group-item list-group-item-action"
+            fetch("../controller/pdv/buscarProdutos.php?q=" + termo)
+                .then(res => res.json())
+                .then(data => {
+                    let html = "";
+                    data.forEach(prod => {
+                        html += `<a href="#" class="list-group-item list-group-item-action"
                       onclick="selecionarProduto('${prod.nome_item}')">
                         ${prod.nome_item} - R$ ${parseFloat(prod.val_unitario).toFixed(2)} (${prod.unidade_medida})
                       </a>`;
+                    });
+                    document.getElementById("sugestoes").innerHTML = html;
+                });
         });
-        document.getElementById("sugestoes").innerHTML = html;
-    });
-});
 
-function selecionarProduto(nome) {
-    document.getElementById("item").value = nome;
-    document.getElementById("sugestoes").innerHTML = "";
-}
-</script>
+        function selecionarProduto(nome) {
+            document.getElementById("item").value = nome;
+            document.getElementById("sugestoes").innerHTML = "";
+        }
+    </script>
 </body>
+
 </html>

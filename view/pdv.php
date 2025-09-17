@@ -67,10 +67,8 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                 <div class="pesquisarItens">
                     <!-- Campo de texto para digitar o NOME do produto -->
                     <!-- O value já vem preenchido com $_SESSION['editar']['nome'] caso o usuário esteja editando -->
-                    <input type="text" name="item" id="item" 
-                    value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>" 
-                    placeholder="Nome, ID ou comanda" 
-                    class="form-control" autocomplete="off" required>
+                    <input type="text" name="item" id="item" value="<?php echo $_SESSION['editar']['nome'] ?? ''; ?>"
+                        placeholder="Nome, ID ou comanda" class="form-control" autocomplete="off" required>
 
                     <!-- Aqui vão aparecer as sugestões -->
                     <div id="sugestoes" class="list-group"></div>
@@ -108,9 +106,14 @@ if (!isset($_SESSION["metodos_pagamento"])) {
                                 <td><?= htmlspecialchars(
                                     $item["nome_item"],
                                 ) ?></td>
-                                <td><?= htmlspecialchars(
-                                    $item["quantidade"],
-                                ) ?></td>
+                                <td>
+                                    <?= htmlspecialchars(
+                                        $item["unidade_medida"] === "UN"
+                                        ? (int) $item["quantidade"]
+                                        : number_format($item["quantidade"], 2, ',', '.')
+                                    )?>
+                                    <?=htmlspecialchars($item["unidade_medida"]) ?>
+                                </td>
                                 <td>R$<span class="subtotal"> <?= number_format(
                                     $item["val_unitario"],
                                     2,
@@ -358,33 +361,33 @@ if (!isset($_SESSION["metodos_pagamento"])) {
 
 
     <script>
-document.getElementById("item").addEventListener("keyup", function() {
-    let termo = this.value;
+        document.getElementById("item").addEventListener("keyup", function () {
+            let termo = this.value;
 
-    if (termo.length < 0) { // só mostra sugestões a partir de 2 letras
-        document.getElementById("sugestoes").innerHTML = "";
-        return;
-    }
+            if (termo.length < 0) { // só mostra sugestões a partir de 2 letras
+                document.getElementById("sugestoes").innerHTML = "";
+                return;
+            }
 
-    fetch("../controller/pdv/buscarProdutos.php?q=" + termo)
-    .then(res => res.json())
-    .then(data => {
-        let html = "";
-        data.forEach(prod => {
-            html += `<a href="#" class="list-group-item list-group-item-action"
+            fetch("../controller/pdv/buscarProdutos.php?q=" + termo)
+                .then(res => res.json())
+                .then(data => {
+                    let html = "";
+                    data.forEach(prod => {
+                        html += `<a href="#" class="list-group-item list-group-item-action"
                       onclick="selecionarProduto('${prod.nome_item}')">
                         ${prod.nome_item} - R$ ${parseFloat(prod.val_unitario).toFixed(2)} (${prod.unidade_medida})
                       </a>`;
+                    });
+                    document.getElementById("sugestoes").innerHTML = html;
+                });
         });
-        document.getElementById("sugestoes").innerHTML = html;
-    });
-});
 
-function selecionarProduto(nome) {
-    document.getElementById("item").value = nome;
-    document.getElementById("sugestoes").innerHTML = "";
-}
-</script>
+        function selecionarProduto(nome) {
+            document.getElementById("item").value = nome;
+            document.getElementById("sugestoes").innerHTML = "";
+        }
+    </script>
 </body>
 
 </html>

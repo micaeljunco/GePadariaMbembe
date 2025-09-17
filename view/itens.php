@@ -151,15 +151,13 @@ $fornecedores = consulta_fornecedores();
                                         "...",
                                     ); ?>
                                 </td>
-                                <td><?= htmlspecialchars(
-                                    $item["quant_min"],
-                                ) ?></td>
-                                <td><?= htmlspecialchars($item["quant"]) ?></td>
+                                <td><?= htmlspecialchars($item["unidade_medida"] == "UN" ? (int) $item["quant_min"] : number_format($item["quant_min"] , 2, ',', '.'))?></td>
+                                <td><?= htmlspecialchars($item["unidade_medida"] == "UN" ? (int) $item["quant"] : number_format($item["quant"], 2, ',', '.'))?></td>
                                 <td><?= htmlspecialchars(
                                     ucfirst($item["categoria"]),
                                 ) ?></td>
                                 <td><?= htmlspecialchars(
-                                    ucfirst($item["unidade_medida"]),
+                                    $item["unidade_medida"]
                                 ) ?></td>
                                 <td><?= htmlspecialchars(
                                     $item["validade"],
