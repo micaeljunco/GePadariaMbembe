@@ -43,19 +43,19 @@ function busca_fornecedores()
         if (is_numeric($busca)) {
             // Busca por ID exato
             $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                    FROM fornecedores
-                    LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
-                    WHERE id_fornecedor = :busca
-                    ORDER BY id_fornecedor DESC";
+                FROM fornecedores
+                LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
+                WHERE fornecedores.id_fornecedor = :busca
+                ORDER BY fornecedores.id_fornecedor DESC";
             $stmt = $con->prepare($sql);
             $stmt->bindParam(":busca", $busca, PDO::PARAM_INT);
         } else {
             // Busca por nome que inicia com o valor informado
-            $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
-                    FROM fornecedores
-                    LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
-                    WHERE nome_fornecedor LIKE :busca
-                    ORDER BY nome_fornecedor ASC";
+                $sql = "SELECT fornecedores.*, telefone.numero, telefone.ddd
+                FROM fornecedores
+                LEFT JOIN telefone ON fornecedores.id_fornecedor = telefone.id_fornecedor
+                WHERE fornecedores.nome_fornecedor LIKE :busca
+                ORDER BY fornecedores.nome_fornecedor ASC";
             $stmt = $con->prepare($sql);
             $stmt->bindValue(":busca", "$busca%", PDO::PARAM_STR);
         }
@@ -221,7 +221,7 @@ function cadastrar_fornecedor(): void
             $fornecedor->getDescricao(),
             PDO::PARAM_STR,
         );
-        
+
         if (!$stmt->execute()) {
             echo "<script>alert('Não foi possivel cadastrar o fornecedor, Tente novamente!');window.location.href='../../view/fornecedores.php'</script>";
             exit();
@@ -230,7 +230,7 @@ function cadastrar_fornecedor(): void
         $id_fornecedor = $con->lastInsertId();
 
         // Cadastra telefone
-       cadastrar_telefone($ddd, $numero, $id_fornecedor);
+        cadastrar_telefone($ddd, $numero, $id_fornecedor);
 
         echo "<script>alert('Fornecedor cadastrado com sucesso!');window.location.href='../../view/fornecedores.php'</script>";
         exit();
