@@ -2,6 +2,11 @@
 
 Este projeto foi desenvolvido como parte do trabalho e avaliação dos conhecimentos adquiridos durante a situação de aprendizagem (SA) da unidade curricular (UC) de Desenvolvimento de Sistemas.
 
+## Desenvolvedores
+### [@micaeljunco](https://github.com/micaeljunco)
+### [@Carlos-Yan0](https://github.com/Carlos-Yan0)
+### [@Freitas014](https://github.com/Freitas014)
+### [@Lucas-Magalhaes-oficial](https://github.com/Lucas-Magalhaes-oficial)
 ---
 
 # Estrutura e Tecnologias Utilizadas
@@ -62,18 +67,6 @@ O projeto será inicializado sem problemas.
 # Como Fazer Login no Sistema?
 
 Para realizar o login no sistema, é necessário utilizar um **e-mail** e uma **senha** pré-definidos. Essas credenciais podem ser encontradas no arquivo **`LOGINS`** que acompanha o projeto.
-
----
-
-# Contribuições
-
-Se você deseja contribuir com o projeto, siga os seguintes passos:
-
-1. Faça um fork deste repositório.
-2. Crie uma branch para a sua modificação (`git checkout -b minha-branch`).
-3. Commit suas alterações (`git commit -am 'Adiciona nova funcionalidade'`).
-4. Envie para o repositório remoto (`git push origin minha-branch`).
-5. Abra um pull request!
 
 ---
 
