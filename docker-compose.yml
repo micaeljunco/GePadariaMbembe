@@ -2,12 +2,12 @@ version: '3.8'
 
 services:
     app:
-        build: .
+        build: ./padaria
         container_name: gepadaria_web
         ports:
             - "8080:80"
         volumes:
-            - ./:/var/www/html
+            - ./padaria:/var/www/html
         depends_on:
             - db
         networks:
