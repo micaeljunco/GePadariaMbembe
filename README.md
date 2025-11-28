@@ -25,9 +25,18 @@ A arquitetura de software adotada é o **MVC** (Model-View-Controller), o que ga
 
 # Como Testar o Projeto
 
-Existem duas maneiras de testar o projeto localmente: via **XAMPP/WAMP** ou **Docker**.
+Existem Três maneiras de testar o projeto localmente: via **XAMPP/WAMP** ou **Docker**.
 
-## 1. Via XAMPP/WAMP
+## 1. Via Site (recomendado para recrutadores)
+
+A forma mais simples de testar é acessar a versão hospedada:
+
+ ```
+    https://gepadariambembe.infinityfreeapp.com
+ ```
+
+
+## 2. Via XAMPP/WAMP
 
 Caso você tenha o **XAMPP** ou **WAMP** instalado em sua máquina, siga os passos abaixo:
 
@@ -42,9 +51,9 @@ Caso você tenha o **XAMPP** ou **WAMP** instalado em sua máquina, siga os pass
 
 ---
 
-## 2. Via Docker (Recomendado)
+## 3. Via Docker (recomendado para devs)
 
-Se você tem o **Docker** instalado, essa é a maneira mais simples e recomendada para testar o projeto. Siga os passos abaixo:
+Se você tem o **Docker** instalado, essa é a maneira mais simples e recomendada para devs testarem o projeto. Siga os passos abaixo:
 
 1. Clone o repositório e troque para a **branch docker**.
 2. Com o terminal, navegue até a pasta onde o projeto foi clonado.
